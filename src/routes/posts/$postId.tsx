@@ -1,0 +1,212 @@
+// TODO: move to react server components?
+
+import React from "react";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { posts as allPosts } from "cms/posts";
+import { md } from "#/lib/markdown";
+import { NotFound } from "#/components/NotFound";
+import { Badge } from "#/components/ui/badge";
+import { Link } from "#/components/ui/ethendotapp/link";
+import { Separator } from "#/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "#/components/ui/dialog";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from "#/components/ui/item";
+import { Button } from "#/components/ui/button";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "#/components/ui/avatar";
+import { RiArrowRightLine } from "@remixicon/react";
+import type { Author } from "cms/authors";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "#/components/ui/breadcrumb";
+import { getTitle } from "#/lib/routing.ts";
+
+export const Route = createFileRoute("/posts/$postId")({
+  loader: async ({ params }) => {
+    const post = allPosts.find((p) => params.postId === p._meta.path.slugify());
+
+    if (!post) throw notFound();
+    return { post };
+  },
+  head: ({ loaderData, matches }) => ({
+    meta: [
+      {
+        title: getTitle(matches, " / ", loaderData?.post.title || "Post"),
+      },
+    ],
+  }),
+  component: RouteComponent,
+  notFoundComponent: (props) =>
+    NotFound({
+      ...props,
+      title: "404: post not found",
+      link: { text: "all posts", href: "/posts" },
+    }),
+});
+
+function RouteComponent() {
+  const { post } = Route.useLoaderData();
+
+  return (
+    <article className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="space-y-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink render={<Link to="/" unstyled />}>Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink render={<Link to="/posts" unstyled />}>Posts</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Post</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        {post.cover ? (
+          <div
+            className="flex items-center w-full rounded-lg overflow-hidden"
+            style={{ maxHeight: `calc(var(--spacing) * ${post.cover.height || 46})` }}
+          >
+            <img src={post.cover.src} alt={post.cover.alt} />
+          </div>
+        ) : (
+          <div />
+        )}
+        <h2 className="font-medium text-shadow-sm text-shadow-hg-black/15">{post.title}</h2>
+        <p className="text-xl text-muted-foreground">{post.summary}</p>
+        <div className="flex items-center gap-4">
+          <Dialog>
+            <DialogTrigger>
+              <div className="flex items-center gap-2 cursor-pointer">
+                <AvatarGroup>
+                  {post.authors.slice(0, 4).map((author) => (
+                    <Avatar key={author.id} size="sm">
+                      <AvatarImage src={author.avatar} alt={author.name} />
+                      <AvatarFallback>{author.name.initials()}</AvatarFallback>
+                    </Avatar>
+                  ))}
+
+                  {post.authors.length > 4 && (
+                    <AvatarGroupCount>+{post.authors.length - 4}</AvatarGroupCount>
+                  )}
+                </AvatarGroup>
+                <AuthorList authors={post.authors} />
+              </div>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Authored by</DialogTitle>
+              </DialogHeader>
+              <AuthorList authors={post.authors} asItems />
+            </DialogContent>
+          </Dialog>
+
+          <p className="text-muted-foreground">
+            {new Date(post.date).toLocaleDateString("en-US", { dateStyle: "long" })}
+          </p>
+
+          {/*<p className="text-muted-foreground">-1 views</p>  TODO: view counter  */}
+        </div>
+        {post.tags && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {post.tags.map((tag) => (
+              <Badge render={<Link to="/posts/tag/$tag" params={{ tag }} unstyled />} key={tag}>
+                #{tag}
+              </Badge>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <Separator className="my-6" />
+
+      <div className="typeset max-w-none" dangerouslySetInnerHTML={{ __html: md(post.content) }} />
+    </article>
+  );
+}
+
+function AuthorList({ authors, asItems }: { authors: Array<Author>; asItems?: boolean }) {
+  if (asItems) {
+    return (
+      <ItemGroup>
+        {authors.map((author) => (
+          <Item size="sm" key={author.id} variant="outline">
+            <ItemMedia>
+              <Avatar className="size-10">
+                <AvatarImage src={author.avatar} />
+                <AvatarFallback>{author.name.initials()}</AvatarFallback>
+              </Avatar>
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>{author.name}</ItemTitle>
+              <ItemDescription className="text-xs">{author.bio}</ItemDescription>
+            </ItemContent>
+            <ItemActions>
+              <Button
+                size="icon-sm"
+                variant="outline"
+                aria-label="View author details"
+                render={<Link to="/posts/@{$author}" params={{ author: author.id }} />}
+                nativeButton={false}
+              >
+                <RiArrowRightLine />
+              </Button>
+            </ItemActions>
+          </Item>
+        ))}
+      </ItemGroup>
+    );
+  }
+
+  if (authors.length <= 2) {
+    return (
+      <p>
+        {authors.map((author, i) => (
+          <React.Fragment key={author.id}>
+            {i > 0 && <span className="text-muted-foreground"> and </span>}
+            <Link to="/posts/@{$author}" params={{ author: author.id }} unstyled disabled>
+              {author.name}
+            </Link>
+          </React.Fragment>
+        ))}
+      </p>
+    );
+  }
+
+  const [first, ...others] = authors;
+
+  return (
+    <p>
+      {first.name}{" "}
+      <span className="text-muted-foreground">
+        and {others.length} {"other".plural(others.length)}
+      </span>
+    </p>
+  );
+}

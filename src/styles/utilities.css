@@ -1,0 +1,277 @@
+@custom-variant dark (&:is(.dark *));
+
+@custom-variant hocus {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+
+  &:focus {
+    @slot;
+  }
+}
+
+@custom-variant not-hocus {
+  @media (hover: hover) {
+    &:not(:hover):not(:focus) {
+      @slot;
+    }
+  }
+
+  @media (hover: none) {
+    &:not(:focus) {
+      @slot;
+    }
+  }
+}
+
+:root {
+  --header-height: calc(var(--spacing) * 17);
+  --layout-offset: 0px;
+
+  --text-base-sm: 0.9375rem;
+  --text-base-sm--line-height: 1.375rem;
+}
+
+@theme {
+  --container-4xs: 14rem;
+  --container-5xs: 12rem;
+  --container-6xs: 10rem;
+
+  --height-screen: 100vh;
+  --height-dvh: 100dvh;
+  --height-svh: 100svh;
+  --height-lvh: 100lvh;
+}
+
+/* @theme {
+  --prose-spacing-tight: 0.75rem;
+  --prose-spacing-none: 0;
+}
+
+@utility prose-headings-spacing-* {
+  @apply prose-headings:--value(--prose-spacing-*);
+} */
+
+@utility animation-delay-* {
+  --tw-animation-delay: calc(--value(integer) * 1ms);
+  animation-delay: var(--tw-animation-delay);
+}
+
+@utility drag-none {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  /* user-select: none; */
+}
+
+@utility text-base-sm {
+  font-size: var(--text-base-sm);
+  line-height: var(--tw-leading, var(--text-base-sm--line-height));
+}
+
+@utility striped-* {
+  background-image: repeating-linear-gradient(
+    135deg,
+    --value(--color-*) 0px,
+    --value(--color-*) calc(--modifier(integer, --default(10)) * 1px),
+    rgba(255, 255, 255, 0.12) calc(--modifier(integer, --default(10)) * 1px),
+    rgba(255, 255, 255, 0.12) calc(--modifier(integer, --default(10)) * 2px)
+  );
+  background-size: auto;
+  background-repeat: repeat;
+}
+
+/* h-safe stuff (accounts for header) */
+:root[data-header="true"] {
+  --layout-offset: var(--header-height);
+}
+
+@utility h-safe-* {
+  height: calc(--value(--height-*) - var(--layout-offset));
+}
+
+@utility min-h-safe-* {
+  min-height: calc(--value(--height-*) - var(--layout-offset));
+}
+
+@utility max-h-safe-* {
+  max-height: calc(--value(--height-*) - var(--layout-offset));
+}
+/* end h-safe stuff */
+
+/* width variants */
+
+@utility w-4xs {
+  width: var(--container-4xs);
+}
+
+@utility w-5xs {
+  width: var(--container-5xs);
+}
+
+@utility w-6xs {
+  width: var(--container-6xs);
+}
+
+/* end width variants */
+/* min-width variants */
+
+@utility min-w-4xs {
+  min-width: var(--container-4xs);
+}
+
+@utility min-w-5xs {
+  min-width: var(--container-5xs);
+}
+
+@utility min-w-6xs {
+  min-width: var(--container-6xs);
+}
+
+/* end min-width variants */
+/* begin max-width variants */
+
+@utility max-w-4xs {
+  max-width: var(--container-4xs);
+}
+
+@utility max-w-5xs {
+  max-width: var(--container-5xs);
+}
+
+@utility max-w-6xs {
+  max-width: var(--container-6xs);
+}
+
+/* end max-width variants */
+
+/* begin shake */
+
+@utility animate-shake-sm-once {
+  --shake-distance: 0.5;
+}
+
+@utility animate-shake-sm {
+  --shake-distance: 0.5;
+}
+
+@utility animate-shake-once {
+  --shake-distance: 1;
+}
+
+@utility animate-shake {
+  --shake-distance: 1;
+}
+
+@utility animate-shake-md-once {
+  --shake-distance: 1;
+}
+
+@utility animate-shake-md {
+  --shake-distance: 1;
+}
+
+@utility animate-shake-lg-once {
+  --shake-distance: 2;
+}
+
+@utility animate-shake-lg {
+  --shake-distance: 2;
+}
+
+@utility animate-shake-xl-once {
+  --shake-distance: 3;
+}
+
+@utility animate-shake-xl {
+  --shake-distance: 3;
+}
+
+@theme {
+  --animate-shake-sm-once: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) 1;
+  --animate-shake-once: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) 1;
+  --animate-shake-md-once: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) 1;
+  --animate-shake-lg-once: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) 1;
+  --animate-shake-xl-once: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) 1;
+
+  --animate-shake-sm: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) infinite;
+  --animate-shake: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) infinite;
+  --animate-shake-md: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) infinite;
+  --animate-shake-lg: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) infinite;
+  --animate-shake-xl: shake var(--tw-duration, 500ms) var(--tw-ease, ease-in-out) infinite;
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+
+    10% {
+      transform: translate(
+        calc(-1px * var(--shake-distance, 1)),
+        calc(0.5px * var(--shake-distance, 1))
+      );
+    }
+
+    20% {
+      transform: translate(
+        calc(1.5px * var(--shake-distance, 1)),
+        calc(-0.5px * var(--shake-distance, 1))
+      );
+    }
+
+    30% {
+      transform: translate(
+        calc(-2px * var(--shake-distance, 1)),
+        calc(1px * var(--shake-distance, 1))
+      );
+    }
+
+    40% {
+      transform: translate(
+        calc(1px * var(--shake-distance, 1)),
+        calc(-1.5px * var(--shake-distance, 1))
+      );
+    }
+
+    50% {
+      transform: translate(
+        calc(-1.5px * var(--shake-distance, 1)),
+        calc(0.5px * var(--shake-distance, 1))
+      );
+    }
+
+    60% {
+      transform: translate(
+        calc(2px * var(--shake-distance, 1)),
+        calc(1px * var(--shake-distance, 1))
+      );
+    }
+
+    70% {
+      transform: translate(
+        calc(-1px * var(--shake-distance, 1)),
+        calc(-1px * var(--shake-distance, 1))
+      );
+    }
+
+    80% {
+      transform: translate(
+        calc(1.5px * var(--shake-distance, 1)),
+        calc(0.5px * var(--shake-distance, 1))
+      );
+    }
+
+    90% {
+      transform: translate(
+        calc(-0.5px * var(--shake-distance, 1)),
+        calc(-1px * var(--shake-distance, 1))
+      );
+    }
+  }
+}
+
+/* end shake */

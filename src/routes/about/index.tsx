@@ -1,0 +1,56 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { posts as allPosts } from "cms/posts";
+import { md } from "#/lib/markdown";
+import { ContactForm } from "./-contact";
+import { NewsletterCTA } from "#/components/elements/NewsletterCTA.tsx";
+// TODO: Switch to Zod Mini?
+
+const ABOUT_POST_ID = "about-us";
+const fallback = `HackGwinnett is a student-run organization that aims to promote computer science and technology education in Gwinnett County, Georgia. We organize hackathons, workshops, and other events to help students learn and grow in the field of technology.`;
+
+export const Route = createFileRoute("/about/")({
+  staticData: { title: "About Us" },
+  loader: async () => {
+    const content = allPosts.find((p) => ABOUT_POST_ID === p._meta.path.slugify());
+    return { content };
+  },
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const { content } = Route.useLoaderData();
+
+  return (
+    <div>
+      {/* TODO: replace with header from social media posts with the hexagonic thingy? */}
+      <div className="relative bg-black flex items-center justify-center h-24 overflow-hidden sm:h-36 lg:h-48">
+        <div className="absolute inset-0 bg-hg-green striped-hg-green-alt/20 opacity-50" />
+        <h1 className="relative font-light font-brand text-5xl uppercase text-white sm:text-6xl lg:text-8xl">
+          About Us
+        </h1>
+      </div>
+
+      <div className="p-4 mx-auto max-w-7xl">
+        <div className="my-8" />
+        <main className="flex flex-col lg:flex-row justify-between gap-8">
+          {content ? (
+            <div
+              className="typeset max-w-none space-y-2"
+              dangerouslySetInnerHTML={{ __html: md(content.content || fallback) }}
+            />
+          ) : (
+            fallback
+          )}
+
+          <div className="lg:min-w-md">
+            <ContactForm />
+          </div>
+        </main>
+        <NewsletterCTA
+          className="border p-5 md:p-8 my-10"
+          description="Be the first to know when officer applications are open. Plus, learn about upcoming events and opportunities from the HackGwinnett team!"
+        />
+      </div>
+    </div>
+  );
+}
