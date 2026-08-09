@@ -6,7 +6,8 @@ const goRedirects: Record<string, string> = {
   register:
     "https://docs.google.com/forms/d/e/1FAIpQLSfZn384gkF09tDDLrMyxB9WhqiCsW3_hMMEek7lDLB_L-gjNw/viewform",
   issues: "/report",
-  workshops: "https://github.com/hackgwinnett/workshops",
+  workshops: "/programs/hackathon#workshops",
+  wsarchive: "https://github.com/hackgwinnett/workshops",
 
   // socials
   instagram: brandInfo.socials.instagram || "/",
@@ -28,7 +29,10 @@ const patchPath = (href: string) => {
 };
 
 export const Route = createFileRoute("/go/$slug")({
-  staticData: { title: "Redirecting...", header: { hidden: true } },
+  staticData: {
+    title: { page: "Redirecting...", exact: true },
+    header: { hidden: true },
+  },
   loader: ({ params }) => {
     const { slug } = params;
 

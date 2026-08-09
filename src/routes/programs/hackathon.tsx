@@ -9,7 +9,7 @@ import { RiLink } from "@remixicon/react";
 import { Separator } from "#/components/ui/separator";
 
 export const Route = createFileRoute("/programs/hackathon")({
-  staticData: { title: "Hackathon" },
+  staticData: { title: "Hackathon 6.0" },
   component: () => (
     <ProgramsEventPage
       event={eventInfo.hackathon}
@@ -21,25 +21,39 @@ export const Route = createFileRoute("/programs/hackathon")({
                 <p>
                   <span className="font-medium">Workshops:</span> Workshops are 40-minute sessions
                   during the hackathon that allow participants to gain hands-on experience in a new
-                  computer science skill or domain. Workshops run simultaneously, so you can only
-                  choose one per time slot (round). You may attend up to 4 workshops total, but you
-                  don't have to attend one for each time slot. Usually, after lecture, you'll have
-                  time to work on your project submission (you may even apply the skills you learned
-                  to improve it!).
+                  computer science skill or domain. Workshops run{" "}
+                  <span className="italic">simultaneously</span>, so you can only choose one per
+                  time slot (round).
                 </p>
-                <p>This year, workshops include:</p>
+                <p>
+                  This year, you may attend up to 4 workshops total. Like always, you don't have to
+                  attend one for each time slot--and usually, after lecture, you'll have time to
+                  work on your hackathon submission. You may even apply the skills you learned to
+                  improve your project!
+                </p>
+                <p>
+                  Here's what you can choose from when you{" "}
+                  <ExtLink href="/go/register">sign up</ExtLink> for Hackathon 6.0:
+                </p>
                 <ul className="list-disc list-inside">
                   <li>Now this is a story all about how</li>
                   <li>my life got flipped-turned upside down</li>
                   <li>#niche</li>
                 </ul>
+                <p>
+                  Check out our previous workshops:{" "}
+                  <ExtLink href="https://github.com/hackgwinnett/workshops">
+                    hackgwinnett/workshops
+                  </ExtLink>
+                  {/* TODO: actually make this archive */}
+                </p>
               </div>
 
               <Separator />
 
               <div>
                 <ExtLink
-                  className="text-primary underline w-fit"
+                  className="text-primary underline not-hover:decoration-primary/50 w-fit"
                   href="https://www.youtube.com/watch?v=aQhZfWQlVXU"
                   buttonStyle
                 >
@@ -47,7 +61,7 @@ export const Route = createFileRoute("/programs/hackathon")({
                   Hackathon 5.0 Recap
                 </ExtLink>
                 <ExtLink
-                  className="text-primary underline w-fit"
+                  className="text-primary underline not-hover:decoration-primary/50 w-fit"
                   href="https://www.instagram.com/reel/DSlEv4xifqL/"
                   buttonStyle
                 >
@@ -57,7 +71,7 @@ export const Route = createFileRoute("/programs/hackathon")({
                 <p>
                   As seen in{" "}
                   <ExtLink
-                    className="text-primary underline w-fit"
+                    className="text-primary underline not-hover:decoration-primary/50 w-fit"
                     href="https://hackathons.hackclub.com/"
                   >
                     Hack Club Hackathons

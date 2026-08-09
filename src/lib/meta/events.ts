@@ -23,11 +23,11 @@ export interface HGEvent {
 // todo: better descriptions?
 export const eventInfo: Record<string, HGEvent> = {
   hackathon: {
-    name: "HackGwinnett 6.0",
+    name: "Hackathon 6.0",
     shortName: "HG6",
     description: "A one-day hackathon for middle and high school students.",
     details:
-      "HackGwinnett 6.0 is a one-day hackathon for middle and high school students. Students will work in teams to create projects and compete for prizes. Workshops for total beginners or seasoned pros are available throughout the day (because we can all learn something new!). Sign up NOW!",
+      "Hackathon 6.0 is a one-day hackathon for middle and high school students. Students will work in teams to create projects and compete for prizes. Workshops for total beginners or seasoned pros are available throughout the day (because we can all learn something new!). Sign up NOW!",
     location: {
       name: "Gwinnett School of Mathematics, Science, and Technology",
       shortName: "GSMST",
