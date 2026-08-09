@@ -148,7 +148,7 @@ const navItems = [
   {
     title: "Report issue",
     className: "hidden", // drawer-only
-    href: "/eda/report",
+    href: "/report",
   },
 ] satisfies NavItem[];
 

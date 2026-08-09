@@ -5,7 +5,7 @@ const goRedirects: Record<string, string> = {
   // main site/quick links
   register:
     "https://docs.google.com/forms/d/e/1FAIpQLSfZn384gkF09tDDLrMyxB9WhqiCsW3_hMMEek7lDLB_L-gjNw/viewform",
-  issues: "/eda/report",
+  issues: "/report",
   workshops: "https://github.com/hackgwinnett/workshops",
 
   // socials

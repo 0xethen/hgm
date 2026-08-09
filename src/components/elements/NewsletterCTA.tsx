@@ -116,7 +116,7 @@ export function NewsletterCTA({
             description: "Please try again (or file an issue!)",
             action: {
               label: "Report",
-              onClick: () => navigate({ to: "/eda/report" }),
+              onClick: () => navigate({ to: "/report" }),
             },
             actionButtonStyle: { backgroundColor: "var(--destructive)" },
           };

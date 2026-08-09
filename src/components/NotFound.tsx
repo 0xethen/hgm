@@ -148,8 +148,8 @@ export function NotFound(
 
           <Link
             ref={reportLinkRef}
-            to="/eda/report"
-            search={{ from: props?.routeId || location.pathname, c: 404, t: "missing-content" }}
+            to="/report"
+            search={{ from: props?.routeId || location.pathname, c: 404, t: "nocontent" }}
             className={cn(
               "group",
               "not-motion-reduce:hover:animate-shake-once",

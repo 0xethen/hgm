@@ -8,10 +8,11 @@ export function HomepageHeader({ isScrolled }: { isScrolled: boolean }) {
       classNames={{
         navigationMenu: {
           items: {
-            global: isScrolled
-              ? "hover:bg-white/50 data-popup-open:hover:bg-white hover:text-black data-popup-open:text-black focus:bg-transparent"
-              : undefined,
+            global: isScrolled ? "hover:text-black focus:hover:bg-white" : undefined,
             link: isScrolled ? "hover:bg-white" : undefined,
+            dropdown: isScrolled
+              ? "hover:bg-white/50 data-popup-open:bg-white/20 data-popup-open:hover:bg-white"
+              : undefined,
           },
         },
       }}

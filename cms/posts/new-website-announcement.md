@@ -30,7 +30,7 @@ For reference, here's [the old website](https://hackgwinnett.github.io/www-archi
 - lots of accessibility improvements*
 - a brand refresh
 
-And a lot more is on the way! If you have feedback, DM us on [Instagram](/go/instagram) or [submit a report](/feedback). If you're a real smart cookie, you can even submit an [issue](https://github.com/0xethen/hgm/issues) and/or [PR](https://github.com/0xethen/hgm/pulls)!
+And a lot more is on the way! If you have feedback, DM us on [Instagram](/go/instagram) or [submit a report](/feedback). If you're a real smart cookie, you can even submit a [PR](https://github.com/0xethen/hgm/pulls)!
 
 Stay inventive,
 ![Ethen's signature](/assets/posts/signatures/ethen-smiley.svg =150x80)

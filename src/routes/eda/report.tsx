@@ -8,7 +8,7 @@ import { Button } from "#/components/ui/button";
 import { Separator } from "#/components/ui/separator";
 
 const templates = {
-  "missing-content": {
+  nocontent: {
     title: "Missing Content",
     description:
       "Encountered a 404 error. \n(Describe the content that is missing, where you expected to find it, and any other details that might help us track down this pesky bug.)",

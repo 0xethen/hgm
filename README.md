@@ -2,6 +2,8 @@
 
 The repository for the official HackGwinnett marketing website (https://hackgwinnett.org)
 
+> Non-contributors, please report issues at [hackgwinnett.org/go/issues](https://hackgwinnett.org/go/issues)
+
 > TODO: `git remote remove origin && git remote add origin https://github.com/hackgwinnett/www.git`
 
 > TODO: resize images so that they don't take 3 years to load
