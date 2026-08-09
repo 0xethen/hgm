@@ -9,7 +9,7 @@ export function HomepageHeader({ isScrolled }: { isScrolled: boolean }) {
         navigationMenu: {
           items: {
             global: isScrolled
-              ? "hover:bg-white/50 data-popup-open:hover:bg-white data-expanded:hover:text-white data-popup-open:text-black focus:bg-transparent"
+              ? "hover:bg-white/50 data-popup-open:hover:bg-white hover:text-black data-popup-open:text-black focus:bg-transparent"
               : undefined,
             link: isScrolled ? "hover:bg-white" : undefined,
           },
