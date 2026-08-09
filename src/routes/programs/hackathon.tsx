@@ -84,29 +84,32 @@ export const Route = createFileRoute("/programs/hackathon")({
               )}
               items={[
                 <img
-                  src="/assets/images/events/hackathon/IMG_6720.JPG"
+                  src={"/assets/images/events/hackathon/IMG_6720.JPG".toAsset()}
                   alt="1st place prize winners (HG 5.0)"
                 />,
                 <img
-                  src="/assets/images/events/hackathon/IMG_6700.JPG"
+                  src={"/assets/images/events/hackathon/IMG_6700.JPG".toAsset()}
                   alt="Ms. Rachkovskiy at HackGwinnett 5.0. To the right, Jaden side-eyes the camera."
                 />,
                 // TODO: who is this speaker (for alt text) (+ more images from diff years)
-                <img src="/assets/images/events/hackathon/IMG_6716.JPG" alt="IMG_6716.JPG" />,
                 <img
-                  src="/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.02 PM.png"
+                  src={"/assets/images/events/hackathon/IMG_6716.JPG".toAsset()}
+                  alt="IMG_6716.JPG"
+                />,
+                <img
+                  src={"/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.02 PM.png".toAsset()}
                   alt="Vishnu and Serge pay attention to a workshop at 5.0."
                 />,
                 <img
-                  src="/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.03 PM.png"
+                  src={"/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.03 PM.png".toAsset()}
                   alt="Neal speaks to the participants at 5.0."
                 />,
                 <img
-                  src="/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.05 PM.png"
+                  src={"/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.05 PM.png".toAsset()}
                   alt="screenshot-2026-07-19-at-25205-pm"
                 />,
                 <img
-                  src="/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.07 PM.png"
+                  src={"/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.07 PM.png".toAsset()}
                   alt="screenshot-2026-07-19-at-25207-pm"
                 />,
               ]}

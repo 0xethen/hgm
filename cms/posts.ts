@@ -10,7 +10,7 @@ export const posts = ccPosts
     date: new Date(p.date),
     cover: {
       ...p.cover,
-      src: p.cover?.src.startsWith("/") ? `${p.cover.src}` : p.cover?.src, // add base path (/www or repo name) if using GH Pages
+      src: p.cover?.src.startsWith("/") ? p.cover.src.toAsset() : p.cover?.src, // add base path (/www or repo name) if using GH Pages
     },
     authors: p.authors.map((id: string) => ({ id, ...authorInfo[id] })) as Author[],
   }));

@@ -25,7 +25,10 @@ export function HomepageHeroVideoDialog() {
         <div className="relative w-full aspect-video">
           {isVideoLoading && (
             <div className="absolute inset-0 flex bg-accent/50 items-center justify-center">
-              <img src="/assets/images/brand/hgtransparent.svg" className="size-24 animate-pulse" />
+              <img
+                src={"/assets/images/brand/hgtransparent.svg".toAsset()}
+                className="size-24 animate-pulse"
+              />
             </div>
           )}
 

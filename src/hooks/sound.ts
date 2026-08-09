@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 
 const SOUND_FILES = {
-  bading: "/assets/sounds/bading.mp3",
+  bading: "/assets/sounds/bading.mp3".toAsset(),
 } as const;
 
 type SoundName = keyof typeof SOUND_FILES;

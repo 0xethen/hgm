@@ -55,7 +55,7 @@ export function LilJadenJr({
   return (
     <div className="z-2 [&>img]:drag-none">
       <img
-        src="/assets/images/misc/jadensideeye.png"
+        src={"/assets/images/misc/jadensideeye.png".toAsset()}
         alt="Jaden Dennis side-eyes you"
         className={cn(
           "fixed -bottom-12",

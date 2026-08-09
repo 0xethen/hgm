@@ -53,7 +53,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
                 {eventInfo.hackathon.startDate.toLocaleDateString("en-US", {
                   dateStyle: "full",
                 })}
-                . Sign up today!
+                . Sign ups coming soon!
               </>
             )}
           </p>

@@ -20,7 +20,7 @@ If things go haywire, you may need to switch to a deployment adapter that suppor
 
 > use this to find bugs. Because this is all very pre-release & experimental stuff, using a server-side deployment adapter (like Vercel or Netlify) is highly recommended.
 
-Locally, you'll have to build the web app first [(see above)](#build). Then upload the finished `dist` artifact onto your deployment provider. You may need to make some tweaks (like pointing assets and [setting the baseUrl](https://tanstack.com/router/latest/docs/how-to/deploy-to-production#github-pages) to /(repository-name) for `*.github.io` GitHub Pages). Look it up!
+Locally, you'll have to build the web app first [(see above)](#build). Then upload the finished `dist` artifact onto your deployment provider. You may need to make some tweaks (like pointing assets and [setting the base path](https://tanstack.com/router/latest/docs/how-to/deploy-to-production#github-pages) to /(repository-name) for `*.github.io` GitHub Pages). Look it up!
 
 ## I chose SPA. Now what?
 

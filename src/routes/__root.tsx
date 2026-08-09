@@ -39,7 +39,7 @@ export const Route: RootRoute<Register> = createRootRoute({
       }),
     ],
     links: [
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico".toAsset() },
       { rel: "stylesheet", href: css },
     ],
   }),
@@ -57,9 +57,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const showChrome =
     hydrated &&
     !staticData.header?.hidden && // explicitly hidden via staticData
-    !activeMatch?.globalNotFound && // actual nonexistent route
-    activeMatch?.status !== "notFound" && // throw notFound()
-    !activeMatch?.error; // error boundary (bsod)
+    // @ts-ignore globalNotFound missing?
+    !activeMatch?._notFound && // actual nonexistent route or throw notFound()
+    !activeMatch?.error; // notFound or error boundary (bsod)
 
   const layoutOffset = hydrated && (showChrome || !!staticData.header?.forceLayoutOffset);
 
@@ -93,7 +93,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 position: "bottom-right",
                 customTrigger: (
                   <img
-                    src="/assets/images/brand/hgdeveloper.png"
+                    src={"/assets/images/brand/hgdeveloper.png".toAsset()}
                     className="size-12 rounded-full border-2 border-border"
                     alt="Open devtools"
                   />

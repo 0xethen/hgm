@@ -11,6 +11,10 @@ Your commit messages should have at least 1 (one) of the following prefixes:
 | [feat]   | Major overhauls to site                                              |
 | [hotfix] | Quick fix/enhancement to one or more site bugs                       |
 
+## General code patterns
+
+When adding static assets like images, sound, etc. to the site, call the .toAsset() string function on the src path. For example, `<img src={"/assets/images/misc/jadensideeye.png".toAsset()} />` in [LilJadenJr](./src/components/elements/misc/LilJadenJr.tsx#58).
+
 ## Routes (webpages)
 
 Routes are defined in the `src/routes` directory. Each route is a separate file that defines the component to be rendered for that route. See the Start [Routing guide](https://tanstack.com/start/latest/docs/framework/react/guide/routing) for more information.

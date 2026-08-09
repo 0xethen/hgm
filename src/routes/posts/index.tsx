@@ -140,7 +140,7 @@ function RouteComponent() {
                 {post.cover && (
                   <div className="overflow-hidden bg-muted aspect-video">
                     <img
-                      src={post.cover.src || "/assets/posts/covers/default.png"}
+                      src={post.cover.src || "/assets/posts/covers/default.png".toAsset()}
                       alt={post.cover.alt}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />

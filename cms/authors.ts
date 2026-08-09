@@ -35,10 +35,6 @@ export const authorInfo: Record<string, AuthorInfo> = {
   unknown: {
     name: "Unknown Author",
     bio: "(this author has not been added to the author list yet)",
-    avatar: "/assets/avatars/unknown.png",
+    avatar: "https://ethen.app/assets/avatars/unknown.png",
   },
 };
-
-// export const authorInfo: Record<string, AuthorInfo> = Object.fromEntries(
-//   Object.entries(authorInfoRaw).map(([id, info]) => [id, { ...info, id }]),
-// );

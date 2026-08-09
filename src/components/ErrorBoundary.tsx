@@ -109,7 +109,7 @@ export function ErrorBoundary(props: ErrorComponentProps) {
       <div className="flex items-start">
         <img
           className="h-auto w-[max(min(11%,105px),50px)] object-contain"
-          src="/assets/images/misc/bsodqr.png" // to /thecakeisalie
+          src={"/assets/images/misc/bsodqr.png".toAsset()} // to /thecakeisalie
           alt="QR code"
         />
 

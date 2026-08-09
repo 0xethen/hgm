@@ -10,13 +10,25 @@ export class EDATestingError extends Error {
 
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+function getAsset(path: string) {
+  const base = import.meta.env.BASE_URL || "/";
+
+  if (base === "/" || !path.startsWith("/")) return path;
+  return import.meta.env.BASE_URL + path;
+}
+
 declare global {
   interface String {
+    toAsset(): string;
     slugify(preserveCase?: boolean): string;
     initials(): string;
     plural(count: number, ending?: string): string;
   }
 }
+
+String.prototype.toAsset = function () {
+  return getAsset(this.toString());
+};
 
 String.prototype.slugify = function (preserveCase = false) {
   let str = this.toString()

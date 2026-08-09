@@ -383,7 +383,7 @@ export function Header({
             <img
               className="size-9"
               alt="HackGwinnett Logo"
-              src="/assets/images/brand/hgwordmark.svg"
+              src={"/assets/images/brand/hgwordmark.svg".toAsset()}
             />
           </IntLink>
 
