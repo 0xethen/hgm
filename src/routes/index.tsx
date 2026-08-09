@@ -9,7 +9,7 @@ import { HomepageFooter } from "#/components/elements/home/nav/footer.tsx";
 export const Route = createFileRoute("/")({
   component: RouteComponent,
   staticData: {
-    title: "HackGwinnett: Metro Atlanta's Premier CS Organization",
+    title: "HackGwinnett - Metro Atlanta's Premier CS Organization",
     header: { hidden: true },
   },
 });
