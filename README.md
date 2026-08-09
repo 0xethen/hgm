@@ -4,6 +4,8 @@ The repository for the official HackGwinnett marketing website (https://hackgwin
 
 > TODO: `git remote remove origin && git remote add origin https://github.com/hackgwinnett/www.git`
 
+> TODO: resize images so that they don't take 3 years to load
+
 ## Contributing
 
 Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md)
