@@ -30,7 +30,7 @@ You did it! Now, content-collections is watching for CMS changes AND your dev se
 
 ### Build
 
-`vpr static-build` (or `vpr server-build` for server-enabled*) (or `vpr local-build` locally)
+`vpr build-static` (or `vpr build-server` for server-enabled*) (or `vpr build-local` locally)
 
 > `vpr` is an alias for `vp run`. It is NOT the same as `vp`... do not run `vp build` alone
 

@@ -16,7 +16,7 @@ jobs:
           cache: true
 
       - name: build step
-        run: vp run static-build
+        run: vp run build-static
 
       - name: upload static files as pages artifact
         id: deployment

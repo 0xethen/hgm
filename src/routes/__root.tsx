@@ -81,7 +81,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             />
           ) : null}
 
-          <div className="min-h-safe-dvh bg-background">{children}</div>
+          <div className="min-h-safe-dvh">{children}</div>
 
           {showChrome ? <Footer /> : null}
 
