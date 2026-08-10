@@ -4,6 +4,6 @@ export const brandInfo = {
   socials: {
     instagram: "https://instagram.com/hackgwinnett",
     youtube: "https://youtube.com/@hackgwinnett",
-    discord: "https://discord.gg/amcVA5Yp5a", // .gg/hackgwinnett vanity link would be tuff
+    discord: "https://discord.gg/QhsBjMAEJ", // https://discord.gg/amcVA5Yp5a // .gg/hackgwinnett vanity link would be tuff
   },
 };
