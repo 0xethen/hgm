@@ -2,7 +2,7 @@
 
 The repository for the official HackGwinnett marketing website (https://hackgwinnett.org)
 
-> Non-contributors, please report issues at [hackgwinnett.org/go/issues](https://hackgwinnett.org/go/issues)
+Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https://hackgwinnett.org/go/issues)**
 
 > TODO: `git remote remove origin && git remote add origin https://github.com/hackgwinnett/www.git`
 
@@ -18,13 +18,13 @@ Before you commit: for more info on how to (correctly) create posts, the committ
 
 ## Develop and Deploy
 
-> We use Vite+, the super-cool next-generation unified tooling system. [Or whatever.](#about-vite)
+We use Vite+, the super-cool next-generation unified tooling system. [Or whatever.](#about-vite)
 
 ### Development
 
 `vpr dev`
 
-> `vpr` is an alias for `vp run`. It is NOT the same as `vp`... do not run `vp dev` alone
+`vpr` is an alias for `vp run`. It is NOT the same as `vp`... do not run `vp dev` alone
 
 You did it! Now, content-collections is watching for CMS changes AND your dev server is live at port `3000`. Make any changes you want and see them propagate live with Vite.
 
@@ -32,7 +32,7 @@ You did it! Now, content-collections is watching for CMS changes AND your dev se
 
 `vpr build-static` (or `vpr build-server` for server-enabled*) (or `vpr build-local` locally)
 
-> `vpr` is an alias for `vp run`. It is NOT the same as `vp`... do not run `vp build` alone
+`vpr` is an alias for `vp run`. It is NOT the same as `vp`... do not run `vp build` alone
 
 *YOU **MUST MUST MUST** READ [HOSTING.md](./docs/HOSTING.md) for instructions on how to deploy the build artifact to your hosting provider. The build artifact is located in `dist/` after a successful build.
 
@@ -48,4 +48,4 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 
 ---
 
-_Made with 🤓 by [Ethen Tseggai](https://github.com/0xethen)_
+_Made with_ 🤓 _by [Ethen Tseggai](https://github.com/0xethen)_

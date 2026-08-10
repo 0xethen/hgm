@@ -41,9 +41,7 @@ export function NewsletterCTA({
 
         const url = import.meta.env.PUBLIC_APPS_SCRIPT_NEWSLETTER_URL;
         if (!url) {
-          throw new Error(
-            "Newsletter signup isn't configured (missing PUBLIC_APPS_SCRIPT_NEWSLETTER_URL).",
-          );
+          throw new Error("Signup endpoint is not configured.");
         }
 
         // let response: Response;
