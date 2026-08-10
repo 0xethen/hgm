@@ -10,6 +10,7 @@ export const Route = createFileRoute("/")({
   component: RouteComponent,
   staticData: {
     title: "HackGwinnett - Metro Atlanta's Premier CS Organization",
+    classNames: { main: "bg-hg-black" },
     header: { hidden: true },
   },
 });

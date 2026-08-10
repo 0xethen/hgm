@@ -27,7 +27,7 @@ declare module "@tanstack/react-router" {
   interface StaticDataRouteOption {
     title?: string | { page: string; pending?: string; exact?: boolean };
     description?: string;
-    classNames?: { root?: string; body?: string };
+    classNames?: { root?: string; body?: string; main?: string };
 
     // todo: cleanup? (like bogey)
     header?: {
