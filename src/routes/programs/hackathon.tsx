@@ -31,14 +31,20 @@ export const Route = createFileRoute("/programs/hackathon")({
                   work on your hackathon submission. You may even apply the skills you learned to
                   improve your project!
                 </p>
-                <p>
-                  Here's what you can choose from when you{" "}
-                  <ExtLink href="/go/register">sign up</ExtLink> for Hackathon 6.0:
-                </p>
-                <ul className="list-disc list-inside">
-                  <li>Now this is a story all about how</li>
-                  <li>my life got flipped-turned upside down</li>
-                  <li>#niche</li>
+                <ul className="list-disc list-inside [&>li]:ml-4">
+                  <p>
+                    Here's what you can choose from when you{" "}
+                    <ExtLink href="/go/register">sign up</ExtLink> for Hackathon 6.0:
+                  </p>
+                  <p className="font-medium mt-2">Beginner</p>
+                  <li>Essential Sorting and Searching Algorithms</li>
+                  <li>Intro to Cybersecurity</li>
+                  <li>Github and Git</li>
+                  <p className="font-medium mt-2">Advanced</p>
+                  <li>Fight Wildfires with AI</li>
+                  <li>Serverless Computing</li>
+                  <li>Fullstack Applications (in 2026)</li>
+                  {/*<li>#niche</li>*/}
                 </ul>
                 <p>
                   Check out our previous workshops:{" "}
