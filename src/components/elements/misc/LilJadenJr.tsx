@@ -1,3 +1,4 @@
+import { useBreakpoint } from "#/hooks/browser.ts";
 import { useSound } from "#/hooks/sound.ts";
 import { cn } from "#/lib/utils.ts";
 import { useEffect, useState } from "react";
@@ -36,6 +37,7 @@ export function LilJadenJr({
 }) {
   const [showSpeechBubble, setShowSpeechBubble] = useState<boolean>(false);
   const [renderSpeechBubble, setRenderSpeechBubble] = useState(false); // stay css-hidden until first click, then only change opacity
+  const { isMobileDevice } = useBreakpoint();
   const { play } = useSound();
 
   const typedText = useTypewriter(SPEECH_TEXT, renderSpeechBubble);
@@ -52,6 +54,8 @@ export function LilJadenJr({
     setTimeout(() => setRenderSpeechBubble(false), SHOW_BUBBLE_FOR + 500);
   };
 
+  if (isMobileDevice) return;
+
   return (
     <div className="z-2 [&>img]:drag-none">
       <img
@@ -59,7 +63,7 @@ export function LilJadenJr({
         alt="Jaden Dennis side-eyes you"
         className={cn(
           "fixed -bottom-12",
-          "transition-transform hidden lg:block w-15 ease-out",
+          "transition-transform w-15 ease-out",
           renderSpeechBubble
             ? "cursor-help duration-300"
             : "cursor-pointer translate-y-26 hover:translate-y-24",

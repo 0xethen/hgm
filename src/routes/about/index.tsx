@@ -32,7 +32,7 @@ function RouteComponent() {
 
       <div className="p-4 mx-auto max-w-7xl">
         <div className="my-8" />
-        <main className="flex flex-col lg:flex-row justify-between gap-8">
+        <div className="flex flex-col lg:flex-row justify-between gap-8">
           {content ? (
             <div
               className="typeset max-w-none space-y-2"
@@ -45,7 +45,7 @@ function RouteComponent() {
           <div className="lg:min-w-md">
             <ContactForm />
           </div>
-        </main>
+        </div>
         <NewsletterCTA
           className="border p-5 md:p-8 my-10"
           description="Be the first to know when officer applications are open. Plus, learn about upcoming events and opportunities from the HackGwinnett team!"

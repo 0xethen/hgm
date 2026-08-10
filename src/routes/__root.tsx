@@ -67,7 +67,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html
       lang="en"
       data-header={layoutOffset}
-      className={cn("overscroll-x-none", classNames?.root)}
+      className={cn("font-sans overscroll-x-none", !showChrome && "relative", classNames?.root)}
     >
       <head>
         <HeadContent />
@@ -81,7 +81,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             />
           ) : null}
 
-          <div className={cn("min-h-safe-dvh bg-background", classNames?.main)}>{children}</div>
+          <main id="main" className={cn("min-h-safe-dvh bg-background", classNames?.main)}>
+            {children}
+          </main>
 
           {showChrome ? <Footer /> : null}
 

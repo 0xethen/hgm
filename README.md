@@ -8,6 +8,10 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 > TODO: resize images so that they don't take 3 years to load
 
+> TODO: Replace all <Link>s imported from ethendotapp/link with native @tanstack/react-router links OR relative <Route.Link> links (if the link is in a Route file+can access the Route var AND relativity is better in that scenario). Note the architecture of <Link> from ethendotapp (like styling with the "link" class) and CLEAN UP the link css (e.g. button-link is kinda awkward, maybe add a separate icon-link and see where button-link is referenced and see what is better for all classes: remake, remove, add, revamp link classes whenever necessary and make sure to implement classNames into the native <Link>s) [@index.css (52:67)](file:///Users/ethen/Documents/Code/hackgwinnett/www/src/styles/index.css#L52:67)
+
+> TODO: fix newsletter cta env config missing in github pages
+
 ## Contributing
 
 Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md)

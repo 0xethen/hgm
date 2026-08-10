@@ -106,7 +106,7 @@ export function NotFound(
   };
 
   return (
-    <div onMouseUp={refocus}>
+    <div className="bg-background" onMouseUp={refocus}>
       {!showSecret && <LilJadenJr onClick={refocus} />}
       <div
         className={cn(

@@ -17,12 +17,13 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-hg-black text-foreground; /* bg-background */
+  /*body {
+    @apply bg-hg-black text-foreground; not bg-background
   }
-  html {
+  */
+  /*html {
     @apply font-sans;
-  }
+  }*/
 
   /* eda */
   /* @apply text-primary hover:text-primary-light transition-colors duration-200; */

@@ -101,7 +101,7 @@ function RouteComponent() {
   const mostUsedTags = getMostUsedTags(7);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8 space-y-8">
+    <div className="mx-auto max-w-7xl px-4 py-8 space-y-8">
       <div className="flex flex-row items-center justify-between gap-4">
         <div className="flex flex-col gap-0.5">
           <h1 className="text-4xl">Posts</h1>
@@ -226,6 +226,6 @@ function RouteComponent() {
           </Pagination>
         )}
       </section>
-    </main>
+    </div>
   );
 }

@@ -4,7 +4,7 @@ import { SponsorSection } from "./sponsors.tsx";
 
 export function HomepageMainContent() {
   return (
-    <main className="bg-background p-6 sm:p-8 md:p-12 space-y-12">
+    <div className="bg-background p-6 sm:p-8 md:p-12 space-y-12">
       {/* Section 1 */}
       <section id="hg-info" className="grid lg:grid-cols-2 gap-10">
         <div className="space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
@@ -36,9 +36,9 @@ export function HomepageMainContent() {
       </section>
 
       {/* Section 3 */}
-      <section id="newsletter-signup" className="p-6 bg-accent">
+      <section id="newslettercta" className="p-6 bg-accent">
         <NewsletterCTA button="Sign me up, chief!" />
       </section>
-    </main>
+    </div>
   );
 }
