@@ -10,7 +10,7 @@ import {
 } from "#/components/ui/pagination";
 import { RiAiGenerateText } from "@remixicon/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { posts as allPosts } from "cms/posts";
+import { posts as everyPost } from "cms/posts/posts";
 import { z } from "zod";
 
 export const Route = createFileRoute("/posts/")({
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/posts/")({
 const POSTS_PER_PAGE = 9;
 const excerptLength = 180; // line-clamp-3 overrides it to three lines max (visually) in the CSS
 
-const posts = allPosts.filter((p) => !p.unlisted);
+const posts = everyPost.filter((p) => !p.unlisted); // public posts
 
 function getExcerpt(post: (typeof posts)[number]) {
   return (

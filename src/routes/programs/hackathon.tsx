@@ -7,54 +7,77 @@ import { MakeCarousel } from "#/components/elements/MakeCarousel.tsx";
 import { cn } from "#/lib/utils";
 import { RiLink } from "@remixicon/react";
 import { Separator } from "#/components/ui/separator";
+import { pages } from "cms/pages/pages";
+import { md } from "#/lib/markdown";
+
+const eventId = "hackathon";
 
 export const Route = createFileRoute("/programs/hackathon")({
-  staticData: { title: "Hackathon 6.0" },
-  component: () => (
+  staticData: { title: eventInfo[eventId].name },
+  loader: async () => {
+    const content = pages.find((p) => eventId === p._meta.path.slugify());
+    return content || { content: "" };
+  },
+  component: RouteComponent,
+});
+
+/*
+<div className="space-y-2" id="workshops">
+  <p>
+    <span className="font-medium">Workshops:</span> Workshops are 40-minute sessions
+    during the hackathon that allow participants to gain hands-on experience in a new
+    computer science skill or domain. Workshops run{" "}
+    <span className="italic">simultaneously</span>, so you can only choose one per
+    time slot (round).
+  </p>
+  <p>
+    This year, you may attend up to 4 workshops total. Like always, you don't have to
+    attend one for each time slot--and usually, after lecture, you'll have time to
+    work on your hackathon submission. You may even apply the skills you learned to
+    improve your project!
+  </p>
+  <ul className="list-disc list-inside [&>li]:ml-4">
+    <p>
+      Here's what you can choose from when you{" "}
+      <ExtLink href="/go/register">sign up</ExtLink> for Hackathon 6.0:
+    </p>
+    <p className="font-medium mt-2">Beginner</p>
+    <li>Essential Sorting and Searching Algorithms</li>
+    <li>Intro to Cybersecurity</li>
+    <li>Github and Git</li>
+    <p className="font-medium mt-2">Advanced</p>
+    <li>Fight Wildfires with AI</li>
+    <li>Serverless Computing</li>
+    <li>Fullstack Applications (in 2026)</li>
+  </ul>
+  <p>
+    Check out our previous workshops:{" "}
+    <ExtLink href="https://github.com/hackgwinnett/workshops">
+      hackgwinnett/workshops
+    </ExtLink>
+  </p>
+</div>
+*/
+
+function RouteComponent() {
+  const document = Route.useLoaderData();
+  const content = (
+    <div
+      className="typeset max-w-none space-y-2"
+      dangerouslySetInnerHTML={{ __html: md(document.content) }}
+    />
+  );
+
+  return (
     <ProgramsEventPage
-      event={eventInfo.hackathon}
+      event={eventInfo[eventId]}
+      content={content || eventInfo[eventId].description}
       additions={{
         left: {
+          // /programs/hackathon#workshops brings you to this description
+          start: <div id="workshops" />,
           end: (
             <>
-              <div className="space-y-2" id="workshops">
-                <p>
-                  <span className="font-medium">Workshops:</span> Workshops are 40-minute sessions
-                  during the hackathon that allow participants to gain hands-on experience in a new
-                  computer science skill or domain. Workshops run{" "}
-                  <span className="italic">simultaneously</span>, so you can only choose one per
-                  time slot (round).
-                </p>
-                <p>
-                  This year, you may attend up to 4 workshops total. Like always, you don't have to
-                  attend one for each time slot--and usually, after lecture, you'll have time to
-                  work on your hackathon submission. You may even apply the skills you learned to
-                  improve your project!
-                </p>
-                <ul className="list-disc list-inside [&>li]:ml-4">
-                  <p>
-                    Here's what you can choose from when you{" "}
-                    <ExtLink href="/go/register">sign up</ExtLink> for Hackathon 6.0:
-                  </p>
-                  <p className="font-medium mt-2">Beginner</p>
-                  <li>Essential Sorting and Searching Algorithms</li>
-                  <li>Intro to Cybersecurity</li>
-                  <li>Github and Git</li>
-                  <p className="font-medium mt-2">Advanced</p>
-                  <li>Fight Wildfires with AI</li>
-                  <li>Serverless Computing</li>
-                  <li>Fullstack Applications (in 2026)</li>
-                  {/*<li>#niche</li>*/}
-                </ul>
-                <p>
-                  Check out our previous workshops:{" "}
-                  <ExtLink href="https://github.com/hackgwinnett/workshops">
-                    hackgwinnett/workshops
-                  </ExtLink>
-                  {/* TODO: actually make this archive */}
-                </p>
-              </div>
-
               <Separator />
 
               <div>
@@ -139,5 +162,5 @@ export const Route = createFileRoute("/programs/hackathon")({
         },
       }}
     />
-  ),
-});
+  );
+}

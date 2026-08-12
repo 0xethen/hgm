@@ -72,7 +72,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className={classNames?.body}>
+      <body className={cn("bg-hg-black", classNames?.body)}>
         <TooltipProvider>
           {showChrome ? (
             <Header

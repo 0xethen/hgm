@@ -12,6 +12,8 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 > TODO: fix newsletter cta env config missing in github pages
 
+> TODO: space out 404 buttons on mobile and remove > <
+
 ## Contributing
 
 Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md)

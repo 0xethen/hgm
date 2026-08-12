@@ -3,7 +3,7 @@ import { Link } from "#/components/ui/ethendotapp/link";
 import { ScrollArea } from "#/components/ui/scroll-area";
 import { Separator } from "#/components/ui/separator";
 import { createFileRoute } from "@tanstack/react-router";
-import { posts } from "cms/posts";
+import { posts } from "cms/posts/posts";
 import {
   Breadcrumb,
   BreadcrumbItem,

@@ -1,10 +1,5 @@
 ---
-# this metadata is simply to prevent compilation errors
-# because it's unlisted, it won't show up (but will still be accessible on the About Us page)
 title: "About HackGwinnett"
-authors: ["hg"]
-date: 1781016713527
-unlisted: true
 ---
 
 ## Hello, world!

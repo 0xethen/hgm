@@ -1,10 +1,10 @@
 import { defineCollection } from "@content-collections/core";
 import { z } from "zod";
-import { authorInfo } from "cms/authors";
+import { authorInfo } from "cms/posts/authors";
 
 export const postsCollection = defineCollection({
   name: "posts",
-  directory: "cms/posts",
+  directory: "cms/posts/content",
   include: "**/*.md",
   schema: z.object({
     title: z.string(),
@@ -19,6 +19,16 @@ export const postsCollection = defineCollection({
     unlisted: z.boolean().optional(),
     hidden: z.boolean().optional(),
 
+    content: z.string(),
+  }),
+});
+
+export const pagesCollection = defineCollection({
+  name: "pages",
+  directory: "cms/pages/content",
+  include: "**/*.md",
+  schema: z.object({
+    title: z.string().optional(),
     content: z.string(),
   }),
 });

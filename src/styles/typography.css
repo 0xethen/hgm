@@ -24,7 +24,7 @@
     margin-trim: block-start;
 
     @media (min-width: 48rem), print {
-      font-size: var(--typeset-size);
+      font-size: var(--typeset-size); /* desktop */
     }
 
     --typeset-muted: var(

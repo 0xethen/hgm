@@ -2,7 +2,7 @@
 
 import React from "react";
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { posts as allPosts } from "cms/posts";
+import { posts } from "cms/posts/posts";
 import { md } from "#/lib/markdown";
 import { NotFound } from "#/components/NotFound";
 import { Badge } from "#/components/ui/badge";
@@ -33,7 +33,7 @@ import {
   AvatarImage,
 } from "#/components/ui/avatar";
 import { RiArrowRightLine } from "@remixicon/react";
-import type { Author } from "cms/authors";
+import type { Author } from "cms/posts/authors";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -46,7 +46,7 @@ import { getTitle } from "#/lib/routing.ts";
 
 export const Route = createFileRoute("/posts/$postId")({
   loader: async ({ params }) => {
-    const post = allPosts.find((p) => params.postId === p._meta.path.slugify());
+    const post = posts.find((p) => params.postId === p._meta.path.slugify());
 
     if (!post) throw notFound();
     return { post };

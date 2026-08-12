@@ -9,8 +9,8 @@ import { Separator } from "#/components/ui/separator";
 import { cap } from "#/lib/utils";
 import { RiAtLine, RiGithubFill, RiInstagramLine, RiTwitterLine } from "@remixicon/react";
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { posts } from "cms/posts";
-import { authorInfo } from "cms/authors";
+import { posts } from "cms/posts/posts";
+import { authorInfo } from "cms/posts/authors";
 import { useBreakpoint } from "#/hooks/browser";
 import { getTitle } from "#/lib/routing.ts";
 

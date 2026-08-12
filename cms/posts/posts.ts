@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-restricted-imports
 import { allPosts as ccPosts } from "content-collections";
-import { authorInfo, type Author } from "cms/authors";
+import { authorInfo, type Author } from "cms/posts/authors";
 
 export const posts = ccPosts
   .filter((p) => !p.hidden)

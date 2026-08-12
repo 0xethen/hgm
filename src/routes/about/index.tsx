@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { posts as allPosts } from "cms/posts";
+import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
 import { ContactForm } from "./-contact";
 import { NewsletterCTA } from "#/components/elements/NewsletterCTA.tsx";
-// TODO: Switch to Zod Mini?
+// TODO: Switch to Zod Mini? or nah
 
 const ABOUT_POST_ID = "about-us";
 const fallback = `HackGwinnett is a student-run organization that aims to promote computer science and technology education in Gwinnett County, Georgia. We organize hackathons, workshops, and other events to help students learn and grow in the field of technology.`;
@@ -11,14 +11,14 @@ const fallback = `HackGwinnett is a student-run organization that aims to promot
 export const Route = createFileRoute("/about/")({
   staticData: { title: "About Us" },
   loader: async () => {
-    const content = allPosts.find((p) => ABOUT_POST_ID === p._meta.path.slugify());
-    return { content };
+    const content = pages.find((p) => ABOUT_POST_ID === p._meta.path.slugify());
+    return content;
   },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { content } = Route.useLoaderData();
+  const content = Route.useLoaderData();
 
   return (
     <div>

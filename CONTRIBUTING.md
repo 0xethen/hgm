@@ -35,7 +35,7 @@ Many of our participants claim they found us while searching for CS opportunitie
 import { ... } from "content-collections";
 ```
 
-> Post/author-related stuff should only be imported from `"cms"`, `"cms/posts"`, `"cms/authors"`, etc. There is rarely a time when you need to be importing raw post data from `"content-collections"`.
+> Post/author-related stuff should only be imported from `"cms"`, `"cms/posts"`, `"cms/pages"`, etc. There is rarely a time when you need to be importing raw post data from `"content-collections"`.
 
 ### Introduction
 

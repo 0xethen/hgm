@@ -31,9 +31,11 @@ import { copy } from "#/lib/utils";
 
 export function ProgramsEventPage({
   event,
+  content,
   additions,
 }: {
   event: HGEvent;
+  content?: React.ReactNode;
   additions?: {
     left?: { start?: React.ReactNode; end?: React.ReactNode };
     right?: { start?: React.ReactNode; end?: React.ReactNode };
@@ -248,9 +250,10 @@ export function ProgramsEventPage({
           </ItemGroup>
           <div className="flex flex-col gap-2">
             {additions?.left?.start}
-            {event.details?.split("\n").map((line, i) => (
+            {content}
+            {/*{event.details?.split("\n").map((line, i) => (
               <p key={i}>{line}</p>
-            ))}
+            ))}*/}
             {additions?.left?.end}
           </div>
         </div>
