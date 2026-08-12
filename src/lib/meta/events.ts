@@ -54,7 +54,7 @@ export const eventInfo: Record<string, HGEvent> = {
     endDate: new Date("2026-10-24T17:00:00"),
     registration: {
       url: "/go/register",
-      // closed: true,
+      closed: true,
     },
   },
   hackfest: {

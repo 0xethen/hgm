@@ -1,5 +1,5 @@
 import { Button } from "#/components/ui/button";
-import { ExtLink } from "#/components/ui/ethendotapp/link";
+import { ExtLink, Link } from "#/components/ui/ethendotapp/link";
 import {
   Item,
   ItemContent,
@@ -135,14 +135,22 @@ export function ProgramsEventPage({
             <h1 className="font-semibold text-4xl">{event.name}</h1>
             <p>{event.description}</p>
           </div>
-          {event.registration?.closed && (
+          {event.registration?.closed ? (
             <Alert>
               <AlertTitle>Registrations closed</AlertTitle>
               <AlertDescription>
                 Sign-ups for {event.name} are closed at this time.
               </AlertDescription>
             </Alert>
-          )}
+          ) : event.registration ? (
+            <Button
+              variant="secondary"
+              size="lg"
+              render={<Link to={event.registration.url} buttonStyle />}
+            >
+              Register Now
+            </Button>
+          ) : null}
           <ItemGroup>
             <Item variant="muted">
               <ItemMedia variant="icon">
