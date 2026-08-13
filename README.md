@@ -1,6 +1,6 @@
 ### www
 
-The repository for the official HackGwinnett marketing website (https://hackgwinnett.org)
+The repository for the official HackGwinnett marketing website ([hackgwinnett.org](https://hackgwinnett.org))
 
 Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https://hackgwinnett.org/go/issues)**
 
