@@ -16,6 +16,8 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 > TODO: space out 404 buttons on mobile and remove > <
 
+> TODO: fix header flickering, probably a useHydrated thing in __root.tsx
+
 ## Contributing
 
 Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md)
