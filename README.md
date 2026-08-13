@@ -6,6 +6,8 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 > TODO: `git remote remove origin && git remote add origin https://github.com/hackgwinnett/www.git`
 
+> TODO: fix "undefined" in search params when navigating to reporting form via /eda/report
+
 > TODO: resize images so that they don't take 3 years to load
 
 > TODO: Replace all <Link>s imported from ethendotapp/link with native @tanstack/react-router links OR relative <Route.Link> links (if the link is in a Route file+can access the Route var AND relativity is better in that scenario). Note the architecture of <Link> from ethendotapp (like styling with the "link" class) and CLEAN UP the link css (e.g. button-link is kinda awkward, maybe add a separate icon-link and see where button-link is referenced and see what is better for all classes: remake, remove, add, revamp link classes whenever necessary and make sure to implement classNames into the native <Link>s) [@index.css (52:67)](file:///Users/ethen/Documents/Code/hackgwinnett/www/src/styles/index.css#L52:67)
