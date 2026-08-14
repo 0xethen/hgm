@@ -25,7 +25,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
   }, [hydrated]);
 
   return (
-    <div className="relative min-h-[85dvh] md:min-h-safe-dvh bg-hg-black bg-[url('/assets/images/hero/bgtexture01.svg')] text-white">
+    <div className="relative min-h-[90dvh] md:min-h-safe-dvh bg-hg-black bg-[url('/assets/images/hero/bgtexture01.svg')] text-white">
       <div className="min-h-[85dvh] md:min-h-safe-dvh px-6 sm:px-8 md:px-12 flex flex-row items-center justify-between gap-12 animate-in fade-in slide-in-from-bottom-5 animation-duration-800 animation-delay-50 fill-mode-backwards">
         <div className="flex flex-col justify-center gap-4 max-w-md sm:max-w-xl md:max-w-2xl">
           <ColorBadge

@@ -42,7 +42,7 @@ export function getTitle(
   const fallback = `Page / ${suffix}`;
 
   if (!last) return "";
-  if (last.globalNotFound || last.status === "notFound") return "Not Found";
+  if (last._notFound || last.status === "notFound") return "Not Found";
   if (last.error) return "An error occurred";
   if (getTitleData(last)?.exact) return getMatchTitle(last) ?? fallback;
 

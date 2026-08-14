@@ -6,7 +6,7 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 > TODO: `git remote remove origin && git remote add origin https://github.com/hackgwinnett/www.git`
 
-> TODO: fix "undefined" in search params when navigating to reporting form via /eda/report
+~~> TODO: fix "undefined" in search params when navigating to reporting form via /eda/report~~
 
 > TODO: resize images so that they don't take 3 years to load
 
@@ -14,7 +14,7 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 > TODO: fix newsletter cta env config missing in github pages. actually im realizing that the commit sha is shown in the footer so that means some env is working? maybe the build script is erasing the endpoint newsletter link? confirm...
 
-> TODO: space out 404 buttons on mobile and remove > <
+~~> TODO: space out 404 buttons on mobile and remove > <~~
 
 ~~> TODO: fix header flickering, probably a useHydrated thing in __root.tsx, make header links unhighlight-able~~
 

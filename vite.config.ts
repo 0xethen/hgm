@@ -53,6 +53,9 @@ const config = defineConfig({
     }),
     viteReact(),
   ]),
+  server: {
+    allowedHosts: ["ethens-macbook-air.taild52664.ts.net"],
+  },
   envPrefix: ["VITE_", "PUBLIC_"],
 });
 

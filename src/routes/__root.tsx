@@ -54,7 +54,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
   const showChrome =
     !staticData.header?.hidden && // explicitly hidden via staticData
-    // @ts-ignore globalNotFound missing?
     !activeMatch?._notFound && // actual nonexistent route or throw notFound()
     !activeMatch?.error; // notFound or error boundary (bsod)
 
