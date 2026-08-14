@@ -16,9 +16,9 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 > TODO: space out 404 buttons on mobile and remove > <
 
-> TODO: fix header flickering, probably a useHydrated thing in __root.tsx, make header links unhighlight-able
+~~> TODO: fix header flickering, probably a useHydrated thing in __root.tsx, make header links unhighlight-able~~
 
-> TODO: add more intense highlight color?
+~~> TODO: add more intense highlight color?~~
 
 ## Contributing
 

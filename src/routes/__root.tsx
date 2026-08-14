@@ -3,7 +3,6 @@ import {
   HeadContent,
   Scripts,
   createRootRoute,
-  useHydrated,
   useMatches,
   type RootRoute,
 } from "@tanstack/react-router";
@@ -48,20 +47,18 @@ export const Route: RootRoute<Register> = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const matches = useMatches();
-  const hydrated = useHydrated();
 
   const activeMatch = matches[matches.length - 1];
   const staticData = activeMatch?.staticData;
   const classNames = staticData?.classNames;
 
   const showChrome =
-    hydrated &&
     !staticData.header?.hidden && // explicitly hidden via staticData
     // @ts-ignore globalNotFound missing?
     !activeMatch?._notFound && // actual nonexistent route or throw notFound()
     !activeMatch?.error; // notFound or error boundary (bsod)
 
-  const layoutOffset = hydrated && (showChrome || !!staticData.header?.forceLayoutOffset);
+  const layoutOffset = showChrome || !!staticData.header?.forceLayoutOffset;
 
   return (
     <html

@@ -84,11 +84,11 @@
   }
 
   ::selection {
-    @apply bg-primary/20;
+    @apply bg-primary/30;
   }
 
   .bg-primary ::selection {
-    @apply bg-primary-foreground/30;
+    @apply bg-primary-foreground/40;
   }
 }
 

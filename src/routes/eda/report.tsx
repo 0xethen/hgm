@@ -41,7 +41,7 @@ export const Route = createFileRoute("/eda/report")({
 function RouteComponent() {
   const { from, c: errorCode, t: templateId } = Route.useSearch();
   const [date, setDate] = useState<string>();
-  const link = `https://docs.google.com/forms/d/e/1FAIpQLSd8ngPGYLdc5gZicMCwm2fZN0bkOqZzPcHKVwFhgzchuYpGkw/viewform?pli=1&usp=pp_url&entry.1231647937=HG+Marketing+(hackgwinnett.org)${date && `&entry.2078293770=${date}`}${templateId && `&entry.1830352709=${templates[templateId].description}`}${`&entry.1501072006=eda-generic:[${errorCode}]"${templateId}"from:${from}`}`;
+  const link = `https://docs.google.com/forms/d/e/1FAIpQLSd8ngPGYLdc5gZicMCwm2fZN0bkOqZzPcHKVwFhgzchuYpGkw/viewform?pli=1&usp=pp_url&entry.1231647937=HG+Marketing+(hackgwinnett.org)${date && `&entry.2078293770=${date}`}${templateId && `&entry.1830352709=${templates[templateId].description}`}${`&entry.1501072006=eda-generic:[${errorCode || "000"}]"${templateId || "(no template)"}"from:${from || "(no origin)"}`}`;
   const hydrated = useHydrated();
 
   useEffect(() => {
