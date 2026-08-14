@@ -2,7 +2,7 @@
 title: "Introducing Summer Workshops"
 authors: ["hg"]
 date: 1783795504614
-summary: "We've partnered up with Peach State Innovations in our mission to empower young developers"
+summary: "We've partnered up with Peach State Innovations in our mission to empower novice developers"
 ---
 
 Hello, world! Big news:

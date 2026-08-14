@@ -4,7 +4,7 @@ title: "About HackGwinnett"
 
 ## Hello, world!
 
-We're the HackGwinnett team, 101% dedicated to empowering young developers that love computer science and software as much as we do!
+We're the HackGwinnett team, 101% dedicated to empowering novice developers that love computer science and software as much as we do!
 
 <!-- TODO: REDUCE SIZE OF GROUP PHOTO IMAGE!! COMPRESS!!! OPTIMIZE!!! WEBSITING!!! -->
 <!-- TODO: add an dynamic image-from-server thing? for diff devices? is that worth idk we just a club -->

@@ -39,9 +39,12 @@ export const Route = createFileRoute("/eda/report")({
 });
 
 function RouteComponent() {
-  const { from, c: errorCode, t: templateId } = Route.useSearch();
+  const { from: origin, c: code, t: templateId } = Route.useSearch();
   const [date, setDate] = useState<string>();
-  const link = `https://docs.google.com/forms/d/e/1FAIpQLSd8ngPGYLdc5gZicMCwm2fZN0bkOqZzPcHKVwFhgzchuYpGkw/viewform?pli=1&usp=pp_url&entry.1231647937=HG+Marketing+(hackgwinnett.org)${date && `&entry.2078293770=${date}`}${templateId && `&entry.1830352709=${templates[templateId].description}`}${`&entry.1501072006=eda-generic:[${errorCode || "000"}]"${templateId || "(no template)"}"from:${from || "(no origin)"}`}`;
+
+  const template = templateId ? templates[templateId] : undefined;
+  const link = `https://docs.google.com/forms/d/e/1FAIpQLSd8ngPGYLdc5gZicMCwm2fZN0bkOqZzPcHKVwFhgzchuYpGkw/viewform?pli=1&usp=pp_url&entry.1231647937=HG+Marketing+(hackgwinnett.org)${date && `&entry.2078293770=${date}`}${templateId && `&entry.1830352709=${template?.description}`}${`&entry.1501072006=eda-${templateId || "generic"}:[${code || "xxx"}], using template ${template ? `"${template.title}"` : "(no template)"}, origin: ${origin || "(no origin)"}`}`;
+
   const hydrated = useHydrated();
 
   useEffect(() => {
