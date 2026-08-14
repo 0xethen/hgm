@@ -73,12 +73,5 @@
     "vite": "catalog:",
     "vite-plus": "catalog:",
     "zod": "^4.4.3"
-  },
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "11.20.0",
-      "onFail": "download"
-    }
   }
 }
