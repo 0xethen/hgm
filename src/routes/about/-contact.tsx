@@ -146,7 +146,7 @@ export function ContactForm() {
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                       value={field.state.value}
-                      placeholder="HackGwinnett inquiry"
+                      placeholder="Include your name and/or organization"
                       aria-invalid={isInvalid}
                       minLength={2}
                       required
