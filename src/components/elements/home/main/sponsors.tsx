@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ExtLink } from "#/components/ui/ethendotapp/link";
+import { Link } from "@tanstack/react-router";
 import { cn } from "#/lib/utils";
 import { Scroller } from "#/components/ui/motion-primitives/scroller";
 import { type Sponsor, mainSponsors, otherSponsors } from "#/lib/meta/sponsors";
@@ -52,7 +52,7 @@ export function SponsorSection() {
   return (
     <div
       className="space-y-8 text-center"
-      // TODO: roundabout way to make the grid show up on mobile when the user focuses onto a sponsor, but not when they tap on a sponsor logo
+      // TODO: roundabout way to make the grid show up on mobile when the user focuses onto a sponsor, but not when they tap on a sponsor logo, fix?
       onFocusCapture={handleFocusCapture}
       onBlurCapture={handleBlurCapture}
     >
@@ -102,7 +102,7 @@ export function SponsorSection() {
   );
 }
 
-type SponsorLogoProps = Omit<React.ComponentPropsWithoutRef<typeof ExtLink>, "href" | "title"> & {
+type SponsorLogoProps = Omit<React.ComponentPropsWithoutRef<typeof Link>, "href" | "title"> & {
   sponsor: Sponsor;
   classNames?: {
     parent?: string;
@@ -113,16 +113,17 @@ type SponsorLogoProps = Omit<React.ComponentPropsWithoutRef<typeof ExtLink>, "hr
 const SponsorLogo = React.forwardRef<HTMLAnchorElement, SponsorLogoProps>(
   ({ sponsor, classNames, className, ...props }, ref) => {
     return (
-      <ExtLink
+      <Link
         ref={ref}
-        href={sponsor.href}
+        to={sponsor.href}
+        target="_blank"
+        rel="noopener noreferrer"
         title={sponsor.title}
         className={cn(
           "group flex items-center justify-center rounded-lg p-3 transition focus-visible:ring-2 focus-visible:ring-ring",
           classNames?.parent,
           className,
         )}
-        unstyled
         {...props}
       >
         <img
@@ -133,7 +134,7 @@ const SponsorLogo = React.forwardRef<HTMLAnchorElement, SponsorLogoProps>(
             classNames?.image,
           )}
         />
-      </ExtLink>
+      </Link>
     );
   },
 );

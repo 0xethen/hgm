@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "#/components/ui/accordion";
-import { Link } from "#/components/ui/ethendotapp/link";
+import { Link } from "@tanstack/react-router";
 import { eventInfo } from "#/lib/meta/events";
 import { cn } from "#/lib/utils";
 
@@ -15,11 +15,19 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
     content: (
       <>
         To attend {eventInfo.hackathon.name}, simply{" "}
-        <Link to="/go/$slug" params={{ slug: "register" }} search={{ ref: "faq-cta" }}>
+        <Link
+          to="/go/$slug"
+          params={{ slug: "register" }}
+          search={{ ref: "faq-cta" }}
+          className="link"
+        >
           register for the event
         </Link>{" "}
         and show up on the day of! If you're interested in volunteering or sponsoring, please{" "}
-        <Link to="/contact">contact us</Link> for more information.
+        <Link to="/contact" className="link">
+          contact us
+        </Link>{" "}
+        for more information.
       </>
     ),
   },
@@ -41,7 +49,12 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
       <>
         Admission is completely free! To secure your spot before the event (and decide which
         workshops interest you),{" "}
-        <Link to="/go/$slug" params={{ slug: "register" }} search={{ ref: "faq-cost" }}>
+        <Link
+          to="/go/$slug"
+          params={{ slug: "register" }}
+          search={{ ref: "faq-cost" }}
+          className="link"
+        >
           sign up for the event
         </Link>{" "}
         now!
@@ -61,7 +74,7 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
         Yes! Prizes are up for grabs for participants who place on the podium (first, second, and
         third). Plus, special prizes are awarded to participants that stand out in their submission
         (e.g., most creative, best solo project, etc.). Prizes are sponsored by State Farm and our{" "}
-        <Link to="/" hash="sponsors">
+        <Link to="/" hash="sponsors" className="link">
           other amazing sponsors
         </Link>
         .

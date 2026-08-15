@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
+import { z } from "zod/mini";
 import { toast } from "sonner";
 import { Field, FieldDescription, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";

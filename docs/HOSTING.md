@@ -1,5 +1,9 @@
 # Hosting
 
+## Environment variables
+
+See [.env.example](../.env.example) for the full list. For the GitHub Pages deploy ([deploy.yml](../.github/workflows/deploy.yml)), any `PUBLIC_`-prefixed variable used at build time (currently just `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL`) must also be added as a repository secret under Settings → Secrets and variables → Actions, or it'll be `undefined` in the deployed build.
+
 ## Post-build
 
 You now have a built application at `dist/`. During [postbuild step](build.js#L16), we keep the `client` generated directory and remove the `server` generated directory--in theory, we'll only need the `client`, so we move it to the parent (`dist`). Our configuration [(vite.config.ts)](vite.config.ts) uses TanStack Start's [SPA mode](https://tanstack.com/start/latest/docs/framework/react/guide/spa-mode) with static prerendering [(**SEE BELOW**)](#i-chose-spa-now-what). Assuming everything is configured correctly (no server functions or API routes allowed!), the `server` directory should be unnecessary for GitHub Pages!

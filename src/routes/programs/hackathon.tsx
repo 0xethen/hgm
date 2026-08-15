@@ -1,7 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { eventInfo } from "#/lib/meta/events";
 import { ProgramsEventPage } from "./-shared";
-import { ExtLink } from "#/components/ui/ethendotapp/link";
 import { HackathonFAQ } from "#/components/elements/HackathonFAQ";
 import { MakeCarousel } from "#/components/elements/MakeCarousel.tsx";
 import { cn } from "#/lib/utils";
@@ -9,6 +8,7 @@ import { RiLink } from "@remixicon/react";
 import { Separator } from "#/components/ui/separator";
 import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
+import { eventSchema } from "#/lib/seo";
 
 const eventId = "hackathon";
 
@@ -18,6 +18,19 @@ export const Route = createFileRoute("/programs/hackathon")({
     const content = pages.find((p) => eventId === p._meta.path.slugify());
     return content || { content: "" };
   },
+  head: () => ({
+    meta: [
+      eventSchema({
+        name: eventInfo[eventId].name,
+        description: eventInfo[eventId].description,
+        startDate: eventInfo[eventId].startDate,
+        endDate: eventInfo[eventId].endDate,
+        url: "https://hackgwinnett.org/programs/hackathon",
+        location: eventInfo[eventId].location,
+        isFree: true,
+      }),
+    ],
+  }),
   component: RouteComponent,
 });
 
@@ -81,30 +94,34 @@ function RouteComponent() {
               <Separator />
 
               <div>
-                <ExtLink
-                  className="text-primary underline not-hover:decoration-primary/50 w-fit"
-                  href="https://www.youtube.com/watch?v=aQhZfWQlVXU"
-                  buttonStyle
+                <Link
+                  className="link icon-link text-primary underline not-hover:decoration-primary/50 w-fit"
+                  to={"https://www.youtube.com/watch?v=aQhZfWQlVXU" as string}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <RiLink />
                   Hackathon 5.0 Recap
-                </ExtLink>
-                <ExtLink
-                  className="text-primary underline not-hover:decoration-primary/50 w-fit"
-                  href="https://www.instagram.com/reel/DSlEv4xifqL/"
-                  buttonStyle
+                </Link>
+                <Link
+                  className="link icon-link text-primary underline not-hover:decoration-primary/50 w-fit"
+                  to={"https://www.instagram.com/reel/DSlEv4xifqL/" as string}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <RiLink />
                   Hackathon 5.0 DMC Recap
-                </ExtLink>
+                </Link>
                 <p>
                   As seen in{" "}
-                  <ExtLink
-                    className="text-primary underline not-hover:decoration-primary/50 w-fit"
-                    href="https://hackathons.hackclub.com/"
+                  <Link
+                    className="link text-primary underline not-hover:decoration-primary/50 w-fit"
+                    to={"https://hackathons.hackclub.com/" as string}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Hack Club Hackathons
-                  </ExtLink>
+                  </Link>
                 </p>
                 {/* TODO: put more social media/in the news/etc */}
               </div>
@@ -127,32 +144,32 @@ function RouteComponent() {
               )}
               items={[
                 <img
-                  src={"/assets/images/events/hackathon/IMG_6720.JPG".toAsset()}
+                  src={"/assets/images/events/hackathon/IMG_6720-resize.jpg".toAsset()}
                   alt="1st place prize winners (HG 5.0)"
                 />,
                 <img
-                  src={"/assets/images/events/hackathon/IMG_6700.JPG".toAsset()}
+                  src={"/assets/images/events/hackathon/IMG_6700-resize.jpg".toAsset()}
                   alt="Ms. Rachkovskiy at HackGwinnett 5.0. To the right, Jaden side-eyes the camera."
                 />,
                 // TODO: who is this speaker (for alt text) (+ more images from diff years)
                 <img
-                  src={"/assets/images/events/hackathon/IMG_6716.JPG".toAsset()}
+                  src={"/assets/images/events/hackathon/IMG_6716-resize.jpg".toAsset()}
                   alt="IMG_6716.JPG"
                 />,
                 <img
-                  src={"/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.02 PM.png".toAsset()}
+                  src={"/assets/images/events/hackathon/oldss/ss-02-resize.jpg".toAsset()}
                   alt="Vishnu and Serge pay attention to a workshop at 5.0."
                 />,
                 <img
-                  src={"/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.03 PM.png".toAsset()}
+                  src={"/assets/images/events/hackathon/oldss/ss-03-resize.jpg".toAsset()}
                   alt="Neal speaks to the participants at 5.0."
                 />,
                 <img
-                  src={"/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.05 PM.png".toAsset()}
+                  src={"/assets/images/events/hackathon/oldss/ss-05-resize.jpg".toAsset()}
                   alt="screenshot-2026-07-19-at-25205-pm"
                 />,
                 <img
-                  src={"/assets/images/events/hackathon/oldss/Screenshot 2026-07-19 at 2.52.07 PM.png".toAsset()}
+                  src={"/assets/images/events/hackathon/oldss/ss-07-resize.jpg".toAsset()}
                   alt="screenshot-2026-07-19-at-25207-pm"
                 />,
               ]}

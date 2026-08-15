@@ -1,12 +1,11 @@
 // TODO: move to react server components?
 
 import React from "react";
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
 import { md } from "#/lib/markdown";
 import { NotFound } from "#/components/NotFound";
 import { Badge } from "#/components/ui/badge";
-import { Link } from "#/components/ui/ethendotapp/link";
 import { Separator } from "#/components/ui/separator";
 import {
   Dialog,
@@ -43,6 +42,7 @@ import {
   BreadcrumbSeparator,
 } from "#/components/ui/breadcrumb";
 import { getTitle } from "#/lib/routing.ts";
+import { articleSchema } from "#/lib/seo";
 
 export const Route = createFileRoute("/posts/$postId")({
   loader: async ({ params }) => {
@@ -56,6 +56,18 @@ export const Route = createFileRoute("/posts/$postId")({
       {
         title: getTitle(matches, " / ", loaderData?.post.title || "Post"),
       },
+      ...(loaderData?.post
+        ? [
+            articleSchema({
+              headline: loaderData.post.title,
+              description: loaderData.post.summary,
+              authorNames: loaderData.post.authors.map((author) => author.name),
+              datePublished: loaderData.post.date,
+              image: loaderData.post.cover?.src,
+              url: `https://hackgwinnett.org/posts/${loaderData.post._meta.path.slugify()}`,
+            }),
+          ]
+        : []),
     ],
   }),
   component: RouteComponent,
@@ -76,11 +88,11 @@ function RouteComponent() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink render={<Link to="/" unstyled />}>Home</BreadcrumbLink>
+              <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink render={<Link to="/posts" unstyled />}>Posts</BreadcrumbLink>
+              <BreadcrumbLink render={<Link to="/posts" />}>Posts</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -136,7 +148,7 @@ function RouteComponent() {
         {post.tags && (
           <div className="mt-2 flex flex-wrap gap-2">
             {post.tags.map((tag) => (
-              <Badge render={<Link to="/posts/tag/$tag" params={{ tag }} unstyled />} key={tag}>
+              <Badge render={<Link to="/posts/tag/$tag" params={{ tag }} />} key={tag}>
                 #{tag}
               </Badge>
             ))}
@@ -172,7 +184,9 @@ function AuthorList({ authors, asItems }: { authors: Array<Author>; asItems?: bo
                 size="icon-sm"
                 variant="outline"
                 aria-label="View author details"
-                render={<Link to="/posts/@{$author}" params={{ author: author.id }} />}
+                render={
+                  <Link to="/posts/@{$author}" params={{ author: author.id }} className="link" />
+                }
                 nativeButton={false}
               >
                 <RiArrowRightLine />
@@ -190,7 +204,7 @@ function AuthorList({ authors, asItems }: { authors: Array<Author>; asItems?: bo
         {authors.map((author, i) => (
           <React.Fragment key={author.id}>
             {i > 0 && <span className="text-muted-foreground"> and </span>}
-            <Link to="/posts/@{$author}" params={{ author: author.id }} unstyled disabled>
+            <Link to="/posts/@{$author}" params={{ author: author.id }} disabled>
               {author.name}
             </Link>
           </React.Fragment>

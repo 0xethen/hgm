@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { eventInfo } from "#/lib/meta/events";
 import { ProgramsEventPage } from "./-shared";
-import { ExtLink } from "#/components/ui/ethendotapp/link.tsx";
 import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
+import { eventSchema } from "#/lib/seo";
 
 // TODO: fill this page out
 
@@ -15,6 +15,19 @@ export const Route = createFileRoute("/programs/hackfest")({
     const content = pages.find((p) => eventId === p._meta.path.slugify());
     return content || { content: "" };
   },
+  head: () => ({
+    meta: [
+      eventSchema({
+        name: eventInfo[eventId].name,
+        description: eventInfo[eventId].description,
+        startDate: eventInfo[eventId].startDate,
+        endDate: eventInfo[eventId].endDate,
+        url: "https://hackgwinnett.org/programs/hackfest",
+        location: eventInfo[eventId].location,
+        isFree: true,
+      }),
+    ],
+  }),
   component: RouteComponent,
 });
 
@@ -35,7 +48,15 @@ function RouteComponent() {
         left: {
           end: (
             <p>
-              Check out our <ExtLink href="https://instagram.com/hackgwinnett">Instagram</ExtLink>{" "}
+              Check out our{" "}
+              <Link
+                to={"https://instagram.com/hackgwinnett" as string}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link"
+              >
+                Instagram
+              </Link>{" "}
               for updates on HackFest!
             </p>
           ),

@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
-import { Link } from "#/components/ui/ethendotapp/link";
-import { useLocation, useNavigate, type NotFoundRouteProps } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate, type NotFoundRouteProps } from "@tanstack/react-router";
 import { TextScramble } from "#/components/ui/motion-primitives/text-scramble";
 import { useBreakpoint, useIsReducedMotion } from "#/hooks/browser.ts";
 import { cn } from "#/lib/utils";
@@ -103,7 +102,6 @@ export function NotFound(
 
     if (e?.shiftKey) setSecretCount(0);
 
-    // if (localStorage.getItem("eda-hgm-secret-achieved")) return; // TODO: should we prevent them from doing it twice? nah
     localStorage.setItem("eda-hgm-secret-achieved", Date.now().toString());
     throw navigate({ href: "https://creators.ethen.app/nfheat/gallery" });
   };
@@ -152,7 +150,6 @@ export function NotFound(
             "focus-visible:outline-none",
           )}
           onKeyDown={switchLinkFocus}
-          unstyled
         >
           <span className="font-bold animate-in fade-in animation-duration-2000 animation-delay-600 fill-mode-backwards">
             <span className="hidden group-focus:inline mr-1.5">{">"}</span>
@@ -173,7 +170,6 @@ export function NotFound(
             "focus-visible:outline-none",
           )}
           onKeyDown={switchLinkFocus}
-          unstyled
         >
           <span className="font-bold animate-in fade-in animation-duration-1500 animation-delay-900 fill-mode-backwards">
             <span className="hidden group-focus:inline mr-1.5">{">"}</span>

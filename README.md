@@ -8,13 +8,13 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 ~~> TODO: fix "undefined" in search params when navigating to reporting form via /eda/report~~
 
-> TODO: resize images so that they don't take 3 years to load
+~~> TODO: resize images so that they don't take 3 years to load~~ (biggest offenders fixed: hackathon carousel photos were full camera resolution up to 6.8MB each, now resized/compressed to <300KB; the about-us group photo and a post cover/inline image were similarly oversized. Keep an eye out for future uploads of full-res camera photos/screenshots going straight into `public/`.)
 
-> TODO: optimize for SEO/GEO
+~~> TODO: optimize for SEO/GEO~~ Added `sitemap.xml` generation (build.ts, referenced from robots.txt), `llms.txt`, and JSON-LD structured data (Organization site-wide, Event on the hackathon/hackfest pages, Article on post pages) — see [seo.ts](src/lib/seo.ts). Still open: the `@hackgwinnett` Twitter/X handle in seo.ts is unconfirmed (deliberately left alone), and llms.txt/JSON-LD content should be spot-checked by someone on the HG team for accuracy since it wasn't written by an officer.
 
-> TODO: Replace all <Link>s imported from ethendotapp/link with native @tanstack/react-router links OR relative <Route.Link> links (if the link is in a Route file+can access the Route var AND relativity is better in that scenario). Note the architecture of <Link> from ethendotapp (like styling with the "link" class) and CLEAN UP the link css (e.g. button-link is kinda awkward, maybe add a separate icon-link and see where button-link is referenced and see what is better for all classes: remake, remove, add, revamp link classes whenever necessary and make sure to implement classNames into the native <Link>s) [@index.css (52:67)](file:///Users/ethen/Documents/Code/hackgwinnett/www/src/styles/index.css#L52:67)
+~~> TODO: Replace all <Link>s imported from ethendotapp/link with native @tanstack/react-router links~~ `ethendotapp/link.tsx` is gone; every `<Link>`/`<ExtLink>` now uses `@tanstack/react-router`'s native `Link` with explicit `className`. `.button-link` was renamed to `.icon-link` per the original suggestion here. [@index.css (53:67)](src/styles/index.css#L53-L67)
 
-> TODO: fix newsletter cta env config missing in github pages. actually im realizing that the commit sha is shown in the footer so that means some env is working? maybe the build script is erasing the endpoint newsletter link? confirm...
+~~> TODO: fix newsletter cta env config missing in github pages.~~ Root cause found: [deploy.yml](./.github/workflows/deploy.yml) never passed `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL` to the build step, so it was always `undefined` on GitHub Pages (the commit SHA still showed because that one's populated by [build.ts](build.ts) itself, not from an env var). Workflow now passes it through from a repo secret — **you still need to add `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL` under Settings → Secrets and variables → Actions** for it to actually work. See [.env.example](.env.example) and [HOSTING.md](docs/HOSTING.md).
 
 ~~> TODO: space out 404 buttons on mobile and remove > <~~
 
@@ -54,7 +54,7 @@ You did it! Now, content-collections is watching for CMS changes AND your dev se
 
 READ [HOSTING.md](./docs/HOSTING.md) for more. For right now:
 
-The GitHub Action ([deploy.yaml](./.github/workflows/deploy.yaml)) should handle building and deploying for you on commit to `main`. Boom. Deployed.
+The GitHub Action ([deploy.yml](./.github/workflows/deploy.yml)) should handle building and deploying for you on commit to `main`. Boom. Deployed.
 
 ### About Vite+
 

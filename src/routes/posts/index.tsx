@@ -1,4 +1,3 @@
-import { Link } from "#/components/ui/ethendotapp/link";
 import {
   Pagination,
   PaginationContent,
@@ -9,14 +8,14 @@ import {
   PaginationPrevious,
 } from "#/components/ui/pagination";
 import { RiAiGenerateText } from "@remixicon/react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { posts as everyPost } from "cms/posts/posts";
-import { z } from "zod";
+import { z } from "zod/mini";
 
 export const Route = createFileRoute("/posts/")({
   staticData: { title: "All Posts" },
   validateSearch: z.object({
-    page: z.int().default(1).optional(),
+    page: z.optional(z._default(z.int(), 1)),
   }),
   component: RouteComponent,
 });
@@ -116,7 +115,6 @@ function RouteComponent() {
                 key={tag}
                 to="/posts/tag/$tag"
                 params={{ tag }}
-                unstyled
                 className="bg-muted px-3 py-1 text-sm font-medium rounded hover:bg-muted/80 transition-colors"
               >
                 #{tag}
@@ -133,7 +131,6 @@ function RouteComponent() {
               key={post._meta.path}
               to="/posts/$postId"
               params={{ postId: post._meta.path }}
-              unstyled
               className="group"
             >
               <article className="overflow-hidden border bg-card transition-all hover:shadow-sm flex flex-col">
@@ -194,7 +191,7 @@ function RouteComponent() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <Link to="/posts" search={{ page: Math.max(1, currentPage - 1) }}>
+                <Link to="/posts" search={{ page: Math.max(1, currentPage - 1) }} className="link">
                   <PaginationPrevious
                     className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
                   />
@@ -208,7 +205,7 @@ function RouteComponent() {
                   </PaginationItem>
                 ) : (
                   <PaginationItem key={item}>
-                    <Link to="/posts" search={{ page: item }}>
+                    <Link to="/posts" search={{ page: item }} className="link">
                       <PaginationLink isActive={item === currentPage}>{item}</PaginationLink>
                     </Link>
                   </PaginationItem>
@@ -216,7 +213,11 @@ function RouteComponent() {
               )}
 
               <PaginationItem>
-                <Link to="/posts" search={{ page: Math.min(totalPages, currentPage + 1) }}>
+                <Link
+                  to="/posts"
+                  search={{ page: Math.min(totalPages, currentPage + 1) }}
+                  className="link"
+                >
                   <PaginationNext
                     className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
                   />

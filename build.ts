@@ -1,5 +1,6 @@
-import { cp, readdir, rm } from "node:fs/promises";
+import { cp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { execSync } from "node:child_process";
 import readline from "node:readline/promises";
 
@@ -14,6 +15,17 @@ const DIST_DIR = "dist";
 const CLIENT_DIR = `${DIST_DIR}/client`;
 const SERVER_DIR = `${DIST_DIR}/server`;
 const SHELL_FILE = `${CLIENT_DIR}/_shell.html`;
+
+const SITE_URL = "https://hackgwinnett.org";
+const POSTS_DIR = "cms/posts/content";
+const STATIC_ROUTES = [
+  "/",
+  "/about",
+  "/posts",
+  "/programs/hackathon",
+  "/programs/hackfest",
+  "/contact",
+];
 
 // parsed in main()
 let flags: CliFlags;
@@ -88,7 +100,53 @@ async function postBuild(): Promise<void> {
     await removeServer();
   }
 
+  await generateSitemap();
+
   console.log("Done!");
+}
+
+async function getPublicPostSlugs(): Promise<string[]> {
+  if (!existsSync(POSTS_DIR)) return [];
+
+  const files = (await readdir(POSTS_DIR)).filter((f) => f.endsWith(".md"));
+
+  const slugs: string[] = [];
+  for (const file of files) {
+    const raw = await readFile(join(POSTS_DIR, file), "utf-8");
+    const frontmatter = raw.split("---", 3)[1] || "";
+
+    const hidden = /^\s*hidden:\s*true\s*$/m.test(frontmatter);
+    const unlisted = /^\s*unlisted:\s*true\s*$/m.test(frontmatter);
+    if (hidden || unlisted) continue;
+
+    slugs.push(file.replace(/\.md$/, ""));
+  }
+
+  return slugs;
+}
+
+async function generateSitemap(): Promise<void> {
+  if (!existsSync(CLIENT_DIR)) {
+    console.log(`${CLIENT_DIR} not found. Skipping sitemap generation.`);
+    return;
+  }
+
+  console.log("Generating sitemap.xml...");
+
+  const postSlugs = await getPublicPostSlugs();
+  const paths = [...STATIC_ROUTES, ...postSlugs.map((slug) => `/posts/${slug}`)];
+
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...paths.map((path) => `  <url><loc>${SITE_URL}${path}</loc></url>`),
+    "</urlset>",
+    "",
+  ].join("\n");
+
+  await writeFile(`${CLIENT_DIR}/sitemap.xml`, xml, "utf-8");
+
+  console.log(`✓ Generated sitemap.xml with ${paths.length} URLs`);
 }
 
 async function removeServer(): Promise<void> {

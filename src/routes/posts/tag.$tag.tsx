@@ -1,8 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/components/ui/card";
-import { Link } from "#/components/ui/ethendotapp/link";
 import { ScrollArea } from "#/components/ui/scroll-area";
 import { Separator } from "#/components/ui/separator";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
 import {
   Breadcrumb,
@@ -32,7 +31,9 @@ function RouteComponent() {
           <Separator orientation="vertical" />
           <p>There are no posts with #{tag} :(</p>
         </div>
-        <Link to="/posts">All posts</Link>
+        <Link to="/posts" className="link">
+          All posts
+        </Link>
       </div>
     );
 
@@ -42,11 +43,11 @@ function RouteComponent() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink render={<Link to="/" unstyled />}>Home</BreadcrumbLink>
+              <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink render={<Link to="/posts" unstyled />}>Posts</BreadcrumbLink>
+              <BreadcrumbLink render={<Link to="/posts" />}>Posts</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -76,7 +77,11 @@ function RouteComponent() {
                 {post.date ? format(new Date(post.date), "MMM d, yyyy") : ""} */}
                 </div>
                 <div>
-                  <Link to="/posts/$postId" params={{ postId: post._meta.path.slugify() }}>
+                  <Link
+                    to="/posts/$postId"
+                    params={{ postId: post._meta.path.slugify() }}
+                    className="link"
+                  >
                     Read
                   </Link>
                 </div>

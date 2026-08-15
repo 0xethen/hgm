@@ -1,6 +1,5 @@
-import { Link } from "#/components/ui/ethendotapp/link.tsx";
 import { RiSignalWifi1Fill } from "@remixicon/react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/eda/under-construction")({
   component: RouteComponent,
@@ -13,7 +12,7 @@ function RouteComponent() {
       {/*<div className="max-w-2xl mx-auto h-full">*/}
       <div className="h-safe-dvh mx-auto max-w-lg px-10 flex flex-col items-center justify-center text-center">
         <h1 className="text-4xl font-bold font-mono text-white text-shadow-lg">
-          <Link to="/thecakeisalie">
+          <Link to="/thecakeisalie" className="link">
             <RiSignalWifi1Fill />
           </Link>
           under construction

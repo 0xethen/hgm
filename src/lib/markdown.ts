@@ -1,7 +1,5 @@
-// TODO: move to @tanstack/markdown?
-// import { renderHtml } from "@tanstack/markdown";
-// export const md = renderHtml;
-
+// TODO: maybe switch to @tanstack/markdown in the future when it matures
+//
 import showdown from "showdown";
 
 const targetblank: showdown.ShowdownExtension = {

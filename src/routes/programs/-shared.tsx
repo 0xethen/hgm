@@ -1,5 +1,5 @@
 import { Button } from "#/components/ui/button";
-import { ExtLink, Link } from "#/components/ui/ethendotapp/link";
+import { Link } from "@tanstack/react-router";
 import {
   Item,
   ItemContent,
@@ -146,7 +146,7 @@ export function ProgramsEventPage({
             <Button
               variant="secondary"
               size="lg"
-              render={<Link to={event.registration.url} buttonStyle />}
+              render={<Link to={event.registration.url} className="link icon-link" />}
             >
               Register Now
             </Button>
@@ -159,7 +159,14 @@ export function ProgramsEventPage({
               <ItemContent>
                 <ItemTitle>{event.location.name}</ItemTitle>
                 <ItemDescription className="text-xs">
-                  <ExtLink href={event.location.mapUrl}>{event.location.address}</ExtLink>
+                  <Link
+                    to={event.location.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link"
+                  >
+                    {event.location.address}
+                  </Link>
                 </ItemDescription>
               </ItemContent>
             </Item>

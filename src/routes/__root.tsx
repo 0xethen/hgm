@@ -17,7 +17,8 @@ import { Footer } from "#/components/elements/nav/Footer";
 import { ConsoleSecrets } from "#/routes/thecakeisalie";
 import { cn } from "#/lib/utils";
 import { getDescription, getTitle } from "#/lib/routing";
-import { seo } from "#/lib/seo";
+import { organizationSchema, seo } from "#/lib/seo";
+import { brandInfo } from "#/lib/meta/brand";
 
 import css from "#/styles/index.css?url";
 
@@ -35,6 +36,16 @@ export const Route: RootRoute<Register> = createRootRoute({
           matches,
           "HackGwinnett is Metro Atlanta's premier computer science organization and programming event organizer, dedicated to fostering innovation, collaboration, and technical excellence among Middle/High School students in Gwinnett and beyond.",
         ),
+      }),
+      organizationSchema({
+        name: brandInfo.name,
+        logo: "/assets/images/brand/hackgwinnett.svg".toAsset(),
+        sameAs: [
+          brandInfo.socials.instagram,
+          brandInfo.socials.youtube,
+          brandInfo.socials.discord,
+          "https://github.com/hackgwinnett",
+        ],
       }),
     ],
     links: [

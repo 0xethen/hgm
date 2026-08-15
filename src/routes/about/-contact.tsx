@@ -1,5 +1,5 @@
 import { revalidateLogic, useForm } from "@tanstack/react-form";
-import { z } from "zod";
+import { z } from "zod/mini";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Button } from "#/components/ui/button";
@@ -37,8 +37,13 @@ const emailProviders: { id: string; label: string; description?: React.ReactNode
 ];
 
 const formSchema = z.object({
-  subject: z.string().min(2, "Subject line is required"),
-  message: z.string().min(1, "Body is required").max(500, "Body must be less than 500 characters"),
+  subject: z.string().check(z.minLength(2, "Subject line is required")),
+  message: z
+    .string()
+    .check(
+      z.minLength(1, "Body is required"),
+      z.maxLength(500, "Body must be less than 500 characters"),
+    ),
   provider: z.enum(emailProviders.map((option) => option.id)),
 });
 

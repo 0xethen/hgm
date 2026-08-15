@@ -3,12 +3,11 @@ import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "#/components/u
 import { Button } from "#/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/components/ui/card";
 import { ColorBadge } from "#/components/ui/color-badge";
-import { ExtLink, Link } from "#/components/ui/ethendotapp/link";
 import { ScrollArea } from "#/components/ui/scroll-area";
 import { Separator } from "#/components/ui/separator";
 import { cap } from "#/lib/utils";
 import { RiAtLine, RiGithubFill, RiInstagramLine, RiTwitterLine } from "@remixicon/react";
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
 import { authorInfo } from "cms/posts/authors";
 import { useBreakpoint } from "#/hooks/browser";
@@ -80,7 +79,7 @@ function RouteComponent() {
                 key={social.platform}
                 size={!isMobile ? "icon" : "sm"}
                 variant="secondary"
-                render={<ExtLink href={social.url} target="_blank" unstyled />}
+                render={<Link to={social.url} target="_blank" rel="noopener noreferrer" />}
                 nativeButton={false}
               >
                 {social.platform === "Instagram" && <RiInstagramLine />}
@@ -113,7 +112,11 @@ function RouteComponent() {
                   {post.date ? post.date.toLocaleDateString("en-US", { dateStyle: "long" }) : ""}
                 </div>
                 <div>
-                  <Link to="/posts/$postId" params={{ postId: post._meta.path.slugify() }}>
+                  <Link
+                    to="/posts/$postId"
+                    params={{ postId: post._meta.path.slugify() }}
+                    className="link"
+                  >
                     Read article <span aria-hidden="true">&rarr;</span>
                   </Link>
                 </div>

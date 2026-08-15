@@ -3,7 +3,7 @@ title: "Introducing the new and improved hackgwinnett.org"
 authors: ["ethen"]
 cover:
   {
-    src: "/assets/posts/covers/newsite-hackathon-page.png",
+    src: "/assets/posts/covers/newsite-hackathon-page-resize.jpg",
     alt: "Screenshot of the new website homepage",
     height: 400,
   }
@@ -19,7 +19,7 @@ Of course, hackgwinnett.org is [still open-source](https://github.com/0xethen/hg
 
 For reference, here's [the old website](https://hackgwinnett.github.io/www-archive):
 
-[![The 2025 HackGwinnett officer team](/assets/posts/img/Screenshot2026-07-29at11.02.25.png)](https://hackgwinnett.github.io/www-archive)
+[![The 2025 HackGwinnett officer team](/assets/posts/img/Screenshot2026-07-29at11.02.25-resize.jpg)](https://hackgwinnett.github.io/www-archive)
 
 [The](https://github.com/hershyz) [three](https://github.com/JBPrew) [founders](https://github.com/sam-shridhar1950f) of HG did a great job, but we've come a long way since 2021! As HackGwinnett kept growing, we wanted it to be easier for HG newbies and veterans alike to find what they're looking for. Here's a quick overview of what's new:
 

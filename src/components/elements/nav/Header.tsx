@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ExtLink, Link as IntLink } from "#/components/ui/ethendotapp/link";
+import { Link as RouterLink } from "@tanstack/react-router";
 import {
   RiDiscordFill,
   RiInstagramFill,
@@ -174,23 +174,34 @@ function itemKey(item: NavLinkItem) {
 function Link({
   item,
   children,
+  buttonStyle,
+  className,
   ...props
 }: {
   item: NavLinkItem;
   children?: React.ReactNode;
-} & Omit<React.ComponentProps<typeof IntLink>, "to">) {
+  buttonStyle?: boolean;
+} & Omit<React.ComponentProps<typeof RouterLink>, "to" | "href">) {
+  const linkClassName = cn("link", buttonStyle && "icon-link", className);
+
   if (item.external) {
     return (
-      <ExtLink href={item.href} {...props}>
+      <RouterLink
+        to={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClassName}
+        {...props}
+      >
         {children ?? item.title}
-      </ExtLink>
+      </RouterLink>
     );
   }
 
   return (
-    <IntLink to={item.href} {...props}>
+    <RouterLink to={item.href} className={linkClassName} {...props}>
       {children ?? item.title}
-    </IntLink>
+    </RouterLink>
   );
 }
 
@@ -334,7 +345,9 @@ function SocialButton({
 }) {
   return (
     <Button
-      render={<IntLink to="/go/$slug" params={{ slug }} target="_blank" buttonStyle />}
+      render={
+        <RouterLink to="/go/$slug" params={{ slug }} target="_blank" className="link icon-link" />
+      }
       className={cn(CTA_HOVER_CLASS, className)}
       variant="ghost"
       size="icon-sm"
@@ -374,20 +387,19 @@ export function Header({
         )}
       >
         <span className={cn("flex flex-1 justify-start", classNames?.logo)}>
-          <IntLink
-            to="/"
-            title="HackGwinnett Logo"
-            className="text-xl font-mono font-bold"
-            unstyled
-          >
+          <RouterLink to="/" title="HackGwinnett Logo" className="text-xl font-mono font-bold">
             <img
               className="size-9"
               alt="HackGwinnett Logo"
               src={"/assets/images/brand/hgwordmark.svg".toAsset()}
             />
-          </IntLink>
+          </RouterLink>
 
-          {import.meta.env.DEV ? <IntLink to="/developer">++</IntLink> : null}
+          {import.meta.env.DEV ? (
+            <RouterLink to="/developer" className="link">
+              ++
+            </RouterLink>
+          ) : null}
         </span>
 
         <div
@@ -480,7 +492,13 @@ export function Header({
 
               <DrawerFooter>
                 <Button
-                  render={<IntLink to="/go/$slug" params={{ slug: "register" }} buttonStyle />}
+                  render={
+                    <RouterLink
+                      to="/go/$slug"
+                      params={{ slug: "register" }}
+                      className="link icon-link"
+                    />
+                  }
                   size="lg"
                   nativeButton={false}
                 >

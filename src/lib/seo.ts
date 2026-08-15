@@ -1,3 +1,108 @@
+const SITE_URL = "https://hackgwinnett.org";
+
+// head()'s meta type in the installed router version is typed as raw <meta> props and
+// hasn't caught up to the "script:ld+json" entry its own runtime (Asset.js) already handles,
+// hence the `any` returns below.
+
+export const organizationSchema = ({
+  name,
+  logo,
+  sameAs,
+}: {
+  name: string;
+  logo?: string;
+  sameAs?: string[];
+}): any => ({
+  "script:ld+json": {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name,
+    url: SITE_URL,
+    ...(logo && { logo }),
+    ...(sameAs?.length && { sameAs }),
+  },
+});
+
+export const eventSchema = ({
+  name,
+  description,
+  startDate,
+  endDate,
+  url,
+  location,
+  isFree,
+}: {
+  name: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  url: string;
+  location: { name: string; address: string };
+  isFree?: boolean;
+}): any => ({
+  "script:ld+json": {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name,
+    description,
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    url,
+    location: {
+      "@type": "Place",
+      name: location.name,
+      address: location.address,
+    },
+    organizer: {
+      "@type": "Organization",
+      name: "HackGwinnett",
+      url: SITE_URL,
+    },
+    ...(isFree && {
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+      },
+    }),
+  },
+});
+
+export const articleSchema = ({
+  headline,
+  description,
+  authorNames,
+  datePublished,
+  image,
+  url,
+}: {
+  headline: string;
+  description?: string;
+  authorNames: string[];
+  datePublished: Date;
+  image?: string;
+  url: string;
+}): any => ({
+  "script:ld+json": {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline,
+    ...(description && { description }),
+    datePublished: datePublished.toISOString(),
+    url,
+    ...(image && { image }),
+    author: authorNames.map((name) => ({ "@type": "Person", name })),
+    publisher: {
+      "@type": "Organization",
+      name: "HackGwinnett",
+      url: SITE_URL,
+    },
+  },
+});
+
 export const seo = ({
   title,
   description,

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useHydrated } from "@tanstack/react-router";
+import { Link, useHydrated } from "@tanstack/react-router";
 import { Button } from "#/components/ui/button";
 import { Magnetic } from "#/components/ui/motion-primitives/magnetic";
-import { Link } from "#/components/ui/ethendotapp/link";
 import { TextScramble } from "#/components/ui/motion-primitives/text-scramble";
 import { cn } from "#/lib/utils";
 import { RiArrowDownBoxLine, RiArrowRightDoubleLine, RiPlayFill } from "@remixicon/react";
@@ -29,9 +28,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
       <div className="min-h-[85dvh] md:min-h-safe-dvh px-6 sm:px-8 md:px-12 flex flex-row items-center justify-between gap-12 animate-in fade-in slide-in-from-bottom-5 animation-duration-800 animation-delay-50 fill-mode-backwards">
         <div className="flex flex-col justify-center gap-4 max-w-md sm:max-w-xl md:max-w-2xl">
           <ColorBadge
-            render={
-              <Link to="/posts/$postId" params={{ postId: "new-website-announcement" }} unstyled />
-            }
+            render={<Link to="/posts/$postId" params={{ postId: "new-website-announcement" }} />}
           >
             NEW: Introducing hackgwinnett.org 2.0
             <RiArrowRightDoubleLine />
@@ -54,7 +51,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
                   dateStyle: "full",
                 })}
                 .{" "}
-                <Link to="." hash="newslettercta">
+                <Link to="." hash="newslettercta" className="link">
                   Get notified
                 </Link>{" "}
                 when registration opens
@@ -65,7 +62,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             {!eventInfo.hackathon.registration?.closed && (
               <Magnetic intensity={0.4}>
                 <Button
-                  render={<Link to="/go/$slug" params={{ slug: "register" }} unstyled />}
+                  render={<Link to="/go/$slug" params={{ slug: "register" }} />}
                   className="cursor-none striped-hg-green hover:brightness-110 hover:not-active:scale-103"
                   variant="hero"
                   size={isMobile ? "sm" : "lg"}
@@ -77,7 +74,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             )}
             <Magnetic intensity={0.4}>
               <Button
-                render={<Link to="/programs/hackathon" unstyled />}
+                render={<Link to="/programs/hackathon" />}
                 className="cursor-none hover:not-active:scale-103"
                 variant="glass"
                 size={isMobile ? "sm" : "lg"}

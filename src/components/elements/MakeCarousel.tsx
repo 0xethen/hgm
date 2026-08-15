@@ -21,7 +21,6 @@ export function MakeCarousel({
   const [emblaApi, setApi] = useState<CarouselApi | undefined>(undefined);
   const [playing, setPlaying] = useState<boolean>(false);
 
-  // TODO: is there a better way to automatically start autoplay?
   useEffect(() => {
     toggleAutoplay("play");
   }, [emblaApi]);

@@ -3,7 +3,6 @@ import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
 import { ContactForm } from "./-contact";
 import { NewsletterCTA } from "#/components/elements/NewsletterCTA.tsx";
-// TODO: Switch to Zod Mini? or nah
 
 const ABOUT_POST_ID = "about-us";
 const fallback = `HackGwinnett is a student-run organization that aims to promote computer science and technology education in Gwinnett County, Georgia. We organize hackathons, workshops, and other events to help students learn and grow in the field of technology.`;

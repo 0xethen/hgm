@@ -17,6 +17,8 @@ jobs:
 
       - name: build step
         run: vp run build-static
+        env:
+          PUBLIC_APPS_SCRIPT_NEWSLETTER_URL: ${{ secrets.PUBLIC_APPS_SCRIPT_NEWSLETTER_URL }}
 
       - name: upload static files as pages artifact
         id: deployment

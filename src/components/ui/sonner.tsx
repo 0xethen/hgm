@@ -8,11 +8,9 @@ import {
 } from "@remixicon/react";
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const theme = "system"; // TODO: useTheme? or keep it theme="light" in __root.tsx
-
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme="light"
       className="toaster group"
       icons={{
         success: <RiCheckboxCircleLine className="size-4" />,
