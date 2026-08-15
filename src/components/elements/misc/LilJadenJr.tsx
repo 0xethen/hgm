@@ -75,8 +75,8 @@ export function LilJadenJr({
       {renderSpeechBubble && (
         <div
           className={cn(
-            "fixed bottom-35 z-10",
-            direction === "left" ? "left-8" : "right-8",
+            "fixed bottom-40 z-10",
+            direction === "left" ? "left-4" : "right-4",
             "duration-300 fill-mode-forwards ease-out",
             "data-[state=show]:animate-in data-[state=show]:fade-in data-[state=show]:slide-in-from-bottom-100",
             "data-[state=hide]:animate-out data-[state=hide]:fade-out data-[state=hide]:slide-out-to-bottom-5",

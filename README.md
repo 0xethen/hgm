@@ -4,24 +4,6 @@ The repository for the official HackGwinnett marketing website ([hackgwinnett.or
 
 Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https://hackgwinnett.org/go/issues)**
 
-> TODO: `git remote remove origin && git remote add origin https://github.com/hackgwinnett/www.git`
-
-~~> TODO: fix "undefined" in search params when navigating to reporting form via /eda/report~~
-
-~~> TODO: resize images so that they don't take 3 years to load~~ (biggest offenders fixed: hackathon carousel photos were full camera resolution up to 6.8MB each, now resized/compressed to <300KB; the about-us group photo and a post cover/inline image were similarly oversized. Keep an eye out for future uploads of full-res camera photos/screenshots going straight into `public/`.)
-
-~~> TODO: optimize for SEO/GEO~~ Added `sitemap.xml` generation (build.ts, referenced from robots.txt), `llms.txt`, and JSON-LD structured data (Organization site-wide, Event on the hackathon/hackfest pages, Article on post pages) — see [seo.ts](src/lib/seo.ts). Still open: the `@hackgwinnett` Twitter/X handle in seo.ts is unconfirmed (deliberately left alone), and llms.txt/JSON-LD content should be spot-checked by someone on the HG team for accuracy since it wasn't written by an officer.
-
-~~> TODO: Replace all <Link>s imported from ethendotapp/link with native @tanstack/react-router links~~ `ethendotapp/link.tsx` is gone; every `<Link>`/`<ExtLink>` now uses `@tanstack/react-router`'s native `Link` with explicit `className`. `.button-link` was renamed to `.icon-link` per the original suggestion here. [@index.css (53:67)](src/styles/index.css#L53-L67)
-
-~~> TODO: fix newsletter cta env config missing in github pages.~~ Root cause found: [deploy.yml](./.github/workflows/deploy.yml) never passed `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL` to the build step, so it was always `undefined` on GitHub Pages (the commit SHA still showed because that one's populated by [build.ts](build.ts) itself, not from an env var). Workflow now passes it through from a repo secret — **you still need to add `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL` under Settings → Secrets and variables → Actions** for it to actually work. See [.env.example](.env.example) and [HOSTING.md](docs/HOSTING.md).
-
-~~> TODO: space out 404 buttons on mobile and remove > <~~
-
-~~> TODO: fix header flickering, probably a useHydrated thing in __root.tsx, make header links unhighlight-able~~
-
-~~> TODO: add more intense highlight color?~~
-
 ## Contributing
 
 Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md)
