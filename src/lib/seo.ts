@@ -30,7 +30,7 @@ export const eventSchema = ({
   endDate,
   url,
   location,
-  isFree,
+  price,
 }: {
   name: string;
   description: string;
@@ -38,7 +38,7 @@ export const eventSchema = ({
   endDate: Date;
   url: string;
   location: { name: string; address: string };
-  isFree?: boolean;
+  price?: number;
 }): any => ({
   "script:ld+json": {
     "@context": "https://schema.org",
@@ -60,14 +60,12 @@ export const eventSchema = ({
       name: "HackGwinnett",
       url: SITE_URL,
     },
-    ...(isFree && {
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    }),
+    offers: {
+      "@type": "Offer",
+      price: price?.toString() || "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
   },
 });
 

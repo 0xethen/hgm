@@ -19,6 +19,8 @@ export interface HGEvent {
     /** The Apple Maps address link or virtual meeting link */
     mapUrl: string;
   };
+  /** Registration price for the event */
+  price?: number;
   /** The start date & time of the event */
   startDate: Date;
   /** The end date & time of the event */

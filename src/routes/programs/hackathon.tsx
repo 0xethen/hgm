@@ -27,7 +27,7 @@ export const Route = createFileRoute("/programs/hackathon")({
         endDate: eventInfo[eventId].endDate,
         url: "https://hackgwinnett.org/programs/hackathon",
         location: eventInfo[eventId].location,
-        isFree: true,
+        price: eventInfo[eventId].price || 0,
       }),
     ],
   }),
