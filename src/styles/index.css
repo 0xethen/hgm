@@ -55,11 +55,11 @@
   }
 
   .alt-link {
-    @apply cursor-pointer underline underline-offset-2 hover:text-primary;
+    @apply underline underline-offset-2 hover:text-primary;
   }
 
   .link {
-    @apply aria-disabled:cursor-not-allowed aria-disabled:opacity-50 cursor-pointer;
+    @apply cursor-pointer aria-disabled:cursor-not-allowed aria-disabled:opacity-50;
   }
 
   /* for links that pair an icon with text (nav items, inline CTAs) instead of prose */
