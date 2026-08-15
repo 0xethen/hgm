@@ -103,7 +103,7 @@ export function NotFound(
     if (e?.shiftKey) setSecretCount(0);
 
     localStorage.setItem("eda-hgm-secret-achieved", Date.now().toString());
-    throw navigate({ href: "https://creators.ethen.app/nfheat/gallery" });
+    throw navigate({ href: "https://old.ethen.app/nfheat/gallery" });
   };
 
   const refocus = () => {
