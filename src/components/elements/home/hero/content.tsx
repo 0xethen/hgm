@@ -24,8 +24,8 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
   }, [hydrated]);
 
   return (
-    <div className="relative min-h-[90dvh] md:min-h-safe-dvh bg-hg-black bg-[url('/assets/images/hero/bgtexture01.svg')] text-white">
-      <div className="min-h-[85dvh] md:min-h-safe-dvh px-6 sm:px-8 md:px-12 flex flex-row items-center justify-between gap-12 animate-in fade-in slide-in-from-bottom-5 animation-duration-800 animation-delay-50 fill-mode-backwards">
+    <div className="relative bg-hg-black bg-[url('/assets/images/hero/bgtexture01.svg')] text-white">
+      <div className="min-h-safe-dvh px-6 sm:px-8 md:px-12 flex flex-row items-center justify-between gap-12 animate-in fade-in slide-in-from-bottom-5 animation-duration-800 animation-delay-50 fill-mode-backwards">
         <div className="flex flex-col justify-center gap-4 max-w-md sm:max-w-xl md:max-w-2xl">
           <ColorBadge
             render={<Link to="/posts/$postId" params={{ postId: "new-website-announcement" }} />}
@@ -33,7 +33,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             NEW: Introducing hackgwinnett.org 2.0
             <RiArrowRightDoubleLine />
           </ColorBadge>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl max-w-2xl font-mono leading-10 sm:leading-14 md:leading-17 select-none">
+          <h1 className="text-2xl sm:text-5xl md:text-6xl max-w-2xl font-mono leading-8 sm:leading-14 md:leading-17 select-none">
             Atlanta's premier{" "}
             <span className="text-primary-light">
               <TextScramble>computer science</TextScramble>

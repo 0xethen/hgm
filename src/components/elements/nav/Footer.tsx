@@ -31,7 +31,7 @@ export function Footer({ link }: { link?: React.ReactNode }) {
         </span>
         <div className="flex flex-row gap-4">
           <Link
-            to={"https://ethen.app/privacy?s=hgm" as string}
+            to={"https://ethen.app/legal?s=hgm" as string}
             target="_blank"
             rel="noopener noreferrer"
             className={cn("link", "text-sm text-white/50 hover:text-white")}

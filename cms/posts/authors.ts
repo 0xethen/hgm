@@ -35,6 +35,6 @@ export const authorInfo: Record<string, AuthorInfo> = {
   unknown: {
     name: "Unknown Author",
     bio: "(this author has not been added to the author list yet)",
-    avatar: "https://ethen.app/assets/avatars/unknown.png",
+    avatar: "https://ethen.app/assets/hgm/unknown.png",
   },
 };
