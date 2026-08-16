@@ -8,8 +8,6 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md)
 
-> If you're bored, try resolving (or removing) one of the many // TODOs in the codebase. If you do, please submit a PR and a senior officer should review it. Spam them! Thanks!!!
-
 > If you need help with something, do not hesitate to DM Ethen on Discord (HackGwinnett officers should have my user). Make sure to send proof you're not an impostor or I probably won't take a look at it.
 
 ## Develop and Deploy
