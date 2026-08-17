@@ -140,4 +140,4 @@ Happy writing! ✍️
 
 ---
 
-> [Ethen](https://github.com/0xethen) wrote this very detailed, very thorough, very well-documented documentation with his own two hands! If at any point in time you were to send him a thank you card... or a snack from the vending machine... he would probably appreciate it. just sayin'.
+> [Ethen](https://github.com/0xethen) wrote this very detailed, very thorough, very well-documented documentation with his own two hands!
