@@ -51,32 +51,34 @@ _Honestly, we rarely put out posts anyway._
 
 So here's how it works:
 
-- [`cms/posts`](cms/posts) folder
+- [`cms/posts/content`](./cms/posts/content) folder
   - This is where every post, stored as a Markdown (`.md`) file, is stored.
 
-- [`cms/posts.ts`](cms/posts.ts) file
+- [`cms/pages/content`](./cms/pages/content) folder
+  - Some page content, like the "About" page, has content also stored as Markdown files. This is where those files are stored. If there ever is some content that should be prose or easily editable from a markdown file, make a new entry in this folder and render it with `const { post } = useLoaderData()` and `{md(post.content)}` in JSX. See [/about](./src/routes/about/index.tsx) for an example.
+
+- [`cms/posts/posts.ts`](./cms/posts/posts.ts) file
   - This is where post data is transformed to be compatible with our web routes. Usually, you won't need to touch this.
 
-- [`cms/authors.ts`](cms/authors.ts) file
+- [`cms/posts/authors.ts`](./cms/posts/authors.ts) file
   - This is where author details are stored. Unless you need to add a new author, you probably won't need to touch this.
-
-  - It is important--nay, IMPERATIVE--that you ALWAYS specify authors that ACTUALLY have a key in [`authors.ts`](cms/authors.ts) (and all the appropriate data).
-
+  - It is important--nay, IMPERATIVE--that you ALWAYS specify authors that ACTUALLY have a key in [`posts/authors.ts`](./cms/posts/authors.ts) (and all the appropriate data).
   - If this condition, or anything prop conforming to the [schema](./cms/config.ts), is not met, either a) the post will not show up on the website or b) the website will fail to build/compile and, therefore, the deployment step literally cannot run.
-
   - _Note: this was originally a JSON file, which was annoying because I couldn't type it. I very quickly converted it to a TypeScript file, but if there's any little JSON leftovers, please lmk ASAP_
 
-- [`content-collections.ts`](./cms/config.ts) file
-  - Configuration for content-collections
-
-  - To modify (add/remove/change type of) metadata for **every post**, edit the Zod schema present in this file
-
+- [`cms/config`](./cms/config.ts) file
+  - Schemas for all content types (posts, pages...). To modify (add/remove/change type of) metadata for **every post** or **every page** (that uses dynamic data from cms/pages), edit their respective Zod schemas present in this file
   - > The build step requires frontmatter (metadata) from ALL posts to match the schema present in [cms/config.ts](./cms/config.ts) (exported to [content-collections.ts](content-collections.ts)). If you _must_ change the metadata schema, it is your responsibility to alert your fellow officers and edit all existing posts
+
+- [`content-collections.ts`](./content-collections.ts) file
+  - Configuration for content-collections (required). Gets its schema from the Zod schema in [cms/config.ts](./cms/config.ts)
+  - Usually, you shouldn't touch this. Try [`cms/config`](./cms/config.ts) instead.
 
 - `.content-collections` folder (locally)
   - When running the `vpr dev` script, you'll notice a .content-collections folder. This is where all the auto-generated nerdy code is that turns it into real code under the hood.
   - There's no need to worry about this folder, but if it doesn't show up _you are doing something wrong_!
   - Most likely, you did `vp dev` (which only ran the dev server) instead of `vp run dev` or `vpr dev` (which ran the dev script in `package.json`, whcih concurrently runs the content-collections stuff for you)
+  - Usually, you shouldn't touch this.
 
 Alright, enough yap. Here's what you've been waiting for:
 
@@ -88,7 +90,7 @@ At the top of every post is the frontmatter, which serves as metadata for the we
 ---
 title: "React Compiler is getting a Rust slopfork"
 authors: ["ethen"]
-date: 1781016713527 # to get the current timestamp, run `node -e "console.log(Date.now())"` in your terminal
+date: 1781016713527 # to get the current timestamp, run `vpr date` in your terminal
 summary: "The jury's still out on whether it'll be reviewed thoroughly"
 cover:
   {
