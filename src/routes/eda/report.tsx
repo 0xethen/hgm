@@ -10,6 +10,7 @@ import { cn } from "#/lib/utils";
 import { z } from "zod/mini";
 import { Button } from "#/components/ui/button";
 import { Separator } from "#/components/ui/separator";
+import { RiFlag2Fill } from "@remixicon/react";
 
 const templates = {
   nocontent: {
@@ -22,6 +23,8 @@ const templates = {
     description: "",
   },
 };
+
+const formLineDivider = "=————————————————————————————————————=";
 
 export const Route = createFileRoute("/eda/report")({
   staticData: { title: "Report a problem" },
@@ -47,7 +50,7 @@ function RouteComponent() {
   const [date, setDate] = useState<string>();
 
   const template = templateId ? templates[templateId] : undefined;
-  const link = `https://docs.google.com/forms/d/e/1FAIpQLSd8ngPGYLdc5gZicMCwm2fZN0bkOqZzPcHKVwFhgzchuYpGkw/viewform?pli=1&usp=pp_url&entry.1231647937=HG+Marketing+(hackgwinnett.org)${date && `&entry.2078293770=${date}`}${templateId && `&entry.1830352709=${template?.description}`}${`&entry.1501072006=eda-${templateId || "generic"}:[${code || "xxx"}], using template ${template ? `"${template.title}"` : "(no template)"}, origin: ${origin || "(no origin)"}`}`;
+  const link = `https://docs.google.com/forms/d/e/1FAIpQLSd8ngPGYLdc5gZicMCwm2fZN0bkOqZzPcHKVwFhgzchuYpGkw/viewform?pli=1&usp=pp_url&entry.1231647937=HG+Marketing+(hackgwinnett.org)${date && `&entry.2078293770=${date}`}${templateId && `&entry.1830352709=${template?.description}`}${`&entry.1501072006=${formLineDivider}%0Aeda-${templateId || "generic"}:[${code || "none"}], using template ${template ? `"${template.title}"` : "(no template)"}, origin: ${origin || "(no origin)"}`}%0A${formLineDivider}%0A`;
 
   const hydrated = useHydrated();
 
@@ -63,41 +66,41 @@ function RouteComponent() {
   return (
     <div className="flex font-heading flex-col min-h-safe-dvh max-w-lg mx-auto items-center justify-center text-center gap-4 px-4">
       <h3>Let's get you on the right path.</h3>
-      <p>Click below to report an issue or submit feedback:</p>
-      <Button
-        render={<Link to={link} target="_blank" rel="noopener noreferrer" />}
-        nativeButton={false}
-      >
-        Report issue
-      </Button>
-      <p className="italic text-muted-foreground">
-        If you're a real smart cookie, you may want to check out our{" "}
-        <Link
-          to={"https://github.com/hackgwinnett/www" as string}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="link"
+      {/*<p>Click below to report an issue or submit feedback:</p>*/}
+      <div className="flex flex-col items-center text-center gap-2">
+        <Button
+          render={<Link to={link} target="_blank" rel="noopener noreferrer" />}
+          variant="destructive"
+          nativeButton={false}
         >
-          GitHub repository
-        </Link>
-      </p>
+          <RiFlag2Fill /> Report issue...
+        </Button>
+        <p className="italic text-muted-foreground text-sm">
+          or view the{" "}
+          <Link
+            to={"https://github.com/hackgwinnett/www" as string}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
+            GitHub repository
+          </Link>
+        </p>
+      </div>
       <Separator />
-      <p className="text-muted-foreground text-sm">
-        We'll ask for your email, but we'll only contact you if you've previously allowed us or gave
-        us confirmation in the form you're about to submit.
+      <p className="text-muted-foreground text-xs">
+        We'll ask for your email, but HackGwinnett will only contact you if you've previously
+        allowed us or you gave us confirmation in the form you're about to submit. We do this to
+        combat spam from emails with a history of malicious/false reports {":)"}
       </p>
-      <p className="text-muted-foreground text-sm">
-        We do this to combat spam by removing submissions from emails with a history of
-        intentionally malicious/false reports {":)"}
-      </p>
-      <p className="text-muted-foreground text-sm">
+      <p className="text-muted-foreground text-xs">
         Please only submit valid issues related to the HackGwinnett website (hackgwinnett.org). If
-        you want to report one of our software products, visit that product's page. If you can't
-        find it, or have any other question about HackGwinnett,{" "}
+        you need help with our other software, visit that specific repository or product page. If
+        you can't find it, or have any other question about HackGwinnett,{" "}
         <Link to="/contact" className="link">
           reach out to us
         </Link>
-        !
+        ! Anytime!!!
       </p>
     </div>
   );
