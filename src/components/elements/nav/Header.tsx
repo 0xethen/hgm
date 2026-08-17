@@ -59,7 +59,7 @@ const navItems = [
   },
   {
     title: "Posts",
-    description: "News, updates, and announcements from HackGwinnett and the team.",
+    description: "News, updates, and announcements from HackGwinnett and our officers.",
     href: "/posts",
   },
   {

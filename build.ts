@@ -125,6 +125,7 @@ async function getPublicPostSlugs(): Promise<string[]> {
   return slugs;
 }
 
+// TODO: make this better. preloading (TanStack Start/Router) already crawls routes, we can maybe play with that.
 async function generateSitemap(): Promise<void> {
   if (!existsSync(CLIENT_DIR)) {
     console.log(`${CLIENT_DIR} not found. Skipping sitemap generation.`);
