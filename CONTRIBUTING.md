@@ -21,7 +21,7 @@ Routes are defined in the `src/routes` directory. Each route is a separate file 
 
 It is SUPER IMPORTANT that you also follow the [Generative Engine Optimization (GEO)](https://tanstack.com/start/latest/docs/framework/react/guide/geo) guide found here, too! Per Ms. R, we are ChatGPT famous!
 
-![Email from Ms. Rachkovskiy: "HackGwinnett is ChatGPT famous!"](./public/assets/images/misc/Screenshot 2026-07-21 at 5.23.40 PM.png)
+![Email from Ms. Rachkovskiy: "HackGwinnett is ChatGPT famous!"](https://raw.githubusercontent.com/0xethen/hgm/main/public/assets/images/misc/Screenshot%202026-07-21%20at%205.23.40%E2%80%AFPM.png)
 
 Many of our participants claim they found us while searching for CS opportunities via ChatGPT (or another LLM), so we need to make our website as scrapable as we can. Ideally, it would be server-side rendered (SSR), but because `www` is a simple marketing website that should not have that many resources allocated to it, this project is statically generated (SSG) (see [HOSTING.md](./docs/HOSTING.md) and (optionally) the TanStack documentation on [SPA Mode](https://tanstack.com/start/latest/docs/framework/react/guide/spa-mode) and [Static Prerendering](https://tanstack.com/start/latest/docs/framework/react/guide/static-prerendering)).
 
