@@ -1,5 +1,6 @@
 import { HackathonFAQ } from "#/components/elements/HackathonFAQ";
 import { NewsletterCTA } from "#/components/elements/NewsletterCTA";
+import { Link } from "@tanstack/react-router";
 import { SponsorSection } from "./sponsors.tsx";
 
 export function HomepageMainContent() {
@@ -11,9 +12,12 @@ export function HomepageMainContent() {
           <h1 className="text-2xl sm:text-3xl md:text-4xl">Hack-a-What?!</h1>
           <p>
             HackGwinnett is Metro Atlanta's premier high school computer science organization.
-            HackGwinnett's signature event is its annual hackathon: free of cost, hosted at Gwinnett
-            School of Mathematics, Science, and Technology, and open to middle and high school
-            students across Georgia.
+            HackGwinnett's signature event is its{" "}
+            <Link to="/programs/hackathon" className="link">
+              annual hackathon
+            </Link>
+            : free of cost, hosted at Gwinnett School of Mathematics, Science, and Technology, and
+            open to middle and high school students across Georgia.
           </p>
           <p>
             During our flagship hackathon, students (solo or in groups up to four) gather to create

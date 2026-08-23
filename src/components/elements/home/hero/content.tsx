@@ -30,7 +30,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
           <ColorBadge
             render={<Link to="/posts/$postId" params={{ postId: "new-website-announcement" }} />}
           >
-            NEW: Introducing hackgwinnett.org 2.0
+            NEW: Introducing hackgwinnett.org v2
             <RiArrowRightDoubleLine />
           </ColorBadge>
           <h1 className="text-2xl sm:text-5xl md:text-6xl max-w-2xl font-mono leading-8 sm:leading-14 md:leading-17 select-none">
@@ -41,12 +41,12 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             organization
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-white/80">
-            {eventInfo.hackathon.name}{" "}
+            {eventInfo.hackathon.name}
             {hackathonOver ? (
               <>has concluded. Thank you, everyone!</>
             ) : (
               <>
-                is{" "}
+                {" is on "}
                 {eventInfo.hackathon.startDate.toLocaleDateString("en-US", {
                   dateStyle: "full",
                 })}

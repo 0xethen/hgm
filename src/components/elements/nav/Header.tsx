@@ -116,6 +116,7 @@ const navItems = [
       className:
         "grid grid-flow-col grid-rows-3 gap-2 md:grid-cols-2 w-84 [&_.nav-label]:font-brand",
       items: [
+        { title: "Media gallery", href: "/gallery" },
         {
           title: "HackGwinnett 5.0",
           href: "https://hackgwinnett-5-0.devpost.com/project-gallery",
@@ -141,7 +142,6 @@ const navItems = [
           href: "https://hackgwinnett.devpost.com/project-gallery",
           external: true,
         },
-        { title: "Other events", href: "/developer/404" },
       ],
     },
   },
