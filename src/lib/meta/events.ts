@@ -61,7 +61,7 @@ export const eventInfo: Record<string, HGEvent> = {
     // },
     registration: {
       url: "/go/register",
-      closed: false,
+      closed: true,
     },
   },
   hackfest: {
