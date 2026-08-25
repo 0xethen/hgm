@@ -33,14 +33,14 @@ import {
 } from "#/components/ui/avatar";
 import { RiArrowRightLine } from "@remixicon/react";
 import type { Author } from "cms/posts/authors";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "#/components/ui/breadcrumb";
+// import {
+//   Breadcrumb,
+//   BreadcrumbItem,
+//   BreadcrumbLink,
+//   BreadcrumbList,
+//   BreadcrumbPage,
+//   BreadcrumbSeparator,
+// } from "#/components/ui/breadcrumb";
 import { getTitle } from "#/lib/routing.ts";
 import { articleSchema } from "#/lib/seo";
 
@@ -85,24 +85,30 @@ function RouteComponent() {
   return (
     <article className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="space-y-4">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink render={<Link to="/posts" />}>Posts</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Post</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <Link to="/posts" className="link alt-link">
+          All posts
+        </Link>
+        {/*
+          // TODO: no reason to have breadcrumbs here until they're more consistent across /posts and /programs
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link to="/posts" />}>Posts</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Post</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+        */}
         {post.cover ? (
           <div
-            className="flex items-center w-full rounded-lg overflow-hidden"
+            className="flex items-center w-full rounded-lg overflow-hidden mt-4"
             style={{ maxHeight: `calc(var(--spacing) * ${post.cover.height || 46})` }}
           >
             <img src={post.cover.src} alt={post.cover.alt} />

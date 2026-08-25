@@ -19,8 +19,8 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
   const hydrated = useHydrated();
 
   useEffect(() => {
-    if (!hydrated) return;
-    setHackathonOver(eventInfo.hackathon.endDate.getTime() < new Date().getTime());
+    if (!hydrated || !eventInfo.hackathon.date) return;
+    setHackathonOver(eventInfo.hackathon.date.end.getTime() < new Date().getTime());
   }, [hydrated]);
 
   return (
@@ -46,11 +46,17 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
               <>has concluded. Thank you, everyone!</>
             ) : (
               <>
-                {" is on "}
-                {eventInfo.hackathon.startDate.toLocaleDateString("en-US", {
-                  dateStyle: "full",
-                })}
-                .{" "}
+                {eventInfo.hackathon.date ? (
+                  <>
+                    {" is on "}
+                    {eventInfo.hackathon.date.start.toLocaleDateString("en-US", {
+                      dateStyle: "full",
+                    })}
+                    .{" "}
+                  </>
+                ) : (
+                  " is coming soon. "
+                )}
                 <Link to="." hash="newslettercta" className="link">
                   Get notified
                 </Link>{" "}

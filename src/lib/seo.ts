@@ -34,8 +34,8 @@ export const eventSchema = ({
 }: {
   name: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date;
+  endDate?: Date;
   url: string;
   location: { name: string; address: string };
   price?: number;
@@ -45,8 +45,8 @@ export const eventSchema = ({
     "@type": "Event",
     name,
     description,
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
+    ...(startDate && { startDate: startDate.toISOString() }),
+    ...(endDate && { endDate: endDate.toISOString() }),
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
     url,

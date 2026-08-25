@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { eventInfo } from "#/lib/meta/events";
-import { ProgramsEventPage } from "./-shared";
+import { ProgramsEventPage } from "./-components";
 import { HackathonFAQ } from "#/components/elements/HackathonFAQ";
 import { MakeCarousel } from "#/components/elements/MakeCarousel.tsx";
 import { cn } from "#/lib/utils";
@@ -23,8 +23,8 @@ export const Route = createFileRoute("/programs/hackathon")({
       eventSchema({
         name: eventInfo[eventId].name,
         description: eventInfo[eventId].description,
-        startDate: eventInfo[eventId].startDate,
-        endDate: eventInfo[eventId].endDate,
+        startDate: eventInfo[eventId].date?.start,
+        endDate: eventInfo[eventId].date?.end,
         url: "https://hackgwinnett.org/programs/hackathon",
         location: eventInfo[eventId].location,
         price: eventInfo[eventId].price || 0,

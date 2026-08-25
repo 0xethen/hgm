@@ -21,10 +21,13 @@ export interface HGEvent {
   };
   /** Registration price for the event */
   price?: number;
-  /** The start date & time of the event */
-  startDate: Date;
-  /** The end date & time of the event */
-  endDate: Date;
+  /** The date & time range of the event, if scheduled yet */
+  date?: {
+    /** The start date & time of the event */
+    start: Date;
+    /** The end date & time of the event */
+    end: Date;
+  };
   /** The registration details of the event, if any */
   registration?: {
     /** Whether registration has closed for this event
@@ -52,11 +55,13 @@ export const eventInfo: Record<string, HGEvent> = {
       address: "970 McElvaney Ln, Lawrenceville, GA 30044",
       mapUrl: "https://maps.apple.com/place?place-id=I3551F8AF8A34BB8A", // https://goo.gl/maps/1Zt7n9s5mL2qjv3bA
     },
-    startDate: new Date("2026-10-24T09:00:00"),
-    endDate: new Date("2026-10-24T17:00:00"),
+    // date: {
+    //   start: new Date("2026-10-24T09:00:00"),
+    //   end: new Date("2026-10-24T17:00:00"),
+    // },
     registration: {
       url: "/go/register",
-      closed: true,
+      closed: false,
     },
   },
   hackfest: {
@@ -71,7 +76,9 @@ export const eventInfo: Record<string, HGEvent> = {
       address: "2136 Old Norcross Rd, Lawrenceville, GA 30044",
       mapUrl: "https://maps.apple.com/place?place-id=I992A6F0C1A2001BD", // https://goo.gl/maps/1Zt7n9s5mL2qjv3bA
     },
-    startDate: new Date("2026-03-24T09:00:00"),
-    endDate: new Date("2026-03-24T17:00:00"),
+    date: {
+      start: new Date("2026-03-24T09:00:00"),
+      end: new Date("2026-03-24T17:00:00"),
+    },
   },
 };

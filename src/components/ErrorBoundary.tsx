@@ -1,8 +1,11 @@
 import { type ErrorComponentProps, redirect, useRouter } from "@tanstack/react-router";
 import { cn } from "#/lib/utils";
 
-const APP_NAME = `HG-marketing-${import.meta.env.DEV ? "development" : "prod"}`; // replaces "infinite"
-const VERBOSE_IN_PROD = false;
+const APP_NAME = `0xethen/hgm@${import.meta.env.DEV ? "development" : "prod"}`; // replaces "infinite"
+const DEFAULT_STOPCODE = "ILLEGAL_OPERATION_EXCEPTION"; // usually when an update to the server breaks the client, triggering reload
+
+const VERBOSE_IN_PRODUCTION = false;
+const VERBOSE_MODE = VERBOSE_IN_PRODUCTION || import.meta.env.DEV;
 
 export function ErrorBoundary(props: ErrorComponentProps) {
   const router = useRouter();
@@ -93,15 +96,14 @@ export function ErrorBoundary(props: ErrorComponentProps) {
         >
           Retry
         </button>
-        {VERBOSE_IN_PROD ||
-          (import.meta.env.DEV && (
-            <>
-              <span>{" • "}</span>
-              <button onClick={showDetails} className="hover:underline active:text-white/50">
-                Details...
-              </button>
-            </>
-          ))}
+        {VERBOSE_MODE && (
+          <>
+            <span>{" • "}</span>
+            <button onClick={showDetails} className="hover:underline active:text-white/50">
+              Details...
+            </button>
+          </>
+        )}
         <br />
         <br />
       </p>
@@ -123,8 +125,7 @@ export function ErrorBoundary(props: ErrorComponentProps) {
           <br />
           if you call a support person, give them this info:
           <br />
-          Stop code:{" "}
-          {VERBOSE_IN_PROD || import.meta.env.DEV ? stopCode : "ILLEGAL_OPERATION_EXCEPTION"}
+          Stop code: {VERBOSE_MODE ? stopCode : DEFAULT_STOPCODE}
           <br></br>
         </p>
       </div>

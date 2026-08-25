@@ -49,9 +49,12 @@ export function ProgramsEventPage({
   const formatICSDate = (date: Date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
   const getCalendarLink = (event: HGEvent, type: "apple" | "google" | "outlook") => {
+    if (!event.date) return undefined;
+    const { start, end } = event.date;
+
     const buildICS = () => {
       const uid =
-        `${event.shortName || event.name}-${event.startDate.toISOString()}@events.hackgwinnett.org`.replace(
+        `${event.shortName || event.name}-${start.toISOString()}@events.hackgwinnett.org`.replace(
           /\s+/g,
           "-",
         );
@@ -65,8 +68,8 @@ export function ProgramsEventPage({
         "BEGIN:VEVENT",
         `UID:${uid}`,
         `DTSTAMP:${formatICSDate(new Date())}`,
-        `DTSTART:${formatICSDate(event.startDate)}`,
-        `DTEND:${formatICSDate(event.endDate)}`,
+        `DTSTART:${formatICSDate(start)}`,
+        `DTEND:${formatICSDate(end)}`,
         `SUMMARY:${escapeICS(event.name)}`,
         `DESCRIPTION:${escapeICS(event.description)}`,
         `LOCATION:${escapeICS(`${event.location.name}, ${event.location.address}`)}`,
@@ -76,23 +79,23 @@ export function ProgramsEventPage({
     };
 
     if (type === "google") {
-      const start = event.startDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
-      const end = event.endDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
+      const startStr = start.toISOString().replace(/-|:|\.\d\d\d/g, "");
+      const endStr = end.toISOString().replace(/-|:|\.\d\d\d/g, "");
       const details = encodeURIComponent(event.description);
       const location = encodeURIComponent(`${event.location.name}, ${event.location.address}`);
       const text = encodeURIComponent(event.name);
 
-      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&details=${details}&location=${location}`;
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${startStr}/${endStr}&details=${details}&location=${location}`;
     }
 
     if (type === "outlook") {
-      const start = encodeURIComponent(event.startDate.toISOString());
-      const end = encodeURIComponent(event.endDate.toISOString());
+      const startStr = encodeURIComponent(start.toISOString());
+      const endStr = encodeURIComponent(end.toISOString());
       const subject = encodeURIComponent(event.name);
       const body = encodeURIComponent(event.description);
       const location = encodeURIComponent(`${event.location.name}, ${event.location.address}`);
 
-      return `https://outlook.cloud.microsoft/calendar/0/deeplink/compose?subject=${subject}&body=${body}&startdt=${start}&enddt=${end}&location=${location}`;
+      return `https://outlook.cloud.microsoft/calendar/0/deeplink/compose?subject=${subject}&body=${body}&startdt=${startStr}&enddt=${endStr}&location=${location}`;
     }
 
     const blob = new Blob([buildICS()], { type: "text/calendar;charset=utf-8" });
@@ -103,6 +106,7 @@ export function ProgramsEventPage({
     if (!hydrated) return;
 
     const url = getCalendarLink(event, type);
+    if (!url) return;
     const filename = `${event.shortName || event.name}.ics`;
 
     if (type === "apple") {
@@ -124,6 +128,7 @@ export function ProgramsEventPage({
     if (!hydrated) return;
 
     const url = getCalendarLink(event, type);
+    if (!url) return;
     copy(url);
   };
 
@@ -147,6 +152,7 @@ export function ProgramsEventPage({
               variant="secondary"
               size="lg"
               render={<Link to={event.registration.url} className="link icon-link" />}
+              nativeButton={false}
             >
               Register Now
             </Button>
@@ -170,98 +176,100 @@ export function ProgramsEventPage({
                 </ItemDescription>
               </ItemContent>
             </Item>
-            <Item variant="muted">
-              <ItemMedia variant="icon">
-                <RiTimeLine />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>
-                  {event.startDate.toLocaleDateString("en-US", {
-                    weekday: "long",
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                    hour: "numeric",
-                    minute: "2-digit",
-                  })}
-                </ItemTitle>
-                <ItemDescription className="text-xs">
-                  <Popover>
-                    <PopoverTrigger className="alt-link">Add to calendar</PopoverTrigger>
-                    <PopoverContent>
-                      <ContextMenu>
-                        <ContextMenuTrigger
-                          render={
-                            <Button
-                              variant="outline"
-                              size="lg"
-                              onClick={() => addToCalendar(event, "apple")}
-                            />
-                          }
-                        >
-                          <RiAppleFill /> Apple
-                          <span className="sr-only">Apple Calendar</span>
-                        </ContextMenuTrigger>
-                        <ContextMenuContent className="w-48">
-                          <ContextMenuGroup>
-                            <ContextMenuItem
-                              onSelect={() => copyToCalendar(event, "apple")}
-                              disabled
-                            >
-                              Copy link
-                            </ContextMenuItem>
-                          </ContextMenuGroup>
-                        </ContextMenuContent>
-                      </ContextMenu>
+            {event.date && (
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <RiTimeLine />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>
+                    {event.date.start.toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                    })}
+                  </ItemTitle>
+                  <ItemDescription className="text-xs">
+                    <Popover>
+                      <PopoverTrigger className="alt-link">Add to calendar</PopoverTrigger>
+                      <PopoverContent>
+                        <ContextMenu>
+                          <ContextMenuTrigger
+                            render={
+                              <Button
+                                variant="outline"
+                                size="lg"
+                                onClick={() => addToCalendar(event, "apple")}
+                              />
+                            }
+                          >
+                            <RiAppleFill /> Apple
+                            <span className="sr-only">Apple Calendar</span>
+                          </ContextMenuTrigger>
+                          <ContextMenuContent className="w-48">
+                            <ContextMenuGroup>
+                              <ContextMenuItem
+                                onSelect={() => copyToCalendar(event, "apple")}
+                                disabled
+                              >
+                                Copy link
+                              </ContextMenuItem>
+                            </ContextMenuGroup>
+                          </ContextMenuContent>
+                        </ContextMenu>
 
-                      <ContextMenu>
-                        <ContextMenuTrigger
-                          render={
-                            <Button
-                              variant="outline"
-                              size="lg"
-                              onClick={() => addToCalendar(event, "google")}
-                            />
-                          }
-                        >
-                          <RiGoogleFill /> Google
-                          <span className="sr-only">Google Calendar</span>
-                        </ContextMenuTrigger>
-                        <ContextMenuContent className="w-48">
-                          <ContextMenuGroup>
-                            <ContextMenuItem onSelect={() => copyToCalendar(event, "google")}>
-                              Copy link
-                            </ContextMenuItem>
-                          </ContextMenuGroup>
-                        </ContextMenuContent>
-                      </ContextMenu>
+                        <ContextMenu>
+                          <ContextMenuTrigger
+                            render={
+                              <Button
+                                variant="outline"
+                                size="lg"
+                                onClick={() => addToCalendar(event, "google")}
+                              />
+                            }
+                          >
+                            <RiGoogleFill /> Google
+                            <span className="sr-only">Google Calendar</span>
+                          </ContextMenuTrigger>
+                          <ContextMenuContent className="w-48">
+                            <ContextMenuGroup>
+                              <ContextMenuItem onSelect={() => copyToCalendar(event, "google")}>
+                                Copy link
+                              </ContextMenuItem>
+                            </ContextMenuGroup>
+                          </ContextMenuContent>
+                        </ContextMenu>
 
-                      <ContextMenu>
-                        <ContextMenuTrigger
-                          render={
-                            <Button
-                              variant="outline"
-                              size="lg"
-                              onClick={() => addToCalendar(event, "outlook")}
-                            />
-                          }
-                        >
-                          <RiMicrosoftFill /> Outlook
-                          <span className="sr-only">Microsoft Outlook</span>
-                        </ContextMenuTrigger>
-                        <ContextMenuContent className="w-48">
-                          <ContextMenuGroup>
-                            <ContextMenuItem onSelect={() => copyToCalendar(event, "outlook")}>
-                              Copy link
-                            </ContextMenuItem>
-                          </ContextMenuGroup>
-                        </ContextMenuContent>
-                      </ContextMenu>
-                    </PopoverContent>
-                  </Popover>
-                </ItemDescription>
-              </ItemContent>
-            </Item>
+                        <ContextMenu>
+                          <ContextMenuTrigger
+                            render={
+                              <Button
+                                variant="outline"
+                                size="lg"
+                                onClick={() => addToCalendar(event, "outlook")}
+                              />
+                            }
+                          >
+                            <RiMicrosoftFill /> Outlook
+                            <span className="sr-only">Microsoft Outlook</span>
+                          </ContextMenuTrigger>
+                          <ContextMenuContent className="w-48">
+                            <ContextMenuGroup>
+                              <ContextMenuItem onSelect={() => copyToCalendar(event, "outlook")}>
+                                Copy link
+                              </ContextMenuItem>
+                            </ContextMenuGroup>
+                          </ContextMenuContent>
+                        </ContextMenu>
+                      </PopoverContent>
+                    </Popover>
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
+            )}
           </ItemGroup>
           <div className="flex flex-col gap-2">
             {additions?.left?.start}
