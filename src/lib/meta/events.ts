@@ -7,7 +7,6 @@ export interface HGEvent {
   description: string;
   /** The `cms/pages/content` pathname for the .md file about this event */
   content?: string;
-  // details?: string; // removed in place of content
   /** The location details for the event */
   location: {
     /** The location name (Gwinnett School of Math, Science, and Tech) */
@@ -47,18 +46,16 @@ export const eventInfo: Record<string, HGEvent> = {
     name: "Hackathon 6.0",
     shortName: "HG6",
     description: "A free, one-day hackathon for middle and high school students.",
-    // details:
-    //   "Hackathon 6.0 is a one-day hackathon for middle and high school students. Students will work in teams to create projects and compete for prizes. Workshops for total beginners or seasoned pros are available throughout the day (because we can all learn something new!). Sign up NOW!",
     location: {
       name: "Gwinnett School of Mathematics, Science, and Technology",
       shortName: "GSMST",
       address: "970 McElvaney Ln, Lawrenceville, GA 30044",
       mapUrl: "https://maps.apple.com/place?place-id=I3551F8AF8A34BB8A", // https://goo.gl/maps/1Zt7n9s5mL2qjv3bA
     },
-    // date: {
-    //   start: new Date("2026-10-24T09:00:00"),
-    //   end: new Date("2026-10-24T17:00:00"),
-    // },
+    date: {
+      start: new Date("2026-10-31T09:00:00"),
+      end: new Date("2026-10-31T17:00:00"),
+    },
     registration: {
       url: "/go/register",
       closed: true,
@@ -69,8 +66,6 @@ export const eventInfo: Record<string, HGEvent> = {
     shortName: "HF4",
     description: "A one-day STEM event for primary students.",
     content: "hackfest",
-    // details:
-    //   "HackFest IV is a one-day STEM event for primary students. Students will learn about technology and coding through hands-on activities and workshops.",
     location: {
       name: "Baggett Elementary School",
       address: "2136 Old Norcross Rd, Lawrenceville, GA 30044",

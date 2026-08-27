@@ -25,7 +25,7 @@ For reference, here's [the old website](https://hackgwinnett.github.io/www-archi
 
 - reorganized our content to have a more intuitive structure
 - rewrote lots of content to better reflect our mission
-- introduced a better [posts](/posts) (previously our blog) system
+- introduced a better [posts](/posts) system (previously our blog)
 - hand-crafted and responsive* design (naturally, we're starting to hate CSS)
 - lots of accessibility improvements*
 - a brand refresh
