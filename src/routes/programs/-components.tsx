@@ -24,10 +24,10 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "#/components/ui/context-menu";
-
-import type { HGEvent } from "#/lib/meta/events";
 import { useHydrated } from "@tanstack/react-router";
 import { copy } from "#/lib/utils";
+
+import type { HGEvent } from "#/lib/meta/events";
 
 export function ProgramsEventPage({
   event,
@@ -50,7 +50,8 @@ export function ProgramsEventPage({
 
   const getCalendarLink = (event: HGEvent, type: "apple" | "google" | "outlook") => {
     if (!event.date) return undefined;
-    const { start, end } = event.date;
+    const { start, end: rawEnd } = event.date;
+    const end = rawEnd || new Date(start.getTime() + 60 * 60 * 24 * 1000); // default to 1 day later if no end date is provided
 
     const buildICS = () => {
       const uid =
@@ -90,6 +91,7 @@ export function ProgramsEventPage({
 
     if (type === "outlook") {
       const startStr = encodeURIComponent(start.toISOString());
+      // end date or all day
       const endStr = encodeURIComponent(end.toISOString());
       const subject = encodeURIComponent(event.name);
       const body = encodeURIComponent(event.description);
@@ -130,6 +132,46 @@ export function ProgramsEventPage({
     const url = getCalendarLink(event, type);
     if (!url) return;
     copy(url);
+  };
+
+  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  const shortDateFormatter = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  const isValidDate = (d: Date): boolean => d instanceof Date && !Number.isNaN(d.getTime());
+
+  const isSameDay = (a: Date, b: Date): boolean =>
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate();
+
+  // TODO: MAJOR: URGENT: ACK! FIX THIS RANGE WHICH IS BROKEN ON DIFF DAYS!!!
+  const formatEventDate = (start: Date, end?: Date): string => {
+    if (!isValidDate(start)) return "Invalid date";
+    if (!end || !isValidDate(end)) return dateFormatter.format(start);
+
+    const [rangeStart, rangeEnd] = start <= end ? [start, end] : [end, start];
+    if (rangeStart.getTime() === rangeEnd.getTime()) return dateFormatter.format(rangeStart);
+
+    try {
+      if (isSameDay(rangeStart, rangeEnd)) return dateFormatter.formatRange(rangeStart, rangeEnd);
+      return shortDateFormatter.formatRange(rangeStart, rangeEnd);
+    } catch {
+      return `${shortDateFormatter.format(rangeStart)} – ${shortDateFormatter.format(rangeEnd)}`;
+    }
   };
 
   return (
@@ -182,16 +224,7 @@ export function ProgramsEventPage({
                   <RiTimeLine />
                 </ItemMedia>
                 <ItemContent>
-                  <ItemTitle>
-                    {event.date.start.toLocaleDateString("en-US", {
-                      weekday: "long",
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "2-digit",
-                    })}
-                  </ItemTitle>
+                  <ItemTitle>{formatEventDate(event.date.start, event.date.end)}</ItemTitle>
                   <ItemDescription className="text-xs">
                     <Popover>
                       <PopoverTrigger className="alt-link">Add to calendar</PopoverTrigger>

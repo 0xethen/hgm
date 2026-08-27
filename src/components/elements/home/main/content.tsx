@@ -2,6 +2,7 @@ import { HackathonFAQ } from "#/components/elements/HackathonFAQ";
 import { NewsletterCTA } from "#/components/elements/NewsletterCTA";
 import { Link } from "@tanstack/react-router";
 import { SponsorSection } from "./sponsors.tsx";
+import { brand } from "#/lib/meta/brand";
 
 export function HomepageMainContent() {
   return (
@@ -11,8 +12,8 @@ export function HomepageMainContent() {
         <div className="space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <h1 className="text-2xl sm:text-3xl md:text-4xl">Hack-a-What?!</h1>
           <p>
-            HackGwinnett is Metro Atlanta's premier high school computer science organization.
-            HackGwinnett's signature event is its{" "}
+            {brand.name} is Metro Atlanta's premier high school computer science organization.
+            {brand.name}'s signature event is its{" "}
             <Link to="/programs/hackathon" className="link">
               annual hackathon
             </Link>
@@ -22,7 +23,7 @@ export function HomepageMainContent() {
           <p>
             During our flagship hackathon, students (solo or in groups up to four) gather to create
             innovative solutions to real-world problems within a short time constraint. Be on the
-            lookout for HackGwinnett's fifth hackathon on October 25th to build awesome projects,
+            lookout for {brand.name}'s fifth hackathon on October 25th to build awesome projects,
             participate in enriching workshops, and make new friends!
           </p>
         </div>

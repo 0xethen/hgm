@@ -24,6 +24,7 @@ import { copy, getGWEmailUrl, popup } from "#/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "#/components/ui/tooltip";
 import { useBreakpoint } from "#/hooks/browser.ts";
 import { useState } from "react";
+import { brand } from "#/lib/meta/brand";
 
 const CONTACT_EMAIL = "hackgwinnett@gmail.com"; // @hackgwinnett.org soon??? 👀
 
@@ -132,7 +133,7 @@ export function ContactForm() {
       <Card size={!md ? "sm" : "default"} className="max-w-full lg:max-w-md">
         <CardHeader>
           <CardTitle>Contact Us</CardTitle>
-          <CardDescription>Get in touch with the HackGwinnett team via email.</CardDescription>
+          <CardDescription>Get in touch with the {brand.name} team via email.</CardDescription>
         </CardHeader>
 
         <CardContent>

@@ -9,6 +9,7 @@ import { Separator } from "#/components/ui/separator";
 import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
 import { eventSchema } from "#/lib/seo";
+import { brand } from "#/lib/meta/brand.ts";
 
 const eventId = "hackathon";
 
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/programs/hackathon")({
         description: eventInfo[eventId].description,
         startDate: eventInfo[eventId].date?.start,
         endDate: eventInfo[eventId].date?.end,
-        url: "https://hackgwinnett.org/programs/hackathon",
+        url: `${window.location.protocol || "https:"}//${window.location.host || brand.domain}/programs/hackathon`,
         location: eventInfo[eventId].location,
         price: eventInfo[eventId].price || 0,
       }),

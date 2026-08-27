@@ -25,7 +25,7 @@ export interface HGEvent {
     /** The start date & time of the event */
     start: Date;
     /** The end date & time of the event */
-    end: Date;
+    end?: Date;
   };
   /** The registration details of the event, if any */
   registration?: {

@@ -34,7 +34,7 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
   {
     value: "what",
     trigger: "What is a hackathon?",
-    content: `A hackathon is a competition where participants come together during a short period of time${eventInfo.hackathon.date ? ` (in this case, ${Math.floor((eventInfo.hackathon.date.end.getTime() - eventInfo.hackathon.date.start.getTime()) / (1000 * 60 * 60))} hours)` : ""} to develop a project related to the theme of the event. It's a fun and competitive way to practice computer science, software development, and problem-solving!`,
+    content: `A hackathon is a competition where participants come together during a short period of time${eventInfo.hackathon.date?.end ? ` (in this case, ${Math.floor((eventInfo.hackathon.date.end.getTime() - eventInfo.hackathon.date.start.getTime()) / (1000 * 60 * 60))} hours)` : ""} to develop a project related to the theme of the event. It's a fun and competitive way to practice computer science, software development, and problem-solving!`,
   },
   {
     value: "who",
@@ -91,7 +91,7 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
     value: "schedule",
     trigger: "What's the schedule?",
     content: eventInfo.hackathon.date
-      ? `${eventInfo.hackathon.name} is on ${eventInfo.hackathon.date.start.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })} from ${eventInfo.hackathon.date.start.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} to ${eventInfo.hackathon.date.end.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}, including opening ceremony, workshops, work time, project submissions, and an awards ceremony. When you arrive at ${eventInfo.hackathon.location.shortName}, you'll receive a pocket schedule with details on each segment of the day!`
+      ? `${eventInfo.hackathon.name} is on ${eventInfo.hackathon.date.start.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })} from ${eventInfo.hackathon.date.start.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}${eventInfo.hackathon.date.end && ` to ${eventInfo.hackathon.date.end.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`}, including opening ceremony, workshops, work time, project submissions, and an awards ceremony. When you arrive at ${eventInfo.hackathon.location.shortName}, you'll receive a pocket schedule with details on each segment of the day!`
       : `The schedule for ${eventInfo.hackathon.name} hasn't been announced yet, but it will include an opening ceremony, workshops, work time, project submissions, and an awards ceremony. Stay tuned for details!`,
   },
   {

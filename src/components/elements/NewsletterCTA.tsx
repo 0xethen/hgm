@@ -7,6 +7,7 @@ import { Button } from "#/components/ui/button";
 import { cn } from "#/lib/utils";
 import { useBreakpoint } from "#/hooks/browser.ts";
 import { useNavigate } from "@tanstack/react-router";
+import { brand } from "#/lib/meta/brand";
 
 const formSchema = z.object({
   email: z.email("Enter a valid email address"),
@@ -157,7 +158,7 @@ export function NewsletterCTA({
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 <FieldDescription className="text-xs md:text-sm">
-                  By signing up for HackGwinnett mail, you agree to receive our updates and
+                  By signing up for {brand.name} mail, you agree to receive our updates and
                   communications. we won't pester you with constant emails (we hate spam too!)
                 </FieldDescription>
               </Field>

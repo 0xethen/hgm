@@ -1,4 +1,5 @@
 import { useMatches, type StaticDataRouteOption } from "@tanstack/react-router";
+import { brand } from "./meta/brand";
 
 type Matches = ReturnType<typeof useMatches>;
 type Match = Matches[number];
@@ -36,7 +37,7 @@ export function getTitle(
   matches: readonly Match[],
   separator: string = " / ",
   prefix: string | readonly string[] = [],
-  suffix: string = "HackGwinnett",
+  suffix: string = brand.name,
 ): string {
   const last = matches.at(-1);
   const fallback = `Page / ${suffix}`;

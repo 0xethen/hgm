@@ -4,7 +4,7 @@ import { cn } from "#/lib/utils";
 const APP_NAME = `0xethen/hgm@${import.meta.env.DEV ? "development" : "prod"}`; // replaces "infinite"
 const DEFAULT_STOPCODE = "ILLEGAL_OPERATION_EXCEPTION"; // usually when an update to the server breaks the client, triggering reload
 
-const VERBOSE_IN_PRODUCTION = false;
+const VERBOSE_IN_PRODUCTION = true; // set to false to hide error details in production
 const VERBOSE_MODE = VERBOSE_IN_PRODUCTION || import.meta.env.DEV;
 
 export function ErrorBoundary(props: ErrorComponentProps) {

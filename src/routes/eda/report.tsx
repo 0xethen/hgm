@@ -11,6 +11,7 @@ import { z } from "zod/mini";
 import { Button } from "#/components/ui/button";
 import { Separator } from "#/components/ui/separator";
 import { RiFlag2Fill } from "@remixicon/react";
+import { brand } from "#/lib/meta/brand";
 
 const templates = {
   nocontent: {
@@ -89,7 +90,7 @@ function RouteComponent() {
       </div>
       <Separator />
       <p className="text-muted-foreground text-xs">
-        We'll ask for your email, but HackGwinnett will only contact you if you've previously
+        We'll ask for your email, but {brand.name} will only contact you if you've previously
         allowed us or you gave us confirmation in the form you're about to submit. We do this to
         combat spam from emails with a history of malicious/false reports {":)"}
       </p>

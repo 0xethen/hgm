@@ -19,7 +19,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
   const hydrated = useHydrated();
 
   useEffect(() => {
-    if (!hydrated || !eventInfo.hackathon.date) return;
+    if (!hydrated || !eventInfo.hackathon.date?.end) return;
     setHackathonOver(eventInfo.hackathon.date.end.getTime() < new Date().getTime());
   }, [hydrated]);
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useHydrated } from "@tanstack/react-router";
 import { cn } from "#/lib/utils";
+import { brand } from "#/lib/meta/brand";
 
 const FALLBACK_COMMIT_SHA = "dev";
 
@@ -18,7 +19,7 @@ export function Footer({ link }: { link?: React.ReactNode }) {
     <footer className="bg-hg-black text-white p-4 md:p-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-2">
         <span className="text-sm text-white/50">
-          &copy; {date?.getFullYear() || "2026"} HackGwinnett. All rights reserved. (
+          &copy; {date?.getFullYear() || "2026"} {brand.name}. All rights reserved. (
           <Link
             to={"https://github.com/hackgwinnett/www" as string}
             target="_blank"
