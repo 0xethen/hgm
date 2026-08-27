@@ -15,7 +15,7 @@ Hello, world! Ethen here :O
 
 Welcome to the new and improved HackGwinnett website! We've been working hard to bring you a better (and prettier) experience on the HackGwinnett marketing site, and I, for one, am excited to share it with you!
 
-Of course, hackgwinnett.org is [still open-source](https://github.com/0xethen/hgm)--what kind of CS organization would we be otherwise? This means you (yes, you!) can read and/or ~~steal~~ borrow components from our site on to your awesome debut to the web! Or, if you have an addition/fix you'd like to make, you can submit a [pull request](https://github.com/0xethen/hgm/pulls).
+Of course, HackGwinnett's website is [still open-source](https://github.com/0xethen/hgm)—what kind of CS organization would we be otherwise? This means you (yes, you!) can read and/or ~~steal~~ borrow components from our site on to your awesome debut to the web! Or, if you have an addition/fix you'd like to make, you can submit a [pull request](https://github.com/0xethen/hgm/pulls).
 
 For reference, here's [the old website](https://hackgwinnett.github.io/www-archive):
 
@@ -30,7 +30,7 @@ For reference, here's [the old website](https://hackgwinnett.github.io/www-archi
 - lots of accessibility improvements*
 - a brand refresh
 
-And a lot more is on the way! If you have feedback, DM us on [Instagram](/go/instagram) or [submit a report](/feedback). If you're a real smart cookie, you can even submit a [PR](https://github.com/0xethen/hgm/pulls)!
+And a lot more is on the way! If you have feedback, DM us on [Instagram](/go/instagram) or [submit a ticket](/feedback). If you're a real smart cookie, you can even submit a [PR](https://github.com/0xethen/hgm/pulls)!
 
 Stay inventive,
 ![Ethen's signature](/assets/posts/signatures/ethen-smiley.svg =150x80)

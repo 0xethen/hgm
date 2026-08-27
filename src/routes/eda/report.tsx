@@ -51,7 +51,7 @@ function RouteComponent() {
   const [date, setDate] = useState<string>();
 
   const template = templateId ? templates[templateId] : undefined;
-  const link = `https://docs.google.com/forms/d/e/1FAIpQLSd8ngPGYLdc5gZicMCwm2fZN0bkOqZzPcHKVwFhgzchuYpGkw/viewform?pli=1&usp=pp_url&entry.1231647937=HG+Marketing+(hackgwinnett.org)${date && `&entry.2078293770=${date}`}${templateId && `&entry.1830352709=${template?.description}`}${`&entry.1501072006=${formLineDivider}%0Aeda-${templateId || "generic"}:[${code || "none"}], using template ${template ? `"${template.title}"` : "(no template)"}, origin: ${origin || "(no origin)"}`}%0A${formLineDivider}%0A`;
+  const link = `https://docs.google.com/forms/d/e/1FAIpQLSd8ngPGYLdc5gZicMCwm2fZN0bkOqZzPcHKVwFhgzchuYpGkw/viewform?entry.1231647937=HG+Marketing+(hackgwinnett.org)${date && `&entry.2078293770=${date}`}${templateId && `&entry.1830352709=${template?.description}`}${`&entry.1501072006=${formLineDivider}%0Aeda-${templateId || "generic"}:[${code || "none"}], using template ${template ? `"${template.title}"` : "(no template)"}, origin: ${origin || "(no origin)"}`}%0A${formLineDivider}%0A`;
 
   const hydrated = useHydrated();
 

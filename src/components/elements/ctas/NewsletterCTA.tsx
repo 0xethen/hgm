@@ -159,7 +159,7 @@ export function NewsletterCTA({
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 <FieldDescription className="text-xs md:text-sm">
                   By signing up for {brand.name} mail, you agree to receive our updates and
-                  communications. we won't pester you with constant emails (we hate spam too!)
+                  communications. We won't pester you with constant emails (we hate spam too!)
                 </FieldDescription>
               </Field>
             );
