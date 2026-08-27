@@ -118,8 +118,8 @@ export const seo = ({
     { name: "keywords", content: keywords },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
-    { name: "twitter:creator", content: "@hackgwinnett" }, // todo: get a twitter handle
-    { name: "twitter:site", content: "@hackgwinnett" }, // todo: get a twitter handle
+    { name: "twitter:creator", content: "@hackgwinnettATL" }, // we have a twitter?!
+    { name: "twitter:site", content: "@hackgwinnettATL" },
     { name: "og:type", content: "website" },
     { name: "og:title", content: title },
     { name: "og:description", content: description },
