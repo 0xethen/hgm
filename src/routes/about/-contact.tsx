@@ -202,6 +202,7 @@ export function ContactForm() {
                       aria-invalid={isInvalid}
                     >
                       <SelectTrigger id={field.name}>
+                        {/* TODO: selectvalue shows key/id instead of name */}
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent>

@@ -1,16 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { eventInfo } from "#/lib/meta/events";
+import { events } from "#/lib/meta/events";
 import { ProgramsEventPage } from "./-components";
 import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
 import { eventSchema } from "#/lib/seo";
+import { buildUrl } from "#/lib/utils.ts";
 
 // TODO: fill this page out
 
 const eventId = "hackfest";
 
 export const Route = createFileRoute("/programs/hackfest")({
-  staticData: { title: eventInfo[eventId].name },
+  staticData: { title: events[eventId].name },
   loader: async () => {
     const content = pages.find((p) => eventId === p._meta.path.slugify());
     return content || { content: "" };
@@ -18,13 +19,13 @@ export const Route = createFileRoute("/programs/hackfest")({
   head: () => ({
     meta: [
       eventSchema({
-        name: eventInfo[eventId].name,
-        description: eventInfo[eventId].description,
-        startDate: eventInfo[eventId].date?.start,
-        endDate: eventInfo[eventId].date?.end,
-        url: "https://hackgwinnett.org/programs/hackfest",
-        location: eventInfo[eventId].location,
-        price: eventInfo[eventId].price || 0,
+        name: events[eventId].name,
+        description: events[eventId].description,
+        startDate: events[eventId].date?.start,
+        endDate: events[eventId].date?.end,
+        url: buildUrl("/programs/hackfest"),
+        location: events[eventId].location,
+        price: events[eventId].price || 0,
       }),
     ],
   }),
@@ -42,8 +43,8 @@ function RouteComponent() {
 
   return (
     <ProgramsEventPage
-      event={eventInfo.hackfest}
-      content={content || eventInfo[eventId].description}
+      event={events.hackfest}
+      content={content || events[eventId].description}
       additions={{
         left: {
           end: (

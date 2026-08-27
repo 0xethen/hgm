@@ -1,3 +1,5 @@
+type EventKey = "hackathon" | "hackfest"; // TODO: is "EventKey" necessary for type-safety?
+
 export interface HGEvent {
   /** The name of the event */
   name: string;
@@ -41,7 +43,8 @@ export interface HGEvent {
 }
 
 // todo: better descriptions?
-export const eventInfo: Record<string, HGEvent> = {
+export const events: Record<EventKey, HGEvent> = {
+  // TODO: is "EventKey" necessary for type-safety?
   hackathon: {
     name: "Hackathon 6.0",
     shortName: "HG6",

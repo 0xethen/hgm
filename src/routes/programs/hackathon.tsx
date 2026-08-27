@@ -1,20 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { eventInfo } from "#/lib/meta/events";
+import { events } from "#/lib/meta/events";
 import { ProgramsEventPage } from "./-components";
-import { HackathonFAQ } from "#/components/elements/HackathonFAQ";
-import { MakeCarousel } from "#/components/elements/MakeCarousel.tsx";
-import { cn } from "#/lib/utils";
+import { HackathonFAQ } from "#/components/elements/ctas/HackathonFAQ.tsx";
+import { MakeCarousel } from "#/components/elements/misc/MakeCarousel.tsx";
+import { buildUrl, cn } from "#/lib/utils.ts";
 import { RiLink } from "@remixicon/react";
 import { Separator } from "#/components/ui/separator";
 import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
 import { eventSchema } from "#/lib/seo";
-import { brand } from "#/lib/meta/brand.ts";
 
 const eventId = "hackathon";
 
 export const Route = createFileRoute("/programs/hackathon")({
-  staticData: { title: eventInfo[eventId].name },
+  staticData: { title: events[eventId].name },
   loader: async () => {
     const content = pages.find((p) => eventId === p._meta.path.slugify());
     return content || { content: "" };
@@ -22,13 +21,13 @@ export const Route = createFileRoute("/programs/hackathon")({
   head: () => ({
     meta: [
       eventSchema({
-        name: eventInfo[eventId].name,
-        description: eventInfo[eventId].description,
-        startDate: eventInfo[eventId].date?.start,
-        endDate: eventInfo[eventId].date?.end,
-        url: `${window.location.protocol || "https:"}//${window.location.host || brand.domain}/programs/hackathon`,
-        location: eventInfo[eventId].location,
-        price: eventInfo[eventId].price || 0,
+        name: events[eventId].name,
+        description: events[eventId].description,
+        startDate: events[eventId].date?.start,
+        endDate: events[eventId].date?.end,
+        url: buildUrl("/programs/hackathon"),
+        location: events[eventId].location,
+        price: events[eventId].price || 0,
       }),
     ],
   }),
@@ -84,8 +83,8 @@ function RouteComponent() {
 
   return (
     <ProgramsEventPage
-      event={eventInfo[eventId]}
-      content={content || eventInfo[eventId].description}
+      event={events[eventId]}
+      content={content || events[eventId].description}
       additions={{
         left: {
           // /programs/hackathon#workshops brings you to this description

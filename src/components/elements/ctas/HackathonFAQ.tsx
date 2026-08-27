@@ -5,8 +5,23 @@ import {
   AccordionTrigger,
 } from "#/components/ui/accordion";
 import { Link } from "@tanstack/react-router";
-import { eventInfo } from "#/lib/meta/events";
+import { events } from "#/lib/meta/events";
 import { cn } from "#/lib/utils";
+
+function SignupLink({ children }: { children: React.ReactNode }) {
+  if (events.hackathon.registration?.closed) return children;
+
+  return (
+    <Link
+      to="/go/$slug"
+      params={{ slug: "register" }}
+      search={{ ref: "faq-cost" }}
+      className="link"
+    >
+      {children}
+    </Link>
+  );
+}
 
 export const faq: { value: string; trigger: string; content: string | React.ReactNode }[] = [
   {
@@ -14,15 +29,7 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
     trigger: "How can I participate?",
     content: (
       <>
-        To attend {eventInfo.hackathon.name}, simply{" "}
-        <Link
-          to="/go/$slug"
-          params={{ slug: "register" }}
-          search={{ ref: "faq-cta" }}
-          className="link"
-        >
-          register for the event
-        </Link>{" "}
+        To attend {events.hackathon.name}, simply <SignupLink>register for the event</SignupLink>{" "}
         and show up on the day of! If you're interested in volunteering or sponsoring, please{" "}
         <Link to="/contact" className="link">
           contact us
@@ -34,7 +41,7 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
   {
     value: "what",
     trigger: "What is a hackathon?",
-    content: `A hackathon is a competition where participants come together during a short period of time${eventInfo.hackathon.date?.end ? ` (in this case, ${Math.floor((eventInfo.hackathon.date.end.getTime() - eventInfo.hackathon.date.start.getTime()) / (1000 * 60 * 60))} hours)` : ""} to develop a project related to the theme of the event. It's a fun and competitive way to practice computer science, software development, and problem-solving!`,
+    content: `A hackathon is a competition where participants come together during a short period of time${events.hackathon.date?.end ? ` (in this case, ${Math.floor((events.hackathon.date.end.getTime() - events.hackathon.date.start.getTime()) / (1000 * 60 * 60))} hours)` : ""} to develop a project related to the theme of the event. It's a fun and competitive way to practice computer science, software development, and problem-solving!`,
   },
   {
     value: "who",
@@ -48,23 +55,14 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
     content: (
       <>
         Admission is completely free! To secure your spot before the event (and decide which
-        workshops interest you),{" "}
-        <Link
-          to="/go/$slug"
-          params={{ slug: "register" }}
-          search={{ ref: "faq-cost" }}
-          className="link"
-        >
-          sign up for the event
-        </Link>{" "}
-        now!
+        workshops interest you), <SignupLink>sign up for the event</SignupLink> now!
       </>
     ),
   },
   {
     value: "experience",
     trigger: "What if I don't know how to code?",
-    content: `That's perfectly fine! Hackathons are a great way to learn, meet new people, and gain experience. We offer beginner-friendly workshops and also cover more advanced concepts at ${eventInfo.hackathon.name} for those who want a challenge.`,
+    content: `That's perfectly fine! Hackathons are a great way to learn, meet new people, and gain experience. We offer beginner-friendly workshops and also cover more advanced concepts at ${events.hackathon.name} for those who want a challenge.`,
   },
   {
     value: "prizes",
@@ -90,15 +88,19 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
   {
     value: "schedule",
     trigger: "What's the schedule?",
-    content: eventInfo.hackathon.date
-      ? `${eventInfo.hackathon.name} is on ${eventInfo.hackathon.date.start.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })} from ${eventInfo.hackathon.date.start.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}${eventInfo.hackathon.date.end && ` to ${eventInfo.hackathon.date.end.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`}, including opening ceremony, workshops, work time, project submissions, and an awards ceremony. When you arrive at ${eventInfo.hackathon.location.shortName}, you'll receive a pocket schedule with details on each segment of the day!`
-      : `The schedule for ${eventInfo.hackathon.name} hasn't been announced yet, but it will include an opening ceremony, workshops, work time, project submissions, and an awards ceremony. Stay tuned for details!`,
+    content: events.hackathon.date
+      ? `${events.hackathon.name} is on ${events.hackathon.date.start.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })} from ${events.hackathon.date.start.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}${events.hackathon.date.end && ` to ${events.hackathon.date.end.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`}, including opening ceremony, workshops, work time, project submissions, and an awards ceremony. When you arrive at ${events.hackathon.location.shortName}, you'll receive a pocket schedule with details on each segment of the day!`
+      : `The schedule for ${events.hackathon.name} hasn't been announced yet, but it will include an opening ceremony, workshops, work time, project submissions, and an awards ceremony. Stay tuned for details!`,
   },
   {
     value: "food",
     trigger: "Will food be provided?",
-    content:
-      "Lunch and other refreshments (snacks and drinks) will be available for purchase throughout the day. You can pre-order lunch when you register.",
+    content: (
+      <>
+        Lunch and other refreshments (snacks and drinks) will be available for purchase throughout
+        the day. You can also pre-order lunch <SignupLink>during registration</SignupLink>.
+      </>
+    ),
   },
   {
     value: "items",

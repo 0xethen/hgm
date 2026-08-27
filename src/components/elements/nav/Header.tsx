@@ -19,7 +19,7 @@ import {
 } from "#/components/ui/navigation-menu";
 import { cn } from "#/lib/utils";
 import { Button } from "#/components/ui/button";
-import { eventInfo } from "#/lib/meta/events";
+import { events } from "#/lib/meta/events";
 import {
   Drawer,
   DrawerClose,
@@ -68,13 +68,13 @@ const navItems = [
       className: "w-100",
       items: [
         {
-          title: eventInfo.hackathon.name,
-          description: eventInfo.hackathon.description,
+          title: events.hackathon.name,
+          description: events.hackathon.description,
           href: "/programs/hackathon",
         },
         {
-          title: eventInfo.hackfest.name,
-          description: eventInfo.hackfest.description,
+          title: events.hackfest.name,
+          description: events.hackfest.description,
           href: "/programs/hackfest",
         },
         // {
@@ -502,7 +502,7 @@ export function Header({
                   size="lg"
                   nativeButton={false}
                 >
-                  Register for {eventInfo.hackathon.shortName}
+                  Register for {events.hackathon.shortName}
                 </Button>
                 <DrawerClose render={<Button size="sm" variant="outline" />}>
                   Close Menu

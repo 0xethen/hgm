@@ -184,7 +184,7 @@ export function ProgramsEventPage({
           </div>
           {event.registration?.closed ? (
             <Alert>
-              <AlertTitle>Registrations closed</AlertTitle>
+              <AlertTitle>Event registration is closed</AlertTitle>
               <AlertDescription>
                 Sign-ups for {event.name} are closed at this time.
               </AlertDescription>

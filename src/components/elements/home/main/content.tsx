@@ -1,5 +1,5 @@
-import { HackathonFAQ } from "#/components/elements/HackathonFAQ";
-import { NewsletterCTA } from "#/components/elements/NewsletterCTA";
+import { HackathonFAQ } from "#/components/elements/ctas/HackathonFAQ.tsx";
+import { NewsletterCTA } from "#/components/elements/ctas/NewsletterCTA.tsx";
 import { Link } from "@tanstack/react-router";
 import { SponsorSection } from "./sponsors.tsx";
 import { brand } from "#/lib/meta/brand";

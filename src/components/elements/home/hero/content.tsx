@@ -6,7 +6,7 @@ import { TextScramble } from "#/components/ui/motion-primitives/text-scramble";
 import { cn } from "#/lib/utils";
 import { RiArrowDownBoxLine, RiArrowRightDoubleLine, RiPlayFill } from "@remixicon/react";
 import { ColorBadge } from "#/components/ui/color-badge";
-import { eventInfo } from "#/lib/meta/events";
+import { events } from "#/lib/meta/events";
 import { DialogTrigger } from "#/components/ui/dialog";
 import { videoDialog, videoId } from "./video";
 import { useBreakpoint } from "#/hooks/browser.ts";
@@ -19,8 +19,8 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
   const hydrated = useHydrated();
 
   useEffect(() => {
-    if (!hydrated || !eventInfo.hackathon.date?.end) return;
-    setHackathonOver(eventInfo.hackathon.date.end.getTime() < new Date().getTime());
+    if (!hydrated || !events.hackathon.date?.end) return;
+    setHackathonOver(events.hackathon.date.end.getTime() < new Date().getTime());
   }, [hydrated]);
 
   return (
@@ -41,15 +41,15 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             organization
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-white/80">
-            {eventInfo.hackathon.name}
+            {events.hackathon.name}
             {hackathonOver ? (
               <>has concluded. Thank you, everyone!</>
             ) : (
               <>
-                {eventInfo.hackathon.date ? (
+                {events.hackathon.date ? (
                   <>
                     {" is on "}
-                    {eventInfo.hackathon.date.start.toLocaleDateString("en-US", {
+                    {events.hackathon.date.start.toLocaleDateString("en-US", {
                       dateStyle: "full",
                     })}
                     .{" "}
@@ -65,7 +65,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             )}
           </p>
           <div className="flex flex-row gap-4">
-            {!eventInfo.hackathon.registration?.closed && (
+            {!events.hackathon.registration?.closed && (
               <Magnetic intensity={0.4}>
                 <Button
                   render={<Link to="/go/$slug" params={{ slug: "register" }} />}

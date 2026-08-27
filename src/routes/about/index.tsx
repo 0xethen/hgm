@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
 import { ContactForm } from "./-contact";
-import { NewsletterCTA } from "#/components/elements/NewsletterCTA.tsx";
+import { NewsletterCTA } from "#/components/elements/ctas/NewsletterCTA.tsx";
 import { brand } from "#/lib/meta/brand";
 
 const ABOUT_POST_ID = "about-us";

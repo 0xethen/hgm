@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "cnfast";
 import { twMerge } from "cnfast";
+import { brand } from "./meta/brand";
 
 export class EDATestingError extends Error {
   constructor(message: string) {
@@ -67,6 +68,10 @@ String.prototype.plural = function (count, ending = "s") {
 
 export function cap(num: number, cap: number, suffix?: string): string {
   return num > cap ? `${cap}${suffix}` : String(num);
+}
+
+export function buildUrl(path: string): string {
+  return `${window.location.protocol || "https:"}//${window.location.host || brand.domain}${path}`;
 }
 
 const GW_EMAIL_DOMAIN = "gwinnett.k12.ga.us";
