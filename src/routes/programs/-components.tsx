@@ -186,7 +186,7 @@ export function ProgramsEventPage({
             <Alert>
               <AlertTitle>Event registration is closed</AlertTitle>
               <AlertDescription>
-                Sign-ups for {event.name} are closed at this time.
+                Sign-ups for {event.name} are closed at this time. Check back later?
               </AlertDescription>
             </Alert>
           ) : event.registration ? (
