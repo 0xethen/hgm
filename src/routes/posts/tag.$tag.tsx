@@ -33,10 +33,7 @@ function RouteComponent() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="space-y-4">
-        <Link to="/posts" className="link alt-link">
-          All posts
-        </Link>
-        <h3 className="mt-4">
+        <h3>
           <span className="font-normal">Posts tagged</span> #{tag}
         </h3>
       </div>
