@@ -8,9 +8,9 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 ## Contributing
 
-Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md)
+Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md).
 
-> If you need help with something, do not hesitate to DM Ethen on Discord (HackGwinnett officers should have my user). Make sure to send proof you're not an impostor or I probably won't take a look at it.
+If you need help with something, do not hesitate to DM Ethen on Discord (HackGwinnett officers should have my user). Make sure to send proof you're not an impostor or I probably won't take a look at it.
 
 ## Develop and Deploy
 
@@ -36,7 +36,7 @@ You did it! Now, content-collections is watching for CMS changes AND your dev se
 
 READ [HOSTING.md](./docs/HOSTING.md) for more. For right now:
 
-The GitHub Action ([deploy.yml](./.github/workflows/deploy.yml)) should handle building and deploying for you on commit to `main`. Boom. Deployed.
+The GitHub Action ([deploy.yml](./.github/workflows/deploy.yml)) should handle building and deploying for you on commit to `main`. Boom. Deployed. Use `[skip ci]` in your commit message to skip the build and deploy step for commits that don't need it (like documentation changes).
 
 ### About Vite+
 
