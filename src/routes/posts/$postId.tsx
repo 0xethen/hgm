@@ -81,9 +81,6 @@ function RouteComponent() {
   return (
     <article className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="space-y-4">
-        <Link to="/posts" className="link alt-link">
-          All posts
-        </Link>
         {post.cover ? (
           <div
             className="flex items-center w-full rounded-lg overflow-hidden mt-4"
