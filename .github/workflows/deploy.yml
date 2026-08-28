@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: pages
     steps:
       - uses: actions/checkout@v7
 
@@ -18,7 +19,8 @@ jobs:
       - name: build step
         run: vp run build-static
         env:
-          PUBLIC_APPS_SCRIPT_NEWSLETTER_URL: ${{ secrets.PUBLIC_APPS_SCRIPT_NEWSLETTER_URL }}
+          # secrets vs vars: https://docs.github.com/en/actions/learn-github-actions/variables#about-environment-variables
+          PUBLIC_APPS_SCRIPT_NEWSLETTER_URL: ${{ vars.PUBLIC_APPS_SCRIPT_NEWSLETTER_URL }}
 
       - name: upload static files as pages artifact
         id: deployment

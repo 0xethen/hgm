@@ -202,8 +202,12 @@ export function ContactForm() {
                       aria-invalid={isInvalid}
                     >
                       <SelectTrigger id={field.name}>
-                        {/* TODO: selectvalue shows key/id instead of name */}
-                        <SelectValue placeholder="Select..." />
+                        {/* TODO: selectvalue shows key/id instead of name. idk why this works so fix with shadcn documentation l8r */}
+                        <SelectValue>
+                          {(value: string | null) =>
+                            (value && getMailProvider(value)?.label) || "Select..."
+                          }
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         {emailProviders.map((option) => (

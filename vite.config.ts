@@ -43,6 +43,7 @@ const config = defineConfig({
         // we don't need to prerender /go routes: only clients that run JavaScript need them, not search engines/LLMs
         // also don't preload the secret
         filter: ({ path: routePath }) =>
+          !routePath.includes("?") &&
           !routePath.startsWith("/go") &&
           !routePath.startsWith("/developer") &&
           !routePath.startsWith("/thecakeisalie"),

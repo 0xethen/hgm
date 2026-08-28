@@ -84,6 +84,22 @@
     @apply absolute bottom-0 left-0 right-0 bg-black/50 text-sm text-white text-center py-2;
   }
 
+  /* CSS transitions/animations disabled in reduce-motion
+     (hover scales, accordion expand/collapse, animate-in/out, marquees, ...).
+     durations are reduced instead of none so that unmount on animation complete still fires */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   ::selection {
     @apply bg-primary/30;
   }

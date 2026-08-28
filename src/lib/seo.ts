@@ -23,6 +23,19 @@ export const organizationSchema = ({
   },
 });
 
+export const breadcrumbSchema = (crumbs: readonly { label: string; pathname: string }[]): any => ({
+  "script:ld+json": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.label,
+      item: `${SITE_URL}${crumb.pathname === "/" ? "" : crumb.pathname}`,
+    })),
+  },
+});
+
 export const eventSchema = ({
   name,
   description,
@@ -134,3 +147,6 @@ export const seo = ({
 
   return tags;
 };
+
+// out of search results & sitemap
+export const noindex = () => [{ name: "robots", content: "noindex, nofollow" }];

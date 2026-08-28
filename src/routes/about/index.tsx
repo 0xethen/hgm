@@ -9,7 +9,7 @@ const ABOUT_POST_ID = "about-us";
 const fallback = brand.description;
 
 export const Route = createFileRoute("/about/")({
-  staticData: { title: "About Us" },
+  staticData: { title: "About Us", breadcrumb: { hidden: true } },
   loader: async () => {
     const content = pages.find((p) => ABOUT_POST_ID === p._meta.path.slugify());
     return content;

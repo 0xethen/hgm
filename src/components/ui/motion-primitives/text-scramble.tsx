@@ -27,7 +27,8 @@ export function TextScramble({
   onScrambleComplete,
   ...props
 }: TextScrambleProps) {
-  // THE FIX: Memoize the component so it doesn't unmount on every animation frame
+  // const reducedMotion = useIsReducedMotion();
+  // TODO: with react compiler, we prob wouldn't have to memoize the component so it doesn't unmount on every animation frame. wait until rust port is stable
   const MotionComponent = useMemo(
     () => motion.create(Component as keyof JSX.IntrinsicElements),
     [Component],
@@ -87,6 +88,12 @@ export function TextScramble({
   };
 
   useEffect(() => {
+    // unneeded: reduced motion: render the final text straight away
+    // if (reducedMotion) {
+    //   stopAnimation();
+    //   return;
+    // }
+
     if (trigger) {
       void scramble();
     } else if (deTriggerStopsScramble) {

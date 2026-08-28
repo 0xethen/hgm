@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AliasesRouteRouteImport } from './routes/_aliases/route'
 import { Route as DeveloperRouteRouteImport } from './routes/developer/route'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as PostsRouteRouteImport } from './routes/posts/route'
@@ -43,6 +44,10 @@ import { Route as PostsTagTagRouteImport } from './routes/posts/tag.$tag'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AliasesRouteRoute = AliasesRouteRouteImport.update({
+  id: '/_aliases',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DeveloperRouteRoute = DeveloperRouteRouteImport.update({
@@ -81,39 +86,39 @@ const ToolsRouteRoute = ToolsRouteRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AliasesAboutUsRoute = AliasesAboutUsRouteImport.update({
-  id: '/_aliases/about-us',
+  id: '/about-us',
   path: '/about-us',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AliasesRouteRoute,
 } as any)
 const AliasesContactRoute = AliasesContactRouteImport.update({
-  id: '/_aliases/contact',
+  id: '/contact',
   path: '/contact',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AliasesRouteRoute,
 } as any)
 const AliasesFeedbackRoute = AliasesFeedbackRouteImport.update({
-  id: '/_aliases/feedback',
+  id: '/feedback',
   path: '/feedback',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AliasesRouteRoute,
 } as any)
 const AliasesHomeRoute = AliasesHomeRouteImport.update({
-  id: '/_aliases/home',
+  id: '/home',
   path: '/home',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AliasesRouteRoute,
 } as any)
 const AliasesRegisterRoute = AliasesRegisterRouteImport.update({
-  id: '/_aliases/register',
+  id: '/register',
   path: '/register',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AliasesRouteRoute,
 } as any)
 const AliasesReportRoute = AliasesReportRouteImport.update({
-  id: '/_aliases/report',
+  id: '/report',
   path: '/report',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AliasesRouteRoute,
 } as any)
 const AliasesTeamRoute = AliasesTeamRouteImport.update({
-  id: '/_aliases/team',
+  id: '/team',
   path: '/team',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AliasesRouteRoute,
 } as any)
 const AboutIndexRoute = AboutIndexRouteImport.update({
   id: '/about/',
@@ -256,6 +261,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_aliases': typeof AliasesRouteRouteWithChildren
   '/developer': typeof DeveloperRouteRouteWithChildren
   '/posts': typeof PostsRouteRouteWithChildren
   '/programs': typeof ProgramsRouteRouteWithChildren
@@ -351,6 +357,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_aliases'
     | '/developer'
     | '/posts'
     | '/programs'
@@ -384,6 +391,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AliasesRouteRoute: typeof AliasesRouteRouteWithChildren
   DeveloperRouteRoute: typeof DeveloperRouteRouteWithChildren
   PostsRouteRoute: typeof PostsRouteRouteWithChildren
   ProgramsRouteRoute: typeof ProgramsRouteRouteWithChildren
@@ -391,13 +399,6 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   SignatureRoute: typeof SignatureRoute
   ThecakeisalieRoute: typeof ThecakeisalieRoute
-  AliasesAboutUsRoute: typeof AliasesAboutUsRoute
-  AliasesContactRoute: typeof AliasesContactRoute
-  AliasesFeedbackRoute: typeof AliasesFeedbackRoute
-  AliasesHomeRoute: typeof AliasesHomeRoute
-  AliasesRegisterRoute: typeof AliasesRegisterRoute
-  AliasesReportRoute: typeof AliasesReportRoute
-  AliasesTeamRoute: typeof AliasesTeamRoute
   EdaReportRoute: typeof EdaReportRoute
   EdaUnderConstructionRoute: typeof EdaUnderConstructionRoute
   GoSlugRoute: typeof GoSlugRoute
@@ -411,6 +412,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_aliases': {
+      id: '/_aliases'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AliasesRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/developer': {
@@ -467,49 +475,49 @@ declare module '@tanstack/react-router' {
       path: '/about-us'
       fullPath: '/about-us'
       preLoaderRoute: typeof AliasesAboutUsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AliasesRouteRoute
     }
     '/_aliases/contact': {
       id: '/_aliases/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof AliasesContactRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AliasesRouteRoute
     }
     '/_aliases/feedback': {
       id: '/_aliases/feedback'
       path: '/feedback'
       fullPath: '/feedback'
       preLoaderRoute: typeof AliasesFeedbackRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AliasesRouteRoute
     }
     '/_aliases/home': {
       id: '/_aliases/home'
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof AliasesHomeRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AliasesRouteRoute
     }
     '/_aliases/register': {
       id: '/_aliases/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof AliasesRegisterRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AliasesRouteRoute
     }
     '/_aliases/report': {
       id: '/_aliases/report'
       path: '/report'
       fullPath: '/report'
       preLoaderRoute: typeof AliasesReportRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AliasesRouteRoute
     }
     '/_aliases/team': {
       id: '/_aliases/team'
       path: '/team'
       fullPath: '/team'
       preLoaderRoute: typeof AliasesTeamRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AliasesRouteRoute
     }
     '/about/': {
       id: '/about/'
@@ -619,6 +627,30 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AliasesRouteRouteChildren {
+  AliasesAboutUsRoute: typeof AliasesAboutUsRoute
+  AliasesContactRoute: typeof AliasesContactRoute
+  AliasesFeedbackRoute: typeof AliasesFeedbackRoute
+  AliasesHomeRoute: typeof AliasesHomeRoute
+  AliasesRegisterRoute: typeof AliasesRegisterRoute
+  AliasesReportRoute: typeof AliasesReportRoute
+  AliasesTeamRoute: typeof AliasesTeamRoute
+}
+
+const AliasesRouteRouteChildren: AliasesRouteRouteChildren = {
+  AliasesAboutUsRoute: AliasesAboutUsRoute,
+  AliasesContactRoute: AliasesContactRoute,
+  AliasesFeedbackRoute: AliasesFeedbackRoute,
+  AliasesHomeRoute: AliasesHomeRoute,
+  AliasesRegisterRoute: AliasesRegisterRoute,
+  AliasesReportRoute: AliasesReportRoute,
+  AliasesTeamRoute: AliasesTeamRoute,
+}
+
+const AliasesRouteRouteWithChildren = AliasesRouteRoute._addFileChildren(
+  AliasesRouteRouteChildren,
+)
+
 interface DeveloperRouteRouteChildren {
   DeveloperBsodRoute: typeof DeveloperBsodRoute
   DeveloperIndexRoute: typeof DeveloperIndexRoute
@@ -683,6 +715,7 @@ const ToolsRouteRouteWithChildren = ToolsRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AliasesRouteRoute: AliasesRouteRouteWithChildren,
   DeveloperRouteRoute: DeveloperRouteRouteWithChildren,
   PostsRouteRoute: PostsRouteRouteWithChildren,
   ProgramsRouteRoute: ProgramsRouteRouteWithChildren,
@@ -690,13 +723,6 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   SignatureRoute: SignatureRoute,
   ThecakeisalieRoute: ThecakeisalieRoute,
-  AliasesAboutUsRoute: AliasesAboutUsRoute,
-  AliasesContactRoute: AliasesContactRoute,
-  AliasesFeedbackRoute: AliasesFeedbackRoute,
-  AliasesHomeRoute: AliasesHomeRoute,
-  AliasesRegisterRoute: AliasesRegisterRoute,
-  AliasesReportRoute: AliasesReportRoute,
-  AliasesTeamRoute: AliasesTeamRoute,
   EdaReportRoute: EdaReportRoute,
   EdaUnderConstructionRoute: EdaUnderConstructionRoute,
   GoSlugRoute: GoSlugRoute,

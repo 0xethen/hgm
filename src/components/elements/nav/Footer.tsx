@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useHydrated } from "@tanstack/react-router";
-import { cn } from "#/lib/utils";
 import { brand } from "#/lib/meta/brand";
 
 const FALLBACK_COMMIT_SHA = "dev";
@@ -32,13 +31,18 @@ export function Footer({ link }: { link?: React.ReactNode }) {
         </span>
         <div className="flex flex-row gap-4">
           <Link
-            to={"https://ethen.app/legal?s=hgm" as string}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn("link", "text-sm text-white/50 hover:text-white")}
+            to="/contact"
+            className="link text-sm" // text-sm text-white/50 hover:text-white
           >
-            Cookies / Privacy Policy
+            Contact Us
           </Link>
+          <a
+            href={"https://ethen.app/legal?s=hgm"}
+            target="_blank"
+            className="link text-sm" // text-sm text-white/50 hover:text-white
+          >
+            Cookies & Privacy
+          </a>
           {link}
         </div>
       </div>

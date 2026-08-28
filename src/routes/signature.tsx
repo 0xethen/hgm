@@ -1,8 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { noindex } from "#/lib/seo";
 
 export const Route = createFileRoute("/signature")({
   component: RouteComponent,
+  staticData: { title: "Signature" },
+  head: () => ({ meta: noindex() }),
 });
 
 type Point = {

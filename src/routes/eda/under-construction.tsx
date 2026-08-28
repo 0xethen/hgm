@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { noindex } from "#/lib/seo";
 
 export const Route = createFileRoute("/eda/under-construction")({
   component: RouteComponent,
-  staticData: { title: "Under Construction" },
+  staticData: { title: "Under Construction", breadcrumb: false },
+  head: () => ({ meta: noindex() }),
 });
 
 function RouteComponent() {

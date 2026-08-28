@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { noindex } from "#/lib/seo";
 
 export const Route = createFileRoute("/tools")({
   beforeLoad: async () => {
@@ -6,4 +7,5 @@ export const Route = createFileRoute("/tools")({
   },
   // component: RouteComponent,
   staticData: { title: "Tools" },
+  head: () => ({ meta: noindex() }),
 });

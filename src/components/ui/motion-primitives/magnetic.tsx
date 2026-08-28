@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useMotionValue, useSpring, type SpringOptions } from "motion/react";
+import { useIsReducedMotion } from "#/hooks/browser.ts";
 
 const SPRING_CONFIG = { stiffness: 26.7, damping: 4.1, mass: 0.2 };
 
@@ -10,6 +11,7 @@ export type MagneticProps = {
   range?: number;
   actionArea?: "self" | "parent" | "global";
   springOptions?: SpringOptions;
+  disabled?: boolean; // reduce motion = enabled automatically
 };
 
 export function Magnetic({
@@ -19,7 +21,11 @@ export function Magnetic({
   range = 100,
   actionArea = "self",
   springOptions = SPRING_CONFIG,
+  disabled = false,
 }: MagneticProps) {
+  const reducedMotion = useIsReducedMotion();
+  const isDisabled = disabled || reducedMotion; // TODO: add override (ignore reduce)?
+
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -30,6 +36,13 @@ export function Magnetic({
   const springY = useSpring(y, springOptions);
 
   useEffect(() => {
+    if (isDisabled) {
+      // snap back to rest if the preference flips mid-session
+      x.set(0);
+      y.set(0);
+      return;
+    }
+
     const calculateDistance = (e: MouseEvent) => {
       if (ref.current) {
         const rect = ref.current.getBoundingClientRect();
@@ -56,9 +69,11 @@ export function Magnetic({
     return () => {
       document.removeEventListener("mousemove", calculateDistance);
     };
-  }, [ref, isHovered, intensity, range]);
+  }, [ref, isHovered, intensity, range, isDisabled]);
 
   useEffect(() => {
+    if (isDisabled) return;
+
     if (actionArea === "parent" && ref.current?.parentElement) {
       const parent = ref.current.parentElement;
 
@@ -75,7 +90,7 @@ export function Magnetic({
     } else if (actionArea === "global") {
       setIsHovered(true);
     }
-  }, [actionArea]);
+  }, [actionArea, isDisabled]);
 
   const handleMouseEnter = () => {
     if (actionArea === "self") {
@@ -90,6 +105,15 @@ export function Magnetic({
       y.set(0);
     }
   };
+
+  // no motion values, listeners, etc. just a wrapper
+  if (isDisabled) {
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <motion.div

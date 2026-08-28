@@ -18,14 +18,7 @@ const SHELL_FILE = `${CLIENT_DIR}/_shell.html`;
 
 const SITE_URL = "https://hackgwinnett.org";
 const POSTS_DIR = "cms/posts/content";
-const STATIC_ROUTES = [
-  "/",
-  "/about",
-  "/posts",
-  "/programs/hackathon",
-  "/programs/hackfest",
-  "/contact",
-];
+const EXPECTED_ENV = ["PUBLIC_APPS_SCRIPT_NEWSLETTER_URL"];
 
 // parsed in main()
 let flags: CliFlags;
@@ -70,6 +63,12 @@ async function preBuild(): Promise<string> {
 
   console.log(`✓ Set PUBLIC_GIT_SHA=${gitSha}`);
 
+  for (const key of EXPECTED_ENV) {
+    if (!process.env[key]) {
+      console.warn(`[!] ${key} is not set — the feature that depends on it will fail at runtime.`);
+    }
+  }
+
   if (existsSync(DIST_DIR)) {
     console.log("Clearing dist...");
     await rm(DIST_DIR, { recursive: true, force: true });
@@ -105,27 +104,50 @@ async function postBuild(): Promise<void> {
   console.log("Done!");
 }
 
-async function getPublicPostSlugs(): Promise<string[]> {
-  if (!existsSync(POSTS_DIR)) return [];
+async function getHiddenPostSlugs(): Promise<Set<string>> {
+  if (!existsSync(POSTS_DIR)) return new Set();
 
   const files = (await readdir(POSTS_DIR)).filter((f) => f.endsWith(".md"));
 
-  const slugs: string[] = [];
+  const slugs = new Set<string>();
   for (const file of files) {
     const raw = await readFile(join(POSTS_DIR, file), "utf-8");
     const frontmatter = raw.split("---", 3)[1] || "";
 
     const hidden = /^\s*hidden:\s*true\s*$/m.test(frontmatter);
     const unlisted = /^\s*unlisted:\s*true\s*$/m.test(frontmatter);
-    if (hidden || unlisted) continue;
-
-    slugs.push(file.replace(/\.md$/, ""));
+    if (hidden || unlisted) slugs.add(file.replace(/\.md$/, ""));
   }
 
   return slugs;
 }
 
-// TODO: make this better. preloading (TanStack Start/Router) already crawls routes, we can maybe play with that.
+async function collectPrerenderedRoutes(dir: string, prefix = ""): Promise<string[]> {
+  const routes: string[] = [];
+  const entries = await readdir(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (entry.name.startsWith("_shell") || entry.name.startsWith("-")) continue;
+
+    if (entry.isDirectory()) {
+      routes.push(
+        ...(await collectPrerenderedRoutes(join(dir, entry.name), `${prefix}/${entry.name}`)),
+      );
+      continue;
+    }
+
+    if (entry.name !== "index.html") continue;
+
+    // `noindex()` in src/lib/seo.ts is how to opt out
+    const html = await readFile(join(dir, entry.name), "utf-8");
+    if (/<meta[^>]+name="robots"[^>]+content="[^"]*noindex/i.test(html)) continue;
+
+    routes.push(prefix || "/");
+  }
+
+  return routes;
+}
+
 async function generateSitemap(): Promise<void> {
   if (!existsSync(CLIENT_DIR)) {
     console.log(`${CLIENT_DIR} not found. Skipping sitemap generation.`);
@@ -134,13 +156,18 @@ async function generateSitemap(): Promise<void> {
 
   console.log("Generating sitemap.xml...");
 
-  const postSlugs = await getPublicPostSlugs();
-  const paths = [...STATIC_ROUTES, ...postSlugs.map((slug) => `/posts/${slug}`)];
+  const hiddenSlugs = await getHiddenPostSlugs();
+  const discovered = await collectPrerenderedRoutes(CLIENT_DIR);
+
+  const paths = [...new Set(discovered)]
+    // a hidden/unlisted post may still be prerendered if something links to it; keep it out of the index
+    .filter((path) => !hiddenSlugs.has(path.replace(/^\/posts\//, "")))
+    .sort();
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...paths.map((path) => `  <url><loc>${SITE_URL}${path}</loc></url>`),
+    ...paths.map((path) => `  <url><loc>${SITE_URL}${path === "/" ? "" : path}</loc></url>`),
     "</urlset>",
     "",
   ].join("\n");

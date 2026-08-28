@@ -10,6 +10,7 @@ import WheelGestures from "embla-carousel-wheel-gestures";
 import { RiPauseLine, RiPlayLine } from "@remixicon/react";
 import { cn } from "#/lib/utils";
 import { motion } from "motion/react";
+import { useIsReducedMotion } from "#/hooks/browser.ts";
 
 export function MakeCarousel({
   className,
@@ -20,10 +21,12 @@ export function MakeCarousel({
 }) {
   const [emblaApi, setApi] = useState<CarouselApi | undefined>(undefined);
   const [playing, setPlaying] = useState<boolean>(false);
+  const reducedMotion = useIsReducedMotion();
 
+  // reduced motion: don't autostart
   useEffect(() => {
-    toggleAutoplay("play");
-  }, [emblaApi]);
+    toggleAutoplay(reducedMotion ? "stop" : "play");
+  }, [emblaApi, reducedMotion]);
 
   const toggleAutoplay = useCallback(
     (override?: "play" | "stop") => {

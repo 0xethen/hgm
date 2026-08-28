@@ -71,6 +71,9 @@ export function cap(num: number, cap: number, suffix?: string): string {
 }
 
 export function buildUrl(path: string): string {
+  // called from route head() functions, which also run during prerendering where there is no window
+  if (typeof window === "undefined") return `https://${brand.domain}${path}`;
+
   return `${window.location.protocol || "https:"}//${window.location.host || brand.domain}${path}`;
 }
 

@@ -6,6 +6,7 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { TextScramble } from "#/components/ui/motion-primitives/text-scramble";
+import { useIsReducedMotion } from "#/hooks/browser.ts";
 import { cn } from "#/lib/utils";
 import { z } from "zod/mini";
 import { Button } from "#/components/ui/button";
@@ -108,10 +109,12 @@ function RouteComponent() {
 }
 
 function ErrorComponent(props: ErrorComponentProps) {
+  const reduced = useIsReducedMotion();
+
   return (
     <div className="flex font-heading flex-col min-h-safe-dvh items-center justify-center text-center gap-1 select-none">
       <span className="animate-in fade-in delay-100 fill-mode-backwards">
-        <TextScramble trigger>
+        <TextScramble trigger={!reduced}>
           {props.error instanceof Response
             ? `${props.error.statusText} (${props.error.status})`
             : "the issue reporter failed to process your request."}

@@ -4,6 +4,7 @@ import { routeTree } from "./routeTree.gen";
 import { NotFound } from "#/components/NotFound";
 import { ErrorBoundary } from "#/components/ErrorBoundary";
 import type { HeaderClassNames } from "#/components/elements/nav/Header";
+import type { TitleOption, BreadcrumbOption } from "#/lib/routing";
 
 export function getRouter() {
   const router = createTanStackRouter({
@@ -25,7 +26,8 @@ declare module "@tanstack/react-router" {
   }
 
   interface StaticDataRouteOption {
-    title?: string | { page: string; pending?: string; exact?: boolean };
+    title?: TitleOption;
+    breadcrumb?: BreadcrumbOption;
     description?: string;
     classNames?: { root?: string; body?: string; main?: string };
 

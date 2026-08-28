@@ -1,7 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_aliases/team")({
-  beforeLoad: async () => {
-    throw Route.redirect({ to: "/about" });
-  },
+  component: RouteComponent,
 });
+
+function RouteComponent() {
+  return (
+    <>
+      <Navigate to="/about" replace />
+      <Link to="/about" className="link">
+        Continue to About Us
+      </Link>
+    </>
+  );
+}

@@ -25,7 +25,16 @@ It is SUPER IMPORTANT that you also follow the [Generative Engine Optimization (
 
 Many of our participants claim they found us while searching for CS opportunities via ChatGPT (or another LLM), so we need to make our website as scrapable as we can. Ideally, it would be server-side rendered (SSR), but because `www` is a simple marketing website that should not have that many resources allocated to it, this project is statically generated (SSG) (see [HOSTING.md](./docs/HOSTING.md) and (optionally) the TanStack documentation on [SPA Mode](https://tanstack.com/start/latest/docs/framework/react/guide/spa-mode) and [Static Prerendering](https://tanstack.com/start/latest/docs/framework/react/guide/static-prerendering)).
 
-> TODO: better sitemap.xml generation in [build.ts](./build.ts)
+> `sitemap.xml` is generated in [build.ts](./build.ts) by walking the prerendered output in
+> `dist/client` — every `index.html` becomes one URL. There is no list of routes to maintain: a
+> new page is in the sitemap as soon as the prerenderer emits it, and anything the prerender
+> filter in [vite.config.ts](./vite.config.ts) skips (`/go`, `/developer`, …) stays out. Posts
+> marked `hidden` or `unlisted` are excluded even if something links to them.
+>
+> To keep a page out of the sitemap (and out of search results), give its route
+> `head: () => ({ meta: noindex() })` from [src/lib/seo.ts](./src/lib/seo.ts) — the generator reads
+> that tag back out of the prerendered HTML. This is how the redirect stubs under
+> `src/routes/_aliases` and the internal tool pages opt out.
 
 ## Posts
 

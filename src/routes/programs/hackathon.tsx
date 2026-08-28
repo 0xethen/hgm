@@ -149,12 +149,13 @@ function RouteComponent() {
                 />,
                 <img
                   src={"/assets/images/events/hackathon/IMG_6700-resize.jpg".toAsset()}
-                  alt="Ms. Rachkovskiy at HackGwinnett 5.0. To the right, Jaden side-eyes the camera."
+                  alt="Ms. Rachkovskiy at Hackathon 5.0. To the right, Jaden side-eyes the camera."
                 />,
-                // TODO: who is this speaker (for alt text) (+ more images from diff years)
+                // NOTE: speaker unidentified — alt text describes the scene rather than naming them.
+                // Swap in a name (and add photos from other years) when someone can confirm who this is.
                 <img
                   src={"/assets/images/events/hackathon/IMG_6716-resize.jpg".toAsset()}
-                  alt="IMG_6716.JPG"
+                  alt="A speaker addresses participants from the front of the room at Hackathon 5.0."
                 />,
                 <img
                   src={"/assets/images/events/hackathon/oldss/ss-02-resize.jpg".toAsset()}
@@ -166,7 +167,7 @@ function RouteComponent() {
                 />,
                 <img
                   src={"/assets/images/events/hackathon/oldss/ss-05-resize.jpg".toAsset()}
-                  alt="screenshot-2026-07-19-at-25205-pm"
+                  alt="Participants working together at their laptops during Hackathon 5.0."
                 />,
                 <img
                   src={"/assets/images/events/hackathon/oldss/ss-07-resize.jpg".toAsset()}

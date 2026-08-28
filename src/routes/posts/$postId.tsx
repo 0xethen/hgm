@@ -1,5 +1,3 @@
-// TODO: move to react server components?
-
 import React from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
@@ -33,18 +31,16 @@ import {
 } from "#/components/ui/avatar";
 import { RiArrowRightLine } from "@remixicon/react";
 import type { Author } from "cms/posts/authors";
-// import {
-//   Breadcrumb,
-//   BreadcrumbItem,
-//   BreadcrumbLink,
-//   BreadcrumbList,
-//   BreadcrumbPage,
-//   BreadcrumbSeparator,
-// } from "#/components/ui/breadcrumb";
 import { getTitle } from "#/lib/routing.ts";
 import { articleSchema } from "#/lib/seo";
 
 export const Route = createFileRoute("/posts/$postId")({
+  staticData: {
+    breadcrumb: {
+      label: (match) =>
+        posts.find((post) => post._meta.path.slugify() === match.params.postId)?.title,
+    },
+  },
   loader: async ({ params }) => {
     const post = posts.find((p) => params.postId === p._meta.path.slugify());
 
@@ -88,24 +84,6 @@ function RouteComponent() {
         <Link to="/posts" className="link alt-link">
           All posts
         </Link>
-        {/*
-          // TODO: no reason to have breadcrumbs here until they're more consistent across /posts and /programs
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link to="/posts" />}>Posts</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Post</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-        */}
         {post.cover ? (
           <div
             className="flex items-center w-full rounded-lg overflow-hidden mt-4"
@@ -149,7 +127,7 @@ function RouteComponent() {
             {new Date(post.date).toLocaleDateString("en-US", { dateStyle: "long" })}
           </p>
 
-          {/*<p className="text-muted-foreground">-1 views</p>  TODO: view counter  */}
+          {/* TODO: view counter */}
         </div>
         {post.tags && (
           <div className="mt-2 flex flex-wrap gap-2">

@@ -1,10 +1,10 @@
-**REGISTRATION IS COMING SOON!** Sign up for our mailing list.
+**REGISTRATION IS COMING SOON!** [Join our mailing list](/#newslettercta) to be the first to know when it opens :D
+
+---
 
 HackGwinnett's 6th annual hackathon is back and better than ever.
 
 Middle & high school students work solo or in teams to create a project based on a secret theme revealed on-site, competing for prizes (and glory). Students across Georgia are welcome to participate!
-
----
 
 Workshops for total beginners or seasoned pros are available throughout the day (because we can all learn something new!). Workshops are 40-minute sessions during the hackathon that allow participants to gain hands-on experience in a new computer science skill or domain. Workshops run simultaneously, so you can only choose one per round.
 

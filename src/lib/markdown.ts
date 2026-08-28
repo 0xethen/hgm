@@ -1,4 +1,4 @@
-// TODO: maybe switch to @tanstack/markdown in the future when it matures
+// TODO: switch to @tanstack/markdown once stable and feature-ready
 
 import showdown from "showdown";
 

@@ -16,8 +16,9 @@ import { Header } from "#/components/elements/nav/Header";
 import { Footer } from "#/components/elements/nav/Footer";
 import { ConsoleSecrets } from "#/routes/thecakeisalie";
 import { cn } from "#/lib/utils";
-import { getDescription, getTitle } from "#/lib/routing";
-import { organizationSchema, seo } from "#/lib/seo";
+import { Breadcrumbs } from "#/components/elements/nav/Breadcrumbs";
+import { getBreadcrumbs, getDescription, getTitle, showsChrome } from "#/lib/routing";
+import { breadcrumbSchema, organizationSchema, seo } from "#/lib/seo";
 import { brand, socialLinks } from "#/lib/meta/brand";
 
 import css from "#/styles/index.css?url";
@@ -25,6 +26,8 @@ import css from "#/styles/index.css?url";
 const BRAND_THEME_COLOR = "rgb(97,178,138)";
 
 export const Route: RootRoute<Register> = createRootRoute({
+  // the first crumb of every trail; see `breadcrumb` in src/router.tsx
+  staticData: { breadcrumb: "Home" },
   head: ({ matches }) => ({
     meta: [
       { charSet: "utf-8" },
@@ -34,6 +37,8 @@ export const Route: RootRoute<Register> = createRootRoute({
         title: getTitle(matches),
         description: getDescription(matches, brand.description),
       }),
+      // only when there is a real trail: structured data must match what the page shows
+      ...(getBreadcrumbs(matches).length > 1 ? [breadcrumbSchema(getBreadcrumbs(matches))] : []),
       organizationSchema({
         name: brand.name,
         logo: "/assets/images/brand/hackgwinnett.svg".toAsset(),
@@ -60,10 +65,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const staticData = activeMatch?.staticData;
   const classNames = staticData?.classNames;
 
-  const showChrome =
-    !staticData.header?.hidden && // explicitly hidden via staticData
-    !activeMatch?._notFound && // actual nonexistent route or throw notFound()
-    !activeMatch?.error; // notFound or error boundary (bsod)
+  const showChrome = showsChrome(matches);
+
+  // a lone "Home" is noise, so a trail needs somewhere to point back to
+  // TODO: more consistent page padding in __root based on showChrome?
+  const crumbs = getBreadcrumbs(matches);
+  const showBreadcrumbs = crumbs.length > 1;
 
   const layoutOffset = showChrome || !!staticData.header?.forceLayoutOffset;
 
@@ -86,6 +93,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           ) : null}
 
           <main id="main" className={cn("min-h-safe-dvh bg-background", classNames?.main)}>
+            {showBreadcrumbs ? <Breadcrumbs crumbs={crumbs} /> : null}
             {children}
           </main>
 

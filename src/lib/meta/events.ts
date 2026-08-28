@@ -1,4 +1,47 @@
-type EventKey = "hackathon" | "hackfest"; // TODO: is "EventKey" necessary for type-safety?
+// DEFINITIONS
+
+const eventList = {
+  hackathon: {
+    name: "Hackathon 6.0",
+    shortName: "HG6",
+    description: "A free, one-day hackathon for middle and high school students.",
+    location: {
+      name: "Gwinnett School of Mathematics, Science, and Technology",
+      shortName: "GSMST",
+      address: "970 McElvaney Ln, Lawrenceville, GA 30044",
+      mapUrl: "https://maps.apple.com/place?place-id=I3551F8AF8A34BB8A", // https://goo.gl/maps/1Zt7n9s5mL2qjv3bA
+    },
+    date: {
+      start: new Date("2026-10-31T09:00:00"),
+      end: new Date("2026-10-31T17:00:00"),
+    },
+    registration: {
+      url: "/go/register",
+      closed: true,
+    },
+  },
+  hackfest: {
+    name: "HackFest IV",
+    shortName: "HF4",
+    description: "A one-day STEM event for primary students.",
+    content: "hackfest",
+    location: {
+      name: "Baggett Elementary School",
+      address: "2136 Old Norcross Rd, Lawrenceville, GA 30044",
+      mapUrl: "https://maps.apple.com/place?place-id=I992A6F0C1A2001BD", // https://goo.gl/maps/1Zt7n9s5mL2qjv3bA
+    },
+    date: {
+      start: new Date("2026-03-24T09:00:00"),
+      end: new Date("2026-03-24T17:00:00"),
+    },
+  },
+} satisfies Record<string, HGEvent>;
+
+export const events: Record<EventKey, HGEvent> = eventList;
+
+// TYPES
+
+export type EventKey = keyof typeof eventList;
 
 export interface HGEvent {
   /** The name of the event */
@@ -41,42 +84,3 @@ export interface HGEvent {
     url: string;
   };
 }
-
-// todo: better descriptions?
-export const events: Record<EventKey, HGEvent> = {
-  // TODO: is "EventKey" necessary for type-safety?
-  hackathon: {
-    name: "Hackathon 6.0",
-    shortName: "HG6",
-    description: "A free, one-day hackathon for middle and high school students.",
-    location: {
-      name: "Gwinnett School of Mathematics, Science, and Technology",
-      shortName: "GSMST",
-      address: "970 McElvaney Ln, Lawrenceville, GA 30044",
-      mapUrl: "https://maps.apple.com/place?place-id=I3551F8AF8A34BB8A", // https://goo.gl/maps/1Zt7n9s5mL2qjv3bA
-    },
-    date: {
-      start: new Date("2026-10-31T09:00:00"),
-      end: new Date("2026-10-31T17:00:00"),
-    },
-    registration: {
-      url: "/go/register",
-      closed: true,
-    },
-  },
-  hackfest: {
-    name: "HackFest IV",
-    shortName: "HF4",
-    description: "A one-day STEM event for primary students.",
-    content: "hackfest",
-    location: {
-      name: "Baggett Elementary School",
-      address: "2136 Old Norcross Rd, Lawrenceville, GA 30044",
-      mapUrl: "https://maps.apple.com/place?place-id=I992A6F0C1A2001BD", // https://goo.gl/maps/1Zt7n9s5mL2qjv3bA
-    },
-    date: {
-      start: new Date("2026-03-24T09:00:00"),
-      end: new Date("2026-03-24T17:00:00"),
-    },
-  },
-};

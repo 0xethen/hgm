@@ -2,6 +2,7 @@ import { cn } from "#/lib/utils";
 import { animate, motion, useAnimationFrame, useMotionValue } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import useMeasure from "react-use-measure";
+import { useIsReducedMotion } from "#/hooks/browser.ts";
 
 export type ScrollerProps = {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ export type ScrollerProps = {
   direction?: "horizontal" | "vertical";
   reverse?: boolean;
   className?: string;
+  disabled?: boolean; // reduce motion = enabled automatically
 };
 
 export function Scroller({
@@ -21,7 +23,11 @@ export function Scroller({
   direction = "horizontal",
   reverse = false,
   className,
+  disabled = false,
 }: ScrollerProps) {
+  const reducedMotion = useIsReducedMotion();
+  const isDisabled = disabled || reducedMotion; // TODO: add override (ignore reduce)?
+
   const [isHovering, setIsHovering] = useState(false);
 
   const [ref, bounds] = useMeasure();
@@ -36,7 +42,7 @@ export function Scroller({
   const lastTime = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!speedOnHover) return;
+    if (isDisabled || !speedOnHover) return;
 
     const targetMultiplier = isHovering ? speedOnHover / speed : 1;
 
@@ -46,10 +52,10 @@ export function Scroller({
     });
 
     return () => controls.stop();
-  }, [isHovering, speed, speedOnHover, speedMultiplier]);
+  }, [isDisabled, isHovering, speed, speedOnHover, speedMultiplier]);
 
   useAnimationFrame((time) => {
-    if (!halfSize) return;
+    if (isDisabled || !halfSize) return;
 
     if (lastTime.current === null) {
       lastTime.current = time;
@@ -75,6 +81,22 @@ export function Scroller({
 
     translation.set(next);
   });
+
+  // No marquee, and no scrollbar standing in for one: lay the children out so all of them are
+  // visible at once. (Callers with a better static layout should branch before rendering a
+  // Scroller at all — SponsorSection swaps in its grid.)
+  if (isDisabled) {
+    return (
+      <div className={className}>
+        <div
+          className="flex flex-wrap items-center justify-center"
+          style={{ gap, flexDirection: direction === "horizontal" ? "row" : "column" }}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("overflow-hidden", className)}>

@@ -42,7 +42,7 @@ export function NewsletterCTA({
 
         const url = import.meta.env.PUBLIC_APPS_SCRIPT_NEWSLETTER_URL;
         if (!url) {
-          throw new Error("Signup endpoint is not configured.");
+          throw new Error("Signup endpoint misconfigured!");
         }
 
         // let response: Response;
@@ -55,7 +55,7 @@ export function NewsletterCTA({
 
           data = await response.json();
         } catch {
-          throw new Error("Unexpected response from signup service.");
+          throw new Error("Unexpected response from signup service!");
         }
 
         if (!data.success) {

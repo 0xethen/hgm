@@ -143,22 +143,8 @@ export function ProgramsEventPage({
     minute: "2-digit",
   });
 
-  const shortDateFormatter = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
-
   const isValidDate = (d: Date): boolean => d instanceof Date && !Number.isNaN(d.getTime());
 
-  const isSameDay = (a: Date, b: Date): boolean =>
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
-
-  // TODO: MAJOR: URGENT: ACK! FIX THIS RANGE WHICH IS BROKEN ON DIFF DAYS!!!
   const formatEventDate = (start: Date, end?: Date): string => {
     if (!isValidDate(start)) return "Invalid date";
     if (!end || !isValidDate(end)) return dateFormatter.format(start);
@@ -167,10 +153,9 @@ export function ProgramsEventPage({
     if (rangeStart.getTime() === rangeEnd.getTime()) return dateFormatter.format(rangeStart);
 
     try {
-      if (isSameDay(rangeStart, rangeEnd)) return dateFormatter.formatRange(rangeStart, rangeEnd);
-      return shortDateFormatter.formatRange(rangeStart, rangeEnd);
+      return dateFormatter.formatRange(rangeStart, rangeEnd);
     } catch {
-      return `${shortDateFormatter.format(rangeStart)} – ${shortDateFormatter.format(rangeEnd)}`;
+      return `${dateFormatter.format(rangeStart)} – ${dateFormatter.format(rangeEnd)}`;
     }
   };
 

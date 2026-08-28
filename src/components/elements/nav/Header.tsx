@@ -118,22 +118,22 @@ const navItems = [
       items: [
         { title: "Media gallery", href: "/gallery" },
         {
-          title: "HackGwinnett 5.0",
+          title: "Hackathon 5.0",
           href: "https://hackgwinnett-5-0.devpost.com/project-gallery",
           external: true,
         },
         {
-          title: "HackGwinnett 4.0",
+          title: "Hackathon 4.0",
           href: "https://hackgwinnett-iv.devpost.com/project-gallery",
           external: true,
         },
         {
-          title: "HackGwinnett 3.0",
+          title: "Hackathon 3.0",
           href: "https://hackgwinnett3.devpost.com/project-gallery",
           external: true,
         },
         {
-          title: "HackGwinnett 2.0",
+          title: "Hackathon 2.0",
           href: "https://hackgwinnett-2-0.devpost.com/project-gallery",
           external: true,
         },

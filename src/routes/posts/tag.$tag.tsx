@@ -3,16 +3,9 @@ import { ScrollArea } from "#/components/ui/scroll-area";
 import { Separator } from "#/components/ui/separator";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
-// import {
-//   Breadcrumb,
-//   BreadcrumbItem,
-//   BreadcrumbLink,
-//   BreadcrumbList,
-//   BreadcrumbPage,
-//   BreadcrumbSeparator,
-// } from "#/components/ui/breadcrumb";
 
 export const Route = createFileRoute("/posts/tag/$tag")({
+  staticData: { breadcrumb: { label: (match) => `#${match.params.tag}` } },
   loader: async ({ params }) => {
     const found = posts.filter((post) => post.tags?.some((a) => a === params.tag));
     return { posts: found, tag: params.tag };
@@ -43,24 +36,6 @@ function RouteComponent() {
         <Link to="/posts" className="link alt-link">
           All posts
         </Link>
-        {/*
-          // TODO: no reason to have breadcrumbs here until they're more consistent across /posts and /programs
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link to="/posts" />}>Posts</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>#{tag}</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-        */}
         <h3 className="mt-4">
           <span className="font-normal">Posts tagged</span> #{tag}
         </h3>

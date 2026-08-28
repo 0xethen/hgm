@@ -1,4 +1,4 @@
-// TODO: is there a required UTM link for any sponsorships?
+// TODO: any sponsors require utm links?
 
 export type Sponsor = {
   title: string;

@@ -3,56 +3,41 @@ import { Link } from "@tanstack/react-router";
 import { cn } from "#/lib/utils";
 import { Scroller } from "#/components/ui/motion-primitives/scroller";
 import { type Sponsor, mainSponsors, otherSponsors } from "#/lib/meta/sponsors";
-import { useBreakpoint } from "#/hooks/browser.ts";
+import { useBreakpoint, useIsReducedMotion } from "#/hooks/browser.ts";
 
 export function SponsorSection() {
   const { md } = useBreakpoint();
   const isMobile = !md;
+  const reducedMotion = useIsReducedMotion();
+  const [hasKeyboardFocus, setHasKeyboardFocus] = React.useState(false);
 
-  const [showGrid, setShowGrid] = React.useState(isMobile);
-  const firstSponsorRef = React.useRef<HTMLAnchorElement | null>(null);
-  const lastSponsorRef = React.useRef<HTMLAnchorElement | null>(null);
-
-  React.useEffect(() => {
-    setShowGrid(isMobile);
-  }, [isMobile]);
+  // the marquee is the only reason the grid isn't the default, so anything that rules the
+  // marquee out (small screens, reduced motion) falls back to the grid
+  const showGrid = isMobile || reducedMotion || hasKeyboardFocus;
 
   const handleFocusCapture = (e: React.FocusEvent<HTMLElement>) => {
-    const target = e.target as HTMLElement | null;
-
-    // Only switch to the grid for keyboard focus (Tab, Shift+Tab, etc.)
-    if (!isMobile && target?.matches(":focus-visible")) {
-      setShowGrid(true);
+    if ((e.target as HTMLElement | null)?.matches(":focus-visible")) {
+      setHasKeyboardFocus(true);
     }
   };
 
   const handleBlurCapture = (e: React.FocusEvent<HTMLElement>) => {
     if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
-      setShowGrid(isMobile);
+      setHasKeyboardFocus(false);
     }
   };
 
   const AllSponsors = () => (
     <>
-      {otherSponsors.map((sponsor, index) => {
-        const isFirst = index === 0;
-        const isLast = index === otherSponsors.length - 1;
-
-        return (
-          <SponsorLogo
-            key={`${sponsor.title}-${index}-logo`}
-            sponsor={sponsor}
-            ref={isFirst ? firstSponsorRef : isLast ? lastSponsorRef : undefined}
-          />
-        );
-      })}
+      {otherSponsors.map((sponsor, index) => (
+        <SponsorLogo key={`${sponsor.title}-${index}-logo`} sponsor={sponsor} />
+      ))}
     </>
   );
 
   return (
     <div
       className="space-y-8 text-center"
-      // TODO: roundabout way to make the grid show up on mobile when the user focuses onto a sponsor, but not when they tap on a sponsor logo, fix?
       onFocusCapture={handleFocusCapture}
       onBlurCapture={handleBlurCapture}
     >

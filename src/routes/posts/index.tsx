@@ -13,7 +13,8 @@ import { posts as everyPost } from "cms/posts/posts";
 import { z } from "zod/mini";
 
 export const Route = createFileRoute("/posts/")({
-  staticData: { title: "All Posts" },
+  // the index route resolves to the same URL as its /posts layout, which owns the crumb
+  staticData: { title: "All Posts", breadcrumb: false },
   validateSearch: z.object({
     page: z.optional(z._default(z.int(), 1)),
   }),
@@ -139,7 +140,7 @@ function RouteComponent() {
                     <img
                       src={post.cover.src || "/assets/posts/covers/default.png".toAsset()}
                       alt={post.cover.alt}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="h-full w-full object-cover transition-transform duration-300 not-motion-reduce:group-hover:scale-105"
                     />
                   </div>
                 )}

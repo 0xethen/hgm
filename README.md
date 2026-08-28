@@ -4,6 +4,8 @@ The repository for the official HackGwinnett marketing website ([hackgwinnett.or
 
 Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https://hackgwinnett.org/go/issues)**
 
+> remaining TODOs: sitemap, the multi-day date range that quietly dropped the weekday (programs), find out why Programs breadcrumb has a link even though there is no index route two images with filenames for alt text, and dead refs in sponsors. there's also about header, hackfest copy, hackathon press links, and programs carousel
+
 ## Contributing
 
 Before you commit: for more info on how to (correctly) create posts, the committing guidelines, and more, please see [CONTRIBUTING](CONTRIBUTING.md)

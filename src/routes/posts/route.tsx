@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/posts")({
+  staticData: { breadcrumb: "Posts" },
   component: Outlet,
   pendingComponent: PendingComponent,
 });

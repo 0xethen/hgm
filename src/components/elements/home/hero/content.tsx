@@ -9,11 +9,12 @@ import { ColorBadge } from "#/components/ui/color-badge";
 import { events } from "#/lib/meta/events";
 import { DialogTrigger } from "#/components/ui/dialog";
 import { videoDialog, videoId } from "./video";
-import { useBreakpoint } from "#/hooks/browser.ts";
+import { useBreakpoint, useIsReducedMotion } from "#/hooks/browser.ts";
 
 export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
   const { md, xl } = useBreakpoint();
   const isMobile = !md;
+  const reducedMotion = useIsReducedMotion();
 
   const [hackathonOver, setHackathonOver] = useState(false);
   const hydrated = useHydrated();
@@ -36,7 +37,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
           <h1 className="text-2xl sm:text-5xl md:text-6xl max-w-2xl font-mono leading-8 sm:leading-14 md:leading-17 select-none">
             Atlanta's premier{" "}
             <span className="text-primary-light">
-              <TextScramble>computer science</TextScramble>
+              <TextScramble trigger={!reducedMotion}>computer science</TextScramble>
             </span>{" "}
             organization
           </h1>
@@ -69,7 +70,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
               <Magnetic intensity={0.4}>
                 <Button
                   render={<Link to="/go/$slug" params={{ slug: "register" }} />}
-                  className="cursor-none striped-hg-green hover:brightness-110 hover:not-active:scale-103"
+                  className="cursor-none motion-reduce:cursor-pointer striped-hg-green hover:brightness-110 not-motion-reduce:hover:not-active:scale-103"
                   variant="hero"
                   size={isMobile ? "sm" : "lg"}
                   nativeButton={false}
@@ -81,7 +82,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             <Magnetic intensity={0.4}>
               <Button
                 render={<Link to="/programs/hackathon" />}
-                className="cursor-none hover:not-active:scale-103"
+                className="cursor-none motion-reduce:cursor-pointer not-motion-reduce:hover:not-active:scale-103"
                 variant="glass"
                 size={isMobile ? "sm" : "lg"}
                 nativeButton={false}
@@ -102,7 +103,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
 
         <DialogTrigger handle={videoDialog}>
           <Magnetic
-            className="group relative hidden xl:inline-flex max-w-lg cursor-none"
+            className="group relative hidden xl:inline-flex max-w-lg cursor-none motion-reduce:cursor-pointer"
             intensity={0.2}
             range={300}
           >
@@ -112,7 +113,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
               className={cn(
                 "w-lg aspect-video select-none drag-none",
                 "bg-hg-black/50 border-3 border-primary-light border-dashed group-hover:border-solid",
-                "transition-[scale,filter] group-hover:scale-101 group-hover:group-active:scale-99",
+                "transition-[scale,filter] not-motion-reduce:group-hover:scale-101 not-motion-reduce:group-hover:group-active:scale-99",
                 "not-group-hover:brightness-80",
               )}
             />
@@ -120,7 +121,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
               className={cn(
                 "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10",
                 "p-1.5 bg-black/50 text-white",
-                "transition-opacity group-hover:opacity-0 cursor-none",
+                "transition-opacity group-hover:opacity-0 cursor-none motion-reduce:cursor-pointer",
               )}
             >
               <RiPlayFill className="size-24" />
@@ -132,14 +133,16 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
         <Magnetic intensity={0.4}>
           <Button
             className={cn(
-              "transition-opacity mx-auto cursor-none",
+              "transition-opacity mx-auto cursor-none motion-reduce:cursor-pointer",
               "data-[state=show]:animate-in data-[state=hide]:animate-out fill-mode-forwards fade-in slide-in-from-bottom-5 fade-out",
             )}
             data-state={isScrolled ? "hide" : "show"}
             variant="glass"
             size={isMobile ? "icon" : "icon-lg"}
             onClick={() =>
-              document.getElementById("subhero")?.scrollIntoView({ behavior: "smooth" })
+              document
+                .getElementById("subhero")
+                ?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" })
             }
           >
             <RiArrowDownBoxLine className="size-7" />
