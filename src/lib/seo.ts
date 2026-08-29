@@ -23,7 +23,9 @@ export const organizationSchema = ({
   },
 });
 
-export const breadcrumbSchema = (crumbs: readonly { label: string; pathname: string }[]): any => ({
+export const breadcrumbSchema = (
+  crumbs: readonly { label: string; pathname: string; linkable?: boolean }[],
+): any => ({
   "script:ld+json": {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -31,7 +33,10 @@ export const breadcrumbSchema = (crumbs: readonly { label: string; pathname: str
       "@type": "ListItem",
       position: index + 1,
       name: crumb.label,
-      item: `${SITE_URL}${crumb.pathname === "/" ? "" : crumb.pathname}`,
+      // dead end crumbs have no page behind them; a ListItem may carry just a name
+      ...(crumb.linkable === false
+        ? {}
+        : { item: `${SITE_URL}${crumb.pathname === "/" ? "" : crumb.pathname}` }),
     })),
   },
 });

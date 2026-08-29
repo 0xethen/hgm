@@ -34,12 +34,20 @@ function RouteComponent() {
   return (
     <>
       <HomepageHeroVideoDialog />
-      <div id="top" />
-      <HomepageHeader isScrolled={isScrolled} />
-      <HomepageHero isScrolled={isScrolled} />
-      <div id="subhero" className="bg-hg-green striped-hg-green-alt/20 h-20" />
-      <HomepageMainContent />
-      <HomepageFooter />
+      <div className="[&_h2]:text-2xl [&_h2]:sm:text-3xl [&_h2]:lg:text-4xl [&_h2]:font-bold">
+        <div id="top" />
+        <HomepageHeader isScrolled={isScrolled} />
+        <HomepageHero isScrolled={isScrolled} />
+
+        {/* <div id="subhero" className="bg-hg-green striped-hg-green-alt/20 h-20" /> */}
+        <div id="subhero" className="relative bg-hg-black flex items-center justify-center h-24">
+          <div className="absolute inset-0 bg-linear-to-b from-hg-green-alt to-hg-green" />
+          <div className="absolute inset-0 bg-[url('/assets/images/hero/hexagons.svg')] opacity-30" />
+        </div>
+
+        <HomepageMainContent />
+        <HomepageFooter />
+      </div>
     </>
   );
 }

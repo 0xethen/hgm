@@ -1,10 +1,8 @@
-import { useMatches } from "@tanstack/react-router";
+import { useMatches, type AnyRoute, type AnyRouter } from "@tanstack/react-router";
 import { brand } from "./meta/brand";
 
 type Matches = ReturnType<typeof useMatches>;
 type Match = Matches[number];
-
-// TODO: merge w Bogey 2 title system
 
 /**
  * a string is the crumb's label
@@ -17,11 +15,44 @@ type Match = Matches[number];
 export type BreadcrumbOption =
   | string
   | false
-  | { label?: string | ((match: Match) => string | undefined); hidden?: boolean };
+  | {
+      label?: string | ((match: Match) => string | undefined);
+      hidden?: boolean;
+    };
 
 export interface Crumb {
   label: string;
   pathname: string;
+  routeId: string;
+  linkable: boolean;
+}
+
+const deadEndRouteIds = new Set<string>();
+
+function hasOwnPage(route: AnyRoute): boolean {
+  const children: AnyRoute[] | undefined = route.children;
+  if (!children?.length) return true;
+
+  // "/" is the index route; a pathless layout shares the URL, so it can hold the index instead
+  return children.some((child) =>
+    child.path === "/" ? true : child.path === undefined ? hasOwnPage(child) : false,
+  );
+}
+
+export function indexDeadEndRoutes(router: AnyRouter): void {
+  deadEndRouteIds.clear();
+
+  const walk = (route: AnyRoute) => {
+    if (!hasOwnPage(route)) deadEndRouteIds.add(route.id);
+    for (const child of (route.children ?? []) as AnyRoute[]) walk(child);
+  };
+
+  walk(router.routeTree);
+}
+
+// true when this route id has children but no index route, so its own URL renders nothing
+export function isDeadEnd(routeId: string | undefined): boolean {
+  return routeId !== undefined && deadEndRouteIds.has(routeId);
 }
 
 // export interface BreadcrumbContext {
@@ -70,7 +101,7 @@ export function getTitle(
   const fallback = `Page / ${suffix}`;
 
   if (!last) return "";
-  if (last._notFound || last.status === "notFound") return "Not Found";
+  if (isNotFound(matches)) return "Not Found";
   if (last.error) return "An error occurred";
   if (getTitleData(last)?.exact) return getMatchTitle(last) ?? fallback;
 
@@ -87,11 +118,16 @@ export function getTitle(
   return titles ? `${titles}${separator}${suffix}` : fallback;
 }
 
+// TODO: necessary to some() on each route change?
+function isNotFound(matches: readonly Match[]): boolean {
+  return matches.some((match) => match._notFound || match.status === "notFound");
+}
+
 export function showsChrome(matches: readonly Match[]): boolean {
   const last = matches.at(-1);
   if (!last) return false;
 
-  return !last.staticData.header?.hidden && !last._notFound && !last.error;
+  return !last.staticData.header?.hidden && !isNotFound(matches) && !last.error;
 }
 
 export function getBreadcrumbs(matches: readonly Match[]): Crumb[] {
@@ -115,13 +151,28 @@ export function getBreadcrumbs(matches: readonly Match[]): Crumb[] {
 
     if (!label) continue;
 
-    // a layout route and its index route resolve to the same URL; keep the deeper label
+    const crumb: Crumb = {
+      label,
+      pathname: match.pathname,
+      routeId: match.routeId,
+      linkable: !isDeadEnd(match.routeId),
+    };
+
     const previous = crumbs.at(-1);
-    if (previous?.pathname === match.pathname) previous.label = label;
-    else crumbs.push({ label, pathname: match.pathname });
+    if (previous?.pathname === crumb.pathname) crumbs[crumbs.length - 1] = crumb;
+    else crumbs.push(crumb);
   }
 
   return crumbs;
+}
+
+/**
+ * The container __root wraps every page in. A route sets it once and everything nested under it
+ * inherits, so a section keeps one width and one set of gutters. `false` opts a full-bleed page
+ * out of the wrapper entirely.
+ */
+export function getContainerClassName(matches: readonly Match[]): string | false | undefined {
+  return findFromLeaf(matches, (match) => match.staticData.classNames?.container);
 }
 
 export function getDescription(matches: readonly Match[], fallback = ""): string {

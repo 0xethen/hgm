@@ -31,7 +31,8 @@ const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: lazyPlugins(() => [
     devtools(),
-    contentCollections(),
+    // its watcher keeps the process alive after a test run, and tests read no collections
+    contentCollections({ isEnabled: (config) => config.mode !== "test" }),
     tailwindcss(),
     tanstackStart({
       spa: {

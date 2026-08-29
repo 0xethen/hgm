@@ -8,7 +8,7 @@ interface AuthorInfo {
 
 export type Author = AuthorInfo & { id: string }; // id is injected in posts.ts
 
-// todo: replace with array and "id" prop?
+// keyed by id on purpose: posts and /posts/@{author} both look authors up by key
 
 export const authorInfo: Record<string, AuthorInfo> = {
   hg: {

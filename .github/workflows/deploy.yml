@@ -21,6 +21,8 @@ jobs:
         env:
           # secrets vs vars: https://docs.github.com/en/actions/learn-github-actions/variables#about-environment-variables
           PUBLIC_APPS_SCRIPT_NEWSLETTER_URL: ${{ vars.PUBLIC_APPS_SCRIPT_NEWSLETTER_URL }}
+          # the footer's commit link; a fork gets its own without changing anything
+          PUBLIC_GIT_REPO: ${{ github.repository }}
 
       - name: upload static files as pages artifact
         id: deployment

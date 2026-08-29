@@ -9,7 +9,8 @@ const ABOUT_POST_ID = "about-us";
 const fallback = brand.description;
 
 export const Route = createFileRoute("/about/")({
-  staticData: { title: "About Us", breadcrumb: { hidden: true } },
+  // the header banner runs edge to edge, so this page lays out its own container
+  staticData: { title: "About Us", breadcrumb: { hidden: true }, classNames: { container: false } },
   loader: async () => {
     const content = pages.find((p) => ABOUT_POST_ID === p._meta.path.slugify());
     return content;
@@ -22,11 +23,12 @@ function RouteComponent() {
 
   return (
     <div>
-      {/* TODO: replace with header from social media posts with the hexagonic thingy? */}
-      <div className="relative bg-black flex items-center justify-center h-24 overflow-hidden sm:h-36 lg:h-48">
-        <div className="absolute inset-0 bg-hg-green striped-hg-green-alt/20 opacity-50" />
+      <div className="relative bg-hg-black flex items-center justify-center h-24 overflow-hidden sm:h-36 lg:h-48">
+        {/*<div className="absolute inset-0 bg-hg-green" />*/}
+        <div className="absolute inset-0 bg-linear-to-b from-primary to-hg-green" />
+        <div className="absolute inset-0 bg-[url('/assets/images/hero/hexagons.svg')] opacity-30" />
         <h1 className="relative font-light font-brand text-5xl uppercase text-white sm:text-6xl lg:text-8xl">
-          About Us
+          ABOUT US
         </h1>
       </div>
 

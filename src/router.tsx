@@ -4,7 +4,7 @@ import { routeTree } from "./routeTree.gen";
 import { NotFound } from "#/components/NotFound";
 import { ErrorBoundary } from "#/components/ErrorBoundary";
 import type { HeaderClassNames } from "#/components/elements/nav/Header";
-import type { TitleOption, BreadcrumbOption } from "#/lib/routing";
+import { indexDeadEndRoutes, type TitleOption, type BreadcrumbOption } from "#/lib/routing";
 
 export function getRouter() {
   const router = createTanStackRouter({
@@ -17,6 +17,9 @@ export function getRouter() {
     defaultNotFoundComponent: NotFound,
   });
 
+  // reachability is a property of the route tree, so index it once here; see #/lib/routing
+  indexDeadEndRoutes(router);
+
   return router;
 }
 
@@ -26,16 +29,29 @@ declare module "@tanstack/react-router" {
   }
 
   interface StaticDataRouteOption {
+    /** document title; see getTitle in #/lib/routing */
     title?: TitleOption;
+    /** overrides the crumb this route contributes; see getBreadcrumbs in #/lib/routing */
     breadcrumb?: BreadcrumbOption;
+    /** meta description, inherited by anything nested under this route */
     description?: string;
-    classNames?: { root?: string; body?: string; main?: string };
-
-    // todo: cleanup? (like bogey)
+    /** escape hatches for pages that own their own chrome (the homepage, the BSOD, ...) */
+    classNames?: {
+      root?: string;
+      body?: string;
+      main?: string;
+      /**
+       * The page container __root wraps children in, inherited by nested routes.
+       * `false` renders the page full-bleed, with no wrapper at all.
+       */
+      container?: string | false;
+    };
     header?: {
       className?: string;
       classNames?: HeaderClassNames;
+      /** drops the site header and footer, and with them the breadcrumb trail */
       hidden?: boolean;
+      /** keeps the header-height offset even when the header itself is hidden */
       forceLayoutOffset?: boolean;
     };
   }

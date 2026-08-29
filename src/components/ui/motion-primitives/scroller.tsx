@@ -13,6 +13,8 @@ export type ScrollerProps = {
   reverse?: boolean;
   className?: string;
   disabled?: boolean; // reduce motion = enabled automatically
+  /** keep the marquee running even when the visitor asks for reduced motion */
+  ignoreReducedMotion?: boolean;
 };
 
 export function Scroller({
@@ -24,9 +26,10 @@ export function Scroller({
   reverse = false,
   className,
   disabled = false,
+  ignoreReducedMotion = false,
 }: ScrollerProps) {
   const reducedMotion = useIsReducedMotion();
-  const isDisabled = disabled || reducedMotion; // TODO: add override (ignore reduce)?
+  const isDisabled = disabled || (reducedMotion && !ignoreReducedMotion);
 
   const [isHovering, setIsHovering] = useState(false);
 
@@ -82,9 +85,6 @@ export function Scroller({
     translation.set(next);
   });
 
-  // No marquee, and no scrollbar standing in for one: lay the children out so all of them are
-  // visible at once. (Callers with a better static layout should branch before rendering a
-  // Scroller at all — SponsorSection swaps in its grid.)
   if (isDisabled) {
     return (
       <div className={className}>
@@ -97,6 +97,11 @@ export function Scroller({
       </div>
     );
   }
+
+  const rowStyle = {
+    gap,
+    flexDirection: direction === "horizontal" ? ("row" as const) : ("column" as const),
+  };
 
   return (
     <div className={cn("overflow-hidden", className)}>
@@ -111,8 +116,13 @@ export function Scroller({
         onHoverStart={speedOnHover ? () => setIsHovering(true) : undefined}
         onHoverEnd={speedOnHover ? () => setIsHovering(false) : undefined}
       >
-        {children}
-        {children}
+        <div className="flex" style={rowStyle}>
+          {children}
+        </div>
+        {/* the seam copy is decoration: keep it out of the tab order and the a11y tree */}
+        <div className="flex" style={rowStyle} aria-hidden inert>
+          {children}
+        </div>
       </motion.div>
     </div>
   );

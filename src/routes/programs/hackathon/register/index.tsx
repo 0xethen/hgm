@@ -40,16 +40,19 @@ export const Route = createFileRoute("/programs/hackathon/register/")({
     breadcrumb: `Register for ${event.shortName}`,
     description: `Register for ${event.name}, Metro Atlanta's premier hackathon, in an interactive JSON editor!`,
   },
-  beforeLoad: () => {
-    if (event.registration?.closed)
-      throw new Response("Forbidden", {
-        status: 403,
-        statusText: "Registration hasn't opened yet",
-      });
-  },
-  component: RouteComponent,
+  // a thrown Response can't be serialized across SSR, so the closed state is rendered, not thrown
+  component: event.registration?.closed ? ClosedComponent : RouteComponent,
   errorComponent: ErrorComponent,
 });
+
+function ClosedComponent() {
+  return (
+    <Fallback
+      title="registration hasn't opened yet"
+      actions={[{ label: `back to ${event.shortName}`, to: event.registration?.page ?? "/programs/hackathon" }]}
+    />
+  );
+}
 
 function RouteComponent() {
   const editorRef = React.useRef<JsonEditorHandle>(null);

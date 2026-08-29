@@ -8,14 +8,14 @@ export function HomepageFooter() {
     <Footer
       link={
         <button
-          className="link text-sm text-white/50 hover:text-white"
+          className="link text-sm"
           onClick={() =>
             document
               .getElementById("top")
               ?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" })
           }
         >
-          Take me up!
+          Back to top
         </button>
       }
     />

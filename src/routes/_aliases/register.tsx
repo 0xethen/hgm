@@ -7,9 +7,9 @@ export const Route = createFileRoute("/_aliases/register")({
 function RouteComponent() {
   return (
     <>
-      <Navigate to="/programs/hackathon" replace />
-      <Link to="/programs/hackathon" className="link">
-        Continue to the hackathon
+      <Navigate to="/programs/hackathon/register" replace />
+      <Link to="/programs/hackathon/register" className="link">
+        Continue to hackathon registration
       </Link>
     </>
   );

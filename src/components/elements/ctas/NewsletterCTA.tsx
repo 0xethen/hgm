@@ -31,9 +31,8 @@ export function NewsletterCTA({
     defaultValues: {
       email: "",
     },
-    validators: {
-      onSubmit: formSchema,
-    },
+    // no triggers means submit-only, which is when a one-field signup should complain
+    validators: [{ run: formSchema, triggers: [] }],
     onSubmit: async ({ value }) => {
       const request = (async () => {
         if (import.meta.env.DEV && value.email.includes("@example.com")) {
@@ -100,14 +99,23 @@ export function NewsletterCTA({
                 description: "That email address does not look valid.",
               };
 
+            // the sheet reports a duplicate whether or not the address ever confirmed, so the
+            // "check your inbox" line is only true while it is still pending
             case "ERR_DUPLICATE_ENTRY":
-              return {
-                type: "warning",
-                message: "Pending verification",
-                description:
-                  "That email is already in our system. Check your inbox for the verification email, or wait a moment and try again.",
-                duration: 12000,
-              };
+              return err.cause?.verified
+                ? {
+                    type: "info",
+                    message: "You're already subscribed",
+                    description: `${value.email} is verified, so there's nothing to do. Email us at hackgwinnett@gmail.com or hit the "Unsubscribe" link in our emails if you want out.`,
+                    duration: 12000,
+                  }
+                : {
+                    type: "warning",
+                    message: "Pending verification",
+                    description:
+                      "That email is already in our system but hasn't been confirmed yet. Check your inbox for the verification email, or wait a moment and try again.",
+                    duration: 12000,
+                  };
           }
 
           return {
@@ -127,7 +135,7 @@ export function NewsletterCTA({
   return (
     <div className={cn("space-y-6", className)}>
       <div>
-        <h2 className="text-2xl font-bold mt-0 mb-2">{title}</h2>
+        <h3 className="text-2xl font-bold mt-0 mb-2">{title}</h3>
         <p className="text-gray-600 text-sm md:text-base">{description}</p>
       </div>
 
@@ -142,21 +150,21 @@ export function NewsletterCTA({
         <form.Field
           name="email"
           children={(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid = field.meta.isTouched && !field.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <Input
                   id={field.name}
                   name={field.name}
                   type="email"
-                  value={field.state.value}
+                  value={field.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
                   aria-invalid={isInvalid}
                   placeholder="Email address"
                   autoComplete="off"
                 />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                {isInvalid && <FieldError errors={field.errors} />}
                 <FieldDescription className="text-xs md:text-sm">
                   By signing up for {brand.name} mail, you agree to receive our updates and
                   communications. We won't pester you with constant emails (we hate spam too!)

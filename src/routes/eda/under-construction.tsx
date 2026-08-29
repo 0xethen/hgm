@@ -3,7 +3,7 @@ import { noindex } from "#/lib/seo";
 
 export const Route = createFileRoute("/eda/under-construction")({
   component: RouteComponent,
-  staticData: { title: "Under Construction", breadcrumb: false },
+  staticData: { title: "Under Construction", breadcrumb: false, classNames: { container: false } },
   head: () => ({ meta: noindex() }),
 });
 

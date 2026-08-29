@@ -1,13 +1,14 @@
 import { createFileRoute, Link, Navigate, useSearch } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_aliases/report")({
+  loader: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 5000)); // simulate a delay TODO TODO TODO
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  // this alias declares no schema of its own, so pass whatever came in through to /eda/report,
-  // which validates it (a bad `?t=` there falls back rather than erroring here)
-  const search = useSearch({ strict: false });
+  const search = useSearch({ strict: false }); // validated @ /eda/report
 
   return (
     <>

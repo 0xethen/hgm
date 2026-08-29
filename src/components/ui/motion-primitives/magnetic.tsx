@@ -12,6 +12,8 @@ export type MagneticProps = {
   actionArea?: "self" | "parent" | "global";
   springOptions?: SpringOptions;
   disabled?: boolean; // reduce motion = enabled automatically
+  /** run the effect even when the visitor asks for reduced motion */
+  ignoreReducedMotion?: boolean;
 };
 
 export function Magnetic({
@@ -22,9 +24,10 @@ export function Magnetic({
   actionArea = "self",
   springOptions = SPRING_CONFIG,
   disabled = false,
+  ignoreReducedMotion = false,
 }: MagneticProps) {
   const reducedMotion = useIsReducedMotion();
-  const isDisabled = disabled || reducedMotion; // TODO: add override (ignore reduce)?
+  const isDisabled = disabled || (reducedMotion && !ignoreReducedMotion);
 
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

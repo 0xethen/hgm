@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useHydrated } from "@tanstack/react-router";
-import { brand } from "#/lib/meta/brand";
+import { brand, repo } from "#/lib/meta/brand";
 
 const FALLBACK_COMMIT_SHA = "dev";
 
@@ -15,31 +15,32 @@ export function Footer({ link }: { link?: React.ReactNode }) {
   }, [hydrated]);
 
   return (
-    <footer className="bg-hg-black text-white p-4 md:p-6">
+    <footer className="bg-hg-green-alt striped-hg-green-alt/20 text-white p-4 md:p-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-2">
-        <span className="text-sm text-white/50">
+        <span className="text-sm text-white/50 text-center md:text-left">
           &copy; {date?.getFullYear() || "2026"} {brand.name}. All rights reserved. (
           <Link
-            to={"https://github.com/hackgwinnett/www" as string}
+            to={repo.commitUrl as string}
             target="_blank"
             rel="noopener noreferrer"
             className="link"
+            title={`${repo.slug} @ ${sha}`}
           >
             {sha}
           </Link>
           )
         </span>
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row flex-wrap justify-center gap-4 text-sm text-white/50">
           <Link
             to="/contact"
-            className="link text-sm" // text-sm text-white/50 hover:text-white
+            className="link" // text-sm text-white/50 hover:text-white
           >
             Contact Us
           </Link>
           <a
             href={"https://ethen.app/legal?s=hgm"}
             target="_blank"
-            className="link text-sm" // text-sm text-white/50 hover:text-white
+            className="link" // text-sm text-white/50 hover:text-white
           >
             Cookies & Privacy
           </a>

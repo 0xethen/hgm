@@ -29,15 +29,15 @@
   /* @apply text-primary hover:text-primary-light transition-colors duration-200; */
 
   h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl font-bold font-brand;
+    @apply text-5xl font-bold font-brand;
   }
 
   h2 {
-    @apply text-2xl sm:text-3xl md:text-4xl font-bold;
+    @apply text-4xl font-semibold;
   }
 
   h3 {
-    @apply text-xl sm:text-2xl md:text-3xl font-semibold;
+    @apply text-3xl font-semibold;
   }
 
   @supports not (display: grid-lanes) {
@@ -94,9 +94,14 @@
       animation-duration: 0.01ms !important;
       animation-delay: 0ms !important;
       animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+
+    *:not([data-slot="accordion-content"], [data-slot="collapsible-content"]),
+    *::before,
+    *::after {
       transition-duration: 0.01ms !important;
       transition-delay: 0ms !important;
-      scroll-behavior: auto !important;
     }
   }
 
@@ -139,6 +144,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-text: var(--destructive-text);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
@@ -189,6 +195,7 @@
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
+  --destructive-text: oklch(0.777 0.245 27.325);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);

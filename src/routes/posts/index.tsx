@@ -10,6 +10,7 @@ import {
 import { RiAiGenerateText } from "@remixicon/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { posts as everyPost } from "cms/posts/posts";
+import pluralize from "pluralize";
 import { z } from "zod/mini";
 
 export const Route = createFileRoute("/posts/")({
@@ -101,12 +102,12 @@ function RouteComponent() {
   const mostUsedTags = getMostUsedTags(7);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 space-y-8">
+    <div className="space-y-8">
       <div className="flex flex-row items-center justify-between gap-4">
         <div className="flex flex-col gap-0.5">
-          <h1 className="text-4xl">Posts</h1>
+          <h2 className="text-4xl">Posts</h2>
           <p className="text-muted-foreground">
-            page {currentPage} of {totalPages} ({posts.length} {"post".plural(posts.length)})
+            page {currentPage} of {totalPages} ({posts.length} {pluralize("post", posts.length)})
           </p>
         </div>
         {mostUsedTags.length > 0 && (
@@ -116,7 +117,7 @@ function RouteComponent() {
                 key={tag}
                 to="/posts/tag/$tag"
                 params={{ tag }}
-                className="bg-muted px-3 py-1 text-sm font-medium rounded hover:bg-muted/80 transition-colors"
+                className="bg-muted px-3 py-1 text-sm font-medium hover:bg-muted/80 transition-colors"
               >
                 #{tag}
               </Link>

@@ -5,20 +5,23 @@ import {
   useHydrated,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { TextScramble } from "#/components/ui/motion-primitives/text-scramble";
-import { useIsReducedMotion } from "#/hooks/browser.ts";
-import { cn } from "#/lib/utils";
+import { Fallback } from "#/components/Fallback";
 import { z } from "zod/mini";
 import { Button } from "#/components/ui/button";
 import { Separator } from "#/components/ui/separator";
 import { RiFlag2Fill } from "@remixicon/react";
-import { brand } from "#/lib/meta/brand";
+import { brand, repo } from "#/lib/meta/brand";
 
 const templates = {
   nocontent: {
     title: "Missing Content",
     description:
       "Encountered a 404 error. \n(Describe the content that is missing, where you expected to find it, and any other details that might help us track down this pesky bug.)",
+  },
+  error: {
+    title: "Error / bug report",
+    description:
+      "Encountered an unknown error. \n(Describe what you were doing when the error occurred, what you expected to happen, and any other details that might help us track down this pesky bug.)",
   },
   feedback: {
     title: "Feedback / feature request",
@@ -29,7 +32,8 @@ const templates = {
 const formLineDivider = "=————————————————————————————————————=";
 
 export const Route = createFileRoute("/eda/report")({
-  staticData: { title: "Report a problem" },
+  // fills the viewport itself, so the page container would only add overflow
+  staticData: { title: "Report a problem", classNames: { container: false } },
   validateSearch: z.object({
     from: z.optional(z.string()), // the route the user came from, if applicable
     c: z.optional(z.number()),
@@ -79,12 +83,7 @@ function RouteComponent() {
         </Button>
         <p className="italic text-muted-foreground text-sm">
           or view the{" "}
-          <Link
-            to={"https://github.com/hackgwinnett/www" as string}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link"
-          >
+          <Link to={repo.url as string} target="_blank" rel="noopener noreferrer" className="link">
             GitHub repository
           </Link>
         </p>
@@ -109,38 +108,14 @@ function RouteComponent() {
 }
 
 function ErrorComponent(props: ErrorComponentProps) {
-  const reduced = useIsReducedMotion();
-
   return (
-    <div className="flex font-heading flex-col min-h-safe-dvh items-center justify-center text-center gap-1 select-none">
-      <span className="animate-in fade-in delay-100 fill-mode-backwards">
-        <TextScramble trigger={!reduced}>
-          {props.error instanceof Response
-            ? `${props.error.statusText} (${props.error.status})`
-            : "the issue reporter failed to process your request."}
-        </TextScramble>
-      </span>
-      <div className="flex flex-row items-center gap-3">
-        <Link
-          to="/"
-          className={cn(
-            "link",
-            "font-bold animate-in fade-in animation-duration-2000 animation-delay-600 fill-mode-backwards",
-            "hover:underline",
-          )}
-        >
-          go home {":("}
-        </Link>
-        {/* <Link
-          to="/"
-          className={cn(
-            "font-bold animate-in fade-in animation-duration-1500 animation-delay-900 fill-mode-backwards",
-            "hover:underline",
-          )}
-        >
-          continue anyway
-        </Link> */}
-      </div>
-    </div>
+    <Fallback
+      title={
+        props.error instanceof Response
+          ? `${props.error.statusText} (${props.error.status})`
+          : "the issue reporter failed to process your request."
+      }
+      actions={[{ label: "go home", to: "/" }]}
+    />
   );
 }

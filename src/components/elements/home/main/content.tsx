@@ -10,9 +10,9 @@ export function HomepageMainContent() {
       {/* Section 1 */}
       <section id="hg-info" className="grid lg:grid-cols-2 gap-10">
         <div className="space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl">Hack-a-What?!</h1>
+          <h2>Hack-a-What?!</h2>
           <p>
-            {brand.name} is Metro Atlanta's premier high school computer science organization.
+            {brand.name} is Metro Atlanta's premier high school computer science organization.{" "}
             {brand.name}'s signature event is its{" "}
             <Link to="/programs/hackathon" className="link">
               annual hackathon
@@ -28,16 +28,16 @@ export function HomepageMainContent() {
           </p>
         </div>
         <div className="space-y-4 flex flex-col lg:items-end">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl lg:text-end">
+          <h2 className="lg:text-end">
             Frequently Asked <span className="inline lg:hidden">Questions</span>
-          </h1>
+          </h2>
           <HackathonFAQ className="w-full lg:max-w-lg xl:max-w-xl" />
         </div>
       </section>
 
       {/* Section 2 */}
       <section id="sponsors">
-        <SponsorSection />
+        <SponsorSection title={<h2>Our Sponsors</h2>} />
       </section>
 
       {/* Section 3 */}

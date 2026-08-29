@@ -33,9 +33,12 @@ import { RiArrowRightLine } from "@remixicon/react";
 import type { Author } from "cms/posts/authors";
 import { getTitle } from "#/lib/routing.ts";
 import { articleSchema } from "#/lib/seo";
+import { readingTime } from "#/lib/utils";
+import pluralize from "pluralize";
 
 export const Route = createFileRoute("/posts/$postId")({
   staticData: {
+    classNames: { container: "max-w-4xl" },
     breadcrumb: {
       label: (match) =>
         posts.find((post) => post._meta.path.slugify() === match.params.postId)?.title,
@@ -79,7 +82,7 @@ function RouteComponent() {
   const { post } = Route.useLoaderData();
 
   return (
-    <article className="container mx-auto px-4 py-8 max-w-4xl">
+    <article>
       <div className="space-y-4">
         {post.cover ? (
           <div
@@ -124,7 +127,8 @@ function RouteComponent() {
             {new Date(post.date).toLocaleDateString("en-US", { dateStyle: "long" })}
           </p>
 
-          {/* TODO: view counter */}
+          {/* TODO: simple backend for view counter */}
+          <p className="text-muted-foreground">{readingTime(post.content)} min read</p>
         </div>
         {post.tags && (
           <div className="mt-2 flex flex-wrap gap-2">
@@ -200,7 +204,7 @@ function AuthorList({ authors, asItems }: { authors: Array<Author>; asItems?: bo
     <p>
       {first.name}{" "}
       <span className="text-muted-foreground">
-        and {others.length} {"other".plural(others.length)}
+        and {others.length} {pluralize("other", others.length)}
       </span>
     </p>
   );

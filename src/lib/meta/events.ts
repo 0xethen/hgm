@@ -16,7 +16,7 @@ const eventList = {
       end: new Date("2026-10-31T17:00:00"),
     },
     registration: {
-      url: "/go/register",
+      url: "https://docs.google.com/forms/d/e/1FAIpQLSfZn384gkF09tDDLrMyxB9WhqiCsW3_hMMEek7lDLB_L-gjNw/viewform",
       page: "/programs/hackathon/register",
       closed: true,
     },
@@ -83,7 +83,7 @@ export interface HGEvent {
     closed?: boolean;
     /** The registration link. Could be a Google Form, email compose link, etc. */
     url: string;
-    /** The internal registration page on the HackGwinnett website, if any */
+    /** An on-site sign-up page (e.g. /programs/hackathon/register) */
     page?: string;
   };
 }

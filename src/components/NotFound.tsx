@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { Link, useLocation, useNavigate, type NotFoundRouteProps } from "@tanstack/react-router";
+import { useLocation, useNavigate, type NotFoundRouteProps } from "@tanstack/react-router";
+import { Fallback, type FallbackAction } from "#/components/Fallback";
 import { TextScramble } from "#/components/ui/motion-primitives/text-scramble";
-import { useBreakpoint, useIsReducedMotion } from "#/hooks/browser.ts";
 import { cn } from "#/lib/utils";
 import { sleep } from "#/lib/utils";
 import { LilJadenJr } from "#/components/elements/misc/LilJadenJr";
@@ -31,13 +31,18 @@ export function NotFound(
 
   const location = useLocation();
   const navigate = useNavigate();
-  const reduced = useIsReducedMotion();
 
   const homeLinkRef = useRef<HTMLAnchorElement>(null);
   const reportLinkRef = useRef<HTMLAnchorElement>(null);
   const secretButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { isMobileDevice } = useBreakpoint();
+  const countSecret = () => {
+    setSecretCount((prev) => prev + 1);
+    if (secretCount <= SECRET_THRESHOLD) {
+      console.log(`[secret] ${secretCount}/${SECRET_THRESHOLD}`);
+      if (secretCount === SECRET_THRESHOLD) void displaySecret();
+    } else if (secretCount % SECRET_THRESHOLD === 0) console.log("[secret] that won't work again");
+  };
 
   const switchLinkFocus = async (e: React.KeyboardEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     if (import.meta.env.DEV && e.key === "e") void displaySecret(true);
@@ -59,23 +64,13 @@ export function NotFound(
           break;
       }
 
-      setSecretCount((prev) => prev + 1);
-      if (secretCount <= SECRET_THRESHOLD) {
-        console.log(`[secret] ${secretCount}/${SECRET_THRESHOLD}`);
-        if (secretCount === SECRET_THRESHOLD) void displaySecret();
-      } else if (secretCount % SECRET_THRESHOLD === 0)
-        console.log("[secret] that won't work again");
+      countSecret();
     }
   };
 
   const tapTitle = () => {
-    if (!isMobileDevice) return;
-
-    setSecretCount((prev) => prev + 1);
-    if (secretCount <= SECRET_THRESHOLD) {
-      console.log(`[secret] ${secretCount}/${SECRET_THRESHOLD}`);
-      if (secretCount === SECRET_THRESHOLD) void displaySecret();
-    } else if (secretCount % SECRET_THRESHOLD === 0) console.log("[secret] that won't work again");
+    // do we need to check for isMobileDevice? nah
+    countSecret();
   };
 
   const displaySecret = async (manual?: boolean) => {
@@ -115,105 +110,57 @@ export function NotFound(
       homeLinkRef.current?.focus();
   };
 
+  const actions: FallbackAction[] = [
+    {
+      label: props?.link?.text || "go home",
+      to: props?.link?.href || "/",
+      ref: homeLinkRef,
+      onKeyDown: switchLinkFocus,
+    },
+    {
+      label: (
+        <TextScramble
+          trigger={scramble}
+          onHoverStart={() => setScramble(true)}
+          onHoverEnd={() => setScramble(false)}
+          deTriggerStopsScramble
+        >
+          report issue
+        </TextScramble>
+      ),
+      tone: "destructive",
+      to: "/report",
+      search: { from: props?.routeId || location.pathname, c: 404, t: "nocontent" },
+      ref: reportLinkRef,
+      onKeyDown: switchLinkFocus,
+    },
+    {
+      // the payoff is still just the gallery link; the tease is the point
+      label: showSecret ? (
+        <TextScramble trigger duration={1.5} speed={0.02}>
+          [ ? ? ? ]
+        </TextScramble>
+      ) : null,
+      tone: "secret",
+      hidden: !showSecret,
+      ref: secretButtonRef,
+      onClick: doSecret,
+      onKeyDown: switchLinkFocus,
+      onBlur: hideSecret,
+    },
+  ];
+
   return (
     <div className="bg-background" onMouseUp={refocus}>
       {!showSecret && <LilJadenJr onClick={refocus} />}
-      <div
-        className={cn(
-          "transition-colors px-12 flex font-mono flex-col min-h-safe-dvh items-center justify-center text-center select-none",
-          isMobileDevice ? "gap-3" : "gap-2",
-          showSecret && "bg-black text-white",
-        )}
-        // no one, including lil jaden jr, should unfocus the linkgroup maybe a listener instead?
-      >
-        <span
-          onClick={tapTitle}
-          className="animate-in fade-in animation-delay-100 fill-mode-backwards mb-1"
-        >
-          <TextScramble
-            trigger={!reduced}
-            onScrambleComplete={() => {
-              if (homeLinkRef.current) homeLinkRef.current.focus();
-            }}
-          >
-            {props?.title || message || messages[0]}
-          </TextScramble>
-        </span>
-
-        <Link
-          ref={homeLinkRef}
-          to={props?.link?.href || "/"}
-          className={cn(
-            "group",
-            "transition-transform not-motion-reduce:hover:-translate-y-px",
-            "focus-visible:decoration-foreground/50 focus-visible:hover:decoration-foreground",
-            "focus-visible:outline-none",
-          )}
-          onKeyDown={switchLinkFocus}
-        >
-          <span className="font-bold animate-in fade-in animation-duration-2000 animation-delay-600 fill-mode-backwards">
-            <span className="hidden group-focus:inline mr-1.5">{">"}</span>
-            <span className="group-hocus:underline">{props?.link?.text || "go home"}</span>
-            <span className="hidden group-focus:inline ml-1.5">{"<"}</span>
-          </span>
-        </Link>
-
-        <Link
-          ref={reportLinkRef}
-          to="/report"
-          search={{ from: props?.routeId || location.pathname, c: 404, t: "nocontent" }}
-          className={cn(
-            "group",
-            "not-motion-reduce:hover:animate-shake-once",
-            "hocus:text-destructive",
-            "focus-visible:decoration-destructive/50 focus-visible:hover:decoration-destructive",
-            "focus-visible:outline-none",
-          )}
-          onKeyDown={switchLinkFocus}
-        >
-          <span className="font-bold animate-in fade-in animation-duration-1500 animation-delay-900 fill-mode-backwards">
-            <span className="hidden group-focus:inline mr-1.5">{">"}</span>
-            <span className="group-hocus:underline">
-              <TextScramble
-                trigger={scramble}
-                onHoverStart={() => setScramble(true)}
-                onHoverEnd={() => setScramble(false)}
-                deTriggerStopsScramble
-              >
-                report issue
-              </TextScramble>
-            </span>
-            <span className="hidden group-focus:inline ml-1.5">{"<"}</span>
-          </span>
-        </Link>
-
-        <button
-          ref={secretButtonRef}
-          className={cn(
-            "group",
-            !showSecret && "hidden",
-            "hocus:text-green-500",
-            "focus-visible:decoration-green-500/50 focus-visible:hover:decoration-green-500",
-            "focus-visible:outline-none",
-          )}
-          onClick={doSecret}
-          onKeyDown={switchLinkFocus}
-          onBlur={hideSecret}
-        >
-          <span>
-            <span className="hidden group-focus:inline mr-1.5">{">"}</span>
-            <span>
-              {showSecret && (
-                <TextScramble trigger duration={1.5} speed={0.02}>
-                  [ ? ? ? ]
-                </TextScramble>
-              )}
-              {/* todo: actually finish this easter egg */}
-            </span>
-            <span className="hidden group-focus:inline ml-1.5">{"<"}</span>
-          </span>
-        </button>
-      </div>
+      {/* no one, including lil jaden jr, should unfocus the linkgroup. maybe a listener instead? */}
+      <Fallback
+        title={props?.title || message || messages[0]}
+        actions={actions}
+        onTitleClick={tapTitle}
+        onScrambleComplete={() => homeLinkRef.current?.focus()}
+        className={cn(showSecret && "bg-black text-white")}
+      />
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { Scroller } from "#/components/ui/motion-primitives/scroller";
 import { type Sponsor, mainSponsors, otherSponsors } from "#/lib/meta/sponsors";
 import { useBreakpoint, useIsReducedMotion } from "#/hooks/browser.ts";
 
-export function SponsorSection() {
+export function SponsorSection({ title }: { title: React.ReactNode }) {
   const { md } = useBreakpoint();
   const isMobile = !md;
   const reducedMotion = useIsReducedMotion();
@@ -41,7 +41,7 @@ export function SponsorSection() {
       onFocusCapture={handleFocusCapture}
       onBlurCapture={handleBlurCapture}
     >
-      <h1 className="text-2xl sm:text-3xl md:text-4xl">Sponsors</h1>
+      {title}
 
       <div className="space-y-6">
         {/* main sponsors (3 per row) */}

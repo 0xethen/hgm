@@ -17,13 +17,22 @@ import { Footer } from "#/components/elements/nav/Footer";
 import { ConsoleSecrets } from "#/routes/thecakeisalie";
 import { cn } from "#/lib/utils";
 import { Breadcrumbs } from "#/components/elements/nav/Breadcrumbs";
-import { getBreadcrumbs, getDescription, getTitle, showsChrome } from "#/lib/routing";
+import {
+  getContainerClassName,
+  getBreadcrumbs,
+  getDescription,
+  getTitle,
+  showsChrome,
+} from "#/lib/routing";
 import { breadcrumbSchema, organizationSchema, seo } from "#/lib/seo";
 import { brand, socialLinks } from "#/lib/meta/brand";
 
 import css from "#/styles/index.css?url";
 
 const BRAND_THEME_COLOR = "rgb(97,178,138)";
+
+/** what most pages were writing out by hand; override per route with staticData.classNames.container */
+const PAGE_CONTAINER = "mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-9 md:py-9";
 
 export const Route: RootRoute<Register> = createRootRoute({
   // the first crumb of every trail; see `breadcrumb` in src/router.tsx
@@ -68,11 +77,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const showChrome = showsChrome(matches);
 
   // a lone "Home" is noise, so a trail needs somewhere to point back to
-  // TODO: more consistent page padding in __root based on showChrome?
   const crumbs = getBreadcrumbs(matches);
   const showBreadcrumbs = crumbs.length > 1;
 
   const layoutOffset = showChrome || !!staticData.header?.forceLayoutOffset;
+
+  // one place decides how wide a page is and how far it sits from the edges. a page without
+  // chrome (the homepage, a 404, the BSOD) is laying itself out full-bleed, so it gets no wrapper
+  const container = showChrome ? getContainerClassName(matches) : false;
 
   return (
     <html
@@ -93,8 +105,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           ) : null}
 
           <main id="main" className={cn("min-h-safe-dvh bg-background", classNames?.main)}>
-            {showBreadcrumbs ? <Breadcrumbs crumbs={crumbs} /> : null}
-            {children}
+            {container === false ? (
+              children
+            ) : (
+              <div className={cn(PAGE_CONTAINER, container)}>
+                {showBreadcrumbs ? <Breadcrumbs crumbs={crumbs} /> : null}
+                {children}
+              </div>
+            )}
           </main>
 
           {showChrome ? <Footer /> : null}

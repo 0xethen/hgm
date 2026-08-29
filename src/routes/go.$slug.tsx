@@ -1,10 +1,10 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { socialLinks } from "#/lib/meta/brand";
+import { events } from "#/lib/meta/events";
 
 const goRedirects: Record<string, string> = {
-  // main site/quick links
-  register:
-    "https://docs.google.com/forms/d/e/1FAIpQLSfZn384gkF09tDDLrMyxB9WhqiCsW3_hMMEek7lDLB_L-gjNw/viewform",
+  register: events.hackathon.registration?.page || "/programs/hackathon",
+  form: events.hackathon.registration?.url || "/programs/hackathon",
   issues: "/report",
   workshops: "/programs/hackathon#workshops",
   wsarchive: "https://github.com/hackgwinnett/workshops",

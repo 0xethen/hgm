@@ -20,7 +20,8 @@ export function Breadcrumbs({
   className?: string;
 }) {
   return (
-    <Breadcrumb className={cn("mx-auto w-full max-w-7xl px-4 pt-5 sm:px-6", className)}>
+    // no gutters of its own: __root's page container already put it where the page starts
+    <Breadcrumb className={cn("w-full pb-5", className)}>
       <BreadcrumbList>
         {crumbs.map((crumb, index) => {
           const isLast = index === crumbs.length - 1;
@@ -29,12 +30,15 @@ export function Breadcrumbs({
             <React.Fragment key={crumb.pathname}>
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
-                ) : (
-                  // crumbs come from matched pathnames, which `to` types as a literal union
+                  <BreadcrumbPage aria-current={isLast ? "page" : undefined}>
+                    {crumb.label}
+                  </BreadcrumbPage>
+                ) : crumb.linkable ? (
                   <BreadcrumbLink render={<Link to={crumb.pathname as string} />}>
                     {crumb.label}
                   </BreadcrumbLink>
+                ) : (
+                  crumb.label
                 )}
               </BreadcrumbItem>
               {isLast ? null : <BreadcrumbSeparator />}

@@ -14,6 +14,19 @@ export const brand = {
   },
 };
 
+/** set by build.ts from the origin remote, so a fork's footer points at the fork */
+export const repo = {
+  slug: import.meta.env.PUBLIC_GIT_REPO || "hackgwinnett/www",
+  get url() {
+    return `https://github.com/${repo.slug}`;
+  },
+  /** the exact commit this build came from, when we know it */
+  get commitUrl() {
+    const sha = import.meta.env.PUBLIC_GIT_SHA;
+    return sha ? `${repo.url}/commit/${sha}` : repo.url;
+  },
+};
+
 export const socialLinks = {
   instagram: `https://instagram.com/${brand.handles.instagram}`,
   youtube: `https://youtube.com/@${brand.handles.youtube}`,

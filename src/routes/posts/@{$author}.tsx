@@ -12,8 +12,10 @@ import { posts } from "cms/posts/posts";
 import { authorInfo } from "cms/posts/authors";
 import { useBreakpoint } from "#/hooks/browser";
 import { getTitle } from "#/lib/routing.ts";
+import pluralize from "pluralize";
 
 export const Route = createFileRoute("/posts/@{$author}")({
+  staticData: { classNames: { container: "max-w-4xl" } },
   loader: async ({ params }) => {
     const found = posts.filter((post) => post.authors.some((a) => a.id === params.author));
     if (!found || found.length === 0) throw notFound();
@@ -51,7 +53,7 @@ function RouteComponent() {
   const isMobile = !md;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div>
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Avatar size={isMobile ? "lg" : "2xl"}>
@@ -59,14 +61,14 @@ function RouteComponent() {
             <AvatarFallback>{author.name.initials()}</AvatarFallback>
             <AvatarBadge
               className="bg-secondary text-secondary-foreground text-xs"
-              title={`Authored ${posts.length} ${"post".plural(posts.length)}`}
+              title={`Authored ${posts.length} ${pluralize("post", posts.length)}`}
             >
               {cap(posts.length, 99, "+")}
             </AvatarBadge>
           </Avatar>
           <div>
             <h1 className="inline-flex items-center gap-2 text-lg md:text-3xl font-semibold">
-              {author.name} {author.officer && <ColorBadge>Staff</ColorBadge>}
+              {author.name} {author.officer && <ColorBadge>Team</ColorBadge>}
             </h1>
             <p className="text-sm md:text-base text-gray-600">{author.bio}</p>
           </div>

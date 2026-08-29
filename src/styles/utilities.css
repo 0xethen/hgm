@@ -59,6 +59,21 @@
   animation-delay: var(--tw-animation-delay);
 }
 
+/* An anchor-positioned popover (see the JSON editor). The top layer escapes any clipping, and
+   the browser keeps it glued to its anchor with no scroll or resize listener of ours. The UA
+   sheet centres popovers with inset:0 + margin:auto, so both have to be undone first. */
+@utility anchored {
+  position: fixed;
+  inset: auto;
+  margin: 0.25rem 0 0 0;
+  max-width: min(20rem, calc(100vw - 2rem));
+  position-area: block-end span-inline-end;
+  position-try-fallbacks:
+    flip-block,
+    flip-inline,
+    block-end span-inline-start;
+}
+
 @utility drag-none {
   -webkit-user-drag: none;
   -khtml-user-drag: none;

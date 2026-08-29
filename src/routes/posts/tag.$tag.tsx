@@ -1,11 +1,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/components/ui/card";
 import { ScrollArea } from "#/components/ui/scroll-area";
-import { Separator } from "#/components/ui/separator";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
+import { Fallback } from "#/components/Fallback";
 
 export const Route = createFileRoute("/posts/tag/$tag")({
-  staticData: { breadcrumb: { label: (match) => `#${match.params.tag}` } },
+  staticData: {
+    breadcrumb: {
+      label: (match) => `#${match.params.tag}`,
+    },
+    classNames: { container: "max-w-4xl" },
+  },
   loader: async ({ params }) => {
     const found = posts.filter((post) => post.tags?.some((a) => a === params.tag));
     return { posts: found, tag: params.tag };
@@ -18,20 +23,16 @@ function RouteComponent() {
 
   if (!posts || posts.length === 0)
     return (
-      <div className="min-h-safe-dvh flex flex-col items-center justify-center gap-4">
-        <div className="flex items-center justify-center gap-4">
-          <h3>404</h3>
-          <Separator orientation="vertical" />
-          <p>There are no posts with #{tag} :(</p>
-        </div>
-        <Link to="/posts" className="link">
-          All posts
-        </Link>
-      </div>
+      <Fallback
+        // sits inside the page container, so it doesn't get to claim the whole viewport
+        className="min-h-[50svh]"
+        title={`404: nothing is tagged #${tag}`}
+        actions={[{ label: "all posts", to: "/posts" }]}
+      />
     );
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div>
       <div className="space-y-4">
         <h3>
           <span className="font-normal">Posts tagged</span> #{tag}

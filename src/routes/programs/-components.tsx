@@ -25,7 +25,8 @@ import {
   ContextMenuTrigger,
 } from "#/components/ui/context-menu";
 import { useHydrated } from "@tanstack/react-router";
-import { copy } from "#/lib/utils";
+import { cn, copy } from "#/lib/utils";
+import { MakeCarousel } from "#/components/elements/misc/MakeCarousel.tsx";
 
 import type { HGEvent } from "#/lib/meta/events";
 
@@ -40,7 +41,8 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 
 const isValidDate = (d: Date): boolean => d instanceof Date && !Number.isNaN(d.getTime());
 
-export const formatEventDate = (start: Date, end?: Date): string => {
+/** formatRange keeps the weekday on both ends of a multi-day range; the fallback below has to too */
+export function formatEventDate(start: Date, end?: Date): string {
   if (!isValidDate(start)) return "Invalid date";
   if (!end || !isValidDate(end)) return dateFormatter.format(start);
 
@@ -52,15 +54,23 @@ export const formatEventDate = (start: Date, end?: Date): string => {
   } catch {
     return `${dateFormatter.format(rangeStart)} – ${dateFormatter.format(rangeEnd)}`;
   }
-};
+}
 
-export function ProgramPage({
+export interface ProgramsGalleryImage {
+  src: string;
+  alt: string;
+}
+
+export function ProgramsEventPage({
   event,
   content,
+  gallery,
   additions,
 }: {
   event: HGEvent;
   content?: React.ReactNode;
+  /** photos from past years; omitted for events we haven't shot yet */
+  gallery?: ProgramsGalleryImage[];
   additions?: {
     left?: { start?: React.ReactNode; end?: React.ReactNode };
     right?: { start?: React.ReactNode; end?: React.ReactNode };
@@ -160,25 +170,30 @@ export function ProgramPage({
   };
 
   return (
-    <div className="p-6 md:p-9 mx-auto max-w-7xl">
+    <div>
       <div className="grid lg:grid-cols-2 gap-10">
         <div className="flex flex-col gap-6">
           <div className="space-y-2">
-            <h1 className="font-semibold text-4xl">{event.name}</h1>
+            <h2 className="text-4xl">{event.name}</h2>
             <p>{event.description}</p>
           </div>
           {event.registration?.closed ? (
             <Alert>
-              <AlertTitle>Event registration is closed</AlertTitle>
+              <AlertTitle>Event registration is not open</AlertTitle>
               <AlertDescription>
-                Sign-ups for {event.name} are closed at this time. Check back later?
+                Sign-ups for {event.name} are closed at this time. Check back later!
               </AlertDescription>
             </Alert>
           ) : event.registration ? (
             <Button
-              variant="secondary"
+              // variant="secondary"
               size="lg"
-              render={<Link to={event.registration.url} className="link icon-link" />}
+              render={
+                <Link
+                  to={event.registration.page || event.registration.url}
+                  className="link icon-link"
+                />
+              }
               nativeButton={false}
             >
               Register Now
@@ -300,7 +315,17 @@ export function ProgramPage({
         </div>
         <div className="flex flex-col gap-2 items-center lg:items-end">
           {additions?.right?.start}
-          {/* TODO: image carousel here(?) yay HG!!! */}
+          {gallery?.length ? (
+            <MakeCarousel
+              className={cn(
+                "max-w-full md:max-w-xl lg:max-w-full h-80 overflow-hidden",
+                "[&>img]:block [&>img]:h-full [&>img]:w-full [&>img]:object-cover [&>img]:object-center [&>img]:drag-none",
+              )}
+              items={gallery.map((image) => (
+                <img src={image.src.toAsset()} alt={image.alt} />
+              ))}
+            />
+          ) : null}
           {additions?.right?.end}
         </div>
       </div>

@@ -4,7 +4,7 @@ import { Button } from "#/components/ui/button";
 import { Magnetic } from "#/components/ui/motion-primitives/magnetic";
 import { TextScramble } from "#/components/ui/motion-primitives/text-scramble";
 import { cn } from "#/lib/utils";
-import { RiArrowDownBoxLine, RiArrowRightDoubleLine, RiPlayFill } from "@remixicon/react";
+import { RiArrowDownLine, RiArrowRightDoubleLine, RiPlayFill } from "@remixicon/react";
 import { ColorBadge } from "#/components/ui/color-badge";
 import { events } from "#/lib/meta/events";
 import { DialogTrigger } from "#/components/ui/dialog";
@@ -135,8 +135,12 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             className={cn(
               "transition-opacity mx-auto cursor-none motion-reduce:cursor-pointer",
               "data-[state=show]:animate-in data-[state=hide]:animate-out fill-mode-forwards fade-in slide-in-from-bottom-5 fade-out",
+              isScrolled && "pointer-events-none",
             )}
             data-state={isScrolled ? "hide" : "show"}
+            aria-hidden={isScrolled}
+            tabIndex={isScrolled ? -1 : undefined}
+            aria-label="Scroll past the hero"
             variant="glass"
             size={isMobile ? "icon" : "icon-lg"}
             onClick={() =>
@@ -145,7 +149,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
                 ?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" })
             }
           >
-            <RiArrowDownBoxLine className="size-7" />
+            <RiArrowDownLine className="size-3/4" />
           </Button>
         </Magnetic>
       </div>

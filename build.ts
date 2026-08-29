@@ -19,6 +19,7 @@ const SHELL_FILE = `${CLIENT_DIR}/_shell.html`;
 const SITE_URL = "https://hackgwinnett.org";
 const POSTS_DIR = "cms/posts/content";
 const EXPECTED_ENV = ["PUBLIC_APPS_SCRIPT_NEWSLETTER_URL"];
+const DEFAULT_REPO = "hackgwinnett/www";
 
 // parsed in main()
 let flags: CliFlags;
@@ -31,6 +32,22 @@ function getGitSha(): string {
     }).trim();
   } catch {
     return "unknown";
+  }
+}
+
+/** owner/repo for the commit link in the footer, read off the origin remote */
+function getGitRepo(): string {
+  try {
+    const remote = execSync("git remote get-url origin", {
+      encoding: "utf-8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+
+    // git@github.com:owner/repo.git and https://github.com/owner/repo(.git) both land here
+    const match = /github\.com[:/]([^/]+\/[^/]+?)(?:\.git)?$/.exec(remote);
+    return match?.[1] || DEFAULT_REPO;
+  } catch {
+    return DEFAULT_REPO;
   }
 }
 
@@ -60,12 +77,14 @@ async function preBuild(): Promise<string> {
 
   const gitSha = getGitSha();
   process.env.PUBLIC_GIT_SHA = gitSha;
+  process.env.PUBLIC_GIT_REPO ||= getGitRepo();
 
   console.log(`✓ Set PUBLIC_GIT_SHA=${gitSha}`);
+  console.log(`✓ Set PUBLIC_GIT_REPO=${process.env.PUBLIC_GIT_REPO}`);
 
   for (const key of EXPECTED_ENV) {
     if (!process.env[key]) {
-      console.warn(`[!] ${key} is not set — the feature that depends on it will fail at runtime.`);
+      console.warn(`[!] ${key} is not set! the feature that depends on it will fail at runtime.`);
     }
   }
 
@@ -217,6 +236,7 @@ async function build(): Promise<void> {
   const env: NodeJS.ProcessEnv = {
     ...process.env,
     PUBLIC_GIT_SHA: gitSha,
+    PUBLIC_GIT_REPO: process.env.PUBLIC_GIT_REPO || DEFAULT_REPO,
   };
 
   console.log("Running build...");

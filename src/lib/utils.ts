@@ -23,7 +23,7 @@ declare global {
     toAsset(): string;
     slugify(preserveCase?: boolean): string;
     initials(): string;
-    plural(count: number, ending?: string): string;
+    // plural(count: number, ending?: string): string;
   }
 }
 
@@ -47,7 +47,7 @@ String.prototype.initials = function () {
     .join("");
 };
 
-String.prototype.plural = function (count, ending = "s") {
+/* String.prototype.plural = function (count, ending = "s") {
   const str = String(this);
 
   if (count === 1) return str;
@@ -64,7 +64,21 @@ String.prototype.plural = function (count, ending = "s") {
   }
 
   return str + "s";
-};
+}; */
+
+const WORDS_PER_MINUTE = 220;
+
+/** rough minutes-to-read for a markdown body (>=1) */
+export function readingTime(markdown: string): number {
+  const words = markdown
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
+}
 
 export function cap(num: number, cap: number, suffix?: string): string {
   return num > cap ? `${cap}${suffix}` : String(num);
