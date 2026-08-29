@@ -68,6 +68,7 @@
     "@types/showdown": "^2.0.6",
     "@vitejs/plugin-react": "^6.1.0",
     "concurrently": "^10.0.5",
+    "pluralize": "^8.0.0",
     "typescript": "^7.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@0.2.9",
     "vite-plus": "catalog:",
