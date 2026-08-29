@@ -29,7 +29,32 @@ import { copy } from "#/lib/utils";
 
 import type { HGEvent } from "#/lib/meta/events";
 
-export function ProgramsEventPage({
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+});
+
+const isValidDate = (d: Date): boolean => d instanceof Date && !Number.isNaN(d.getTime());
+
+export const formatEventDate = (start: Date, end?: Date): string => {
+  if (!isValidDate(start)) return "Invalid date";
+  if (!end || !isValidDate(end)) return dateFormatter.format(start);
+
+  const [rangeStart, rangeEnd] = start <= end ? [start, end] : [end, start];
+  if (rangeStart.getTime() === rangeEnd.getTime()) return dateFormatter.format(rangeStart);
+
+  try {
+    return dateFormatter.formatRange(rangeStart, rangeEnd);
+  } catch {
+    return `${dateFormatter.format(rangeStart)} – ${dateFormatter.format(rangeEnd)}`;
+  }
+};
+
+export function ProgramPage({
   event,
   content,
   additions,
@@ -132,31 +157,6 @@ export function ProgramsEventPage({
     const url = getCalendarLink(event, type);
     if (!url) return;
     copy(url);
-  };
-
-  const dateFormatter = new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
-
-  const isValidDate = (d: Date): boolean => d instanceof Date && !Number.isNaN(d.getTime());
-
-  const formatEventDate = (start: Date, end?: Date): string => {
-    if (!isValidDate(start)) return "Invalid date";
-    if (!end || !isValidDate(end)) return dateFormatter.format(start);
-
-    const [rangeStart, rangeEnd] = start <= end ? [start, end] : [end, start];
-    if (rangeStart.getTime() === rangeEnd.getTime()) return dateFormatter.format(rangeStart);
-
-    try {
-      return dateFormatter.formatRange(rangeStart, rangeEnd);
-    } catch {
-      return `${dateFormatter.format(rangeStart)} – ${dateFormatter.format(rangeEnd)}`;
-    }
   };
 
   return (

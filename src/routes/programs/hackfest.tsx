@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { events } from "#/lib/meta/events";
-import { ProgramsEventPage } from "./-components";
+import { ProgramPage } from "./-components";
 import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
 import { eventSchema } from "#/lib/seo";
@@ -42,7 +42,7 @@ function RouteComponent() {
   );
 
   return (
-    <ProgramsEventPage
+    <ProgramPage
       event={events.hackfest}
       content={content || events[eventId].description}
       additions={{

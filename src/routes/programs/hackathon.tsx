@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { events } from "#/lib/meta/events";
-import { ProgramsEventPage } from "./-components";
+import { ProgramPage } from "./-components";
 import { HackathonFAQ } from "#/components/elements/ctas/HackathonFAQ.tsx";
 import { MakeCarousel } from "#/components/elements/misc/MakeCarousel.tsx";
 import { buildUrl, cn } from "#/lib/utils.ts";
@@ -82,7 +82,7 @@ function RouteComponent() {
   );
 
   return (
-    <ProgramsEventPage
+    <ProgramPage
       event={events[eventId]}
       content={content || events[eventId].description}
       additions={{

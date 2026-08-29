@@ -1,4 +1,4 @@
-import { revalidateLogic, useForm } from "@tanstack/react-form";
+import { useForm } from "@tanstack/react-form";
 import { z } from "zod/mini";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
@@ -37,6 +37,11 @@ const emailProviders: { id: string; label: string; description?: React.ReactNode
   { id: "gcps", label: "GCPS Mail", description: "your Google Workspace email" },
 ];
 
+// apparently: Select.Root resolves the trigger's label from this, so SelectValue needs no render prop
+const providerLabels: Record<string, string> = Object.fromEntries(
+  emailProviders.map((option) => [option.id, option.label]),
+);
+
 const formSchema = z.object({
   subject: z.string().check(z.minLength(2, "Subject line is required")),
   message: z
@@ -55,13 +60,17 @@ export function ContactForm() {
       message: "",
       provider: "default",
     },
-    validators: {
-      onDynamic: formSchema,
-    },
-    validationLogic: revalidateLogic({
-      mode: "submit",
-      modeAfterSubmission: "change",
-    }),
+    validators: [
+      {
+        run: formSchema,
+        triggers: [
+          {
+            trigger: "change",
+            when: ({ formApi }) => formApi.state.submissionAttempts > 0,
+          },
+        ],
+      },
+    ],
     onSubmit({ value }) {
       const subject = encodeURIComponent(value.subject || "");
       const body = encodeURIComponent(value.message + "\n\n\nSent from hackgwinnett.org" || "");
@@ -141,7 +150,7 @@ export function ContactForm() {
             <form.Field
               name="subject"
               children={(field) => {
-                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                const isInvalid = field.meta.isTouched && !field.meta.isValid;
 
                 return (
                   <Field data-invalid={isInvalid}>
@@ -151,13 +160,13 @@ export function ContactForm() {
                       type="text"
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                      value={field.state.value}
+                      value={field.value}
                       placeholder="Include your name and/or organization"
                       aria-invalid={isInvalid}
                       minLength={2}
                       required
                     />
-                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                    {isInvalid && <FieldError errors={field.errors} />}
                   </Field>
                 );
               }}
@@ -165,14 +174,14 @@ export function ContactForm() {
             <form.Field
               name="message"
               children={(field) => {
-                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                const isInvalid = field.meta.isTouched && !field.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>Body*</FieldLabel>
                     <Textarea
                       id={field.name}
                       name={field.name}
-                      value={field.state.value}
+                      value={field.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Message"
@@ -182,7 +191,7 @@ export function ContactForm() {
                       maxLength={500}
                       required
                     />
-                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                    {isInvalid && <FieldError errors={field.errors} />}
                   </Field>
                 );
               }}
@@ -190,24 +199,20 @@ export function ContactForm() {
             <form.Field
               name="provider"
               children={(field) => {
-                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                const isInvalid = field.meta.isTouched && !field.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>Send with</FieldLabel>
                     <Select
                       id={field.name}
                       name={field.name}
-                      value={field.state.value}
+                      items={providerLabels}
+                      value={field.value}
                       onValueChange={(value) => field.handleChange(value || "default")}
                       aria-invalid={isInvalid}
                     >
                       <SelectTrigger id={field.name}>
-                        {/* TODO: selectvalue shows key/id instead of name. idk why this works so fix with shadcn documentation l8r */}
-                        <SelectValue>
-                          {(value: string | null) =>
-                            (value && getMailProvider(value)?.label) || "Select..."
-                          }
-                        </SelectValue>
+                        <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent>
                         {emailProviders.map((option) => (
@@ -217,13 +222,12 @@ export function ContactForm() {
                         ))}
                       </SelectContent>
                     </Select>
-                    {getMailProvider(field.state.value)?.description && (
+                    {getMailProvider(field.value)?.description && (
                       <FieldDescription>
-                        This email will be sent via{" "}
-                        {getMailProvider(field.state.value)?.description}
+                        This email will be sent via {getMailProvider(field.value)?.description}
                       </FieldDescription>
                     )}
-                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                    {isInvalid && <FieldError errors={field.errors} />}
                   </Field>
                 );
               }}

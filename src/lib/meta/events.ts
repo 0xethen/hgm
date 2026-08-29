@@ -17,6 +17,7 @@ const eventList = {
     },
     registration: {
       url: "/go/register",
+      page: "/programs/hackathon/register",
       closed: true,
     },
   },
@@ -82,5 +83,7 @@ export interface HGEvent {
     closed?: boolean;
     /** The registration link. Could be a Google Form, email compose link, etc. */
     url: string;
+    /** The internal registration page on the HackGwinnett website, if any */
+    page?: string;
   };
 }

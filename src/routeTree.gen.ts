@@ -28,18 +28,23 @@ import { Route as AliasesTeamRouteImport } from './routes/_aliases/team'
 import { Route as AboutIndexRouteImport } from './routes/about/index'
 import { Route as DeveloperIndexRouteImport } from './routes/developer/index'
 import { Route as DeveloperBsodRouteImport } from './routes/developer/bsod'
+import { Route as DeveloperCrumbtestRouteRouteImport } from './routes/developer/crumbtest/route'
 import { Route as EdaReportRouteImport } from './routes/eda/report'
 import { Route as EdaUnderConstructionRouteImport } from './routes/eda/under-construction'
 import { Route as GoSlugRouteImport } from './routes/go.$slug'
 import { Route as PostsIndexRouteImport } from './routes/posts/index'
 import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
 import { Route as PostsAtChar123authorChar125RouteImport } from './routes/posts/@{$author}'
+import { Route as ProgramsIndexRouteImport } from './routes/programs/index'
+import { Route as ProgramsHackathonRouteRouteImport } from './routes/programs/hackathon/route'
 import { Route as ProgramsHackathonRouteImport } from './routes/programs/hackathon'
 import { Route as ProgramsHackfestRouteImport } from './routes/programs/hackfest'
 import { Route as ToolsIndexRouteImport } from './routes/tools/index'
 import { Route as ToolsBirdieRouteImport } from './routes/tools/birdie'
 import { Route as ToolsBogeyRouteImport } from './routes/tools/bogey'
+import { Route as DeveloperCrumbtestBogeyRouteImport } from './routes/developer/crumbtest/bogey'
 import { Route as PostsTagTagRouteImport } from './routes/posts/tag.$tag'
+import { Route as ProgramsHackathonRegisterIndexRouteImport } from './routes/programs/hackathon/register/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -135,6 +140,11 @@ const DeveloperBsodRoute = DeveloperBsodRouteImport.update({
   path: '/bsod',
   getParentRoute: () => DeveloperRouteRoute,
 } as any)
+const DeveloperCrumbtestRouteRoute = DeveloperCrumbtestRouteRouteImport.update({
+  id: '/crumbtest',
+  path: '/crumbtest',
+  getParentRoute: () => DeveloperRouteRoute,
+} as any)
 const EdaReportRoute = EdaReportRouteImport.update({
   id: '/eda/report',
   path: '/eda/report',
@@ -166,6 +176,16 @@ const PostsAtChar123authorChar125Route =
     path: '/@{$author}',
     getParentRoute: () => PostsRouteRoute,
   } as any)
+const ProgramsIndexRoute = ProgramsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProgramsRouteRoute,
+} as any)
+const ProgramsHackathonRouteRoute = ProgramsHackathonRouteRouteImport.update({
+  id: '/hackathon',
+  path: '/hackathon',
+  getParentRoute: () => ProgramsRouteRoute,
+} as any)
 const ProgramsHackathonRoute = ProgramsHackathonRouteImport.update({
   id: '/hackathon',
   path: '/hackathon',
@@ -191,11 +211,22 @@ const ToolsBogeyRoute = ToolsBogeyRouteImport.update({
   path: '/bogey',
   getParentRoute: () => ToolsRouteRoute,
 } as any)
+const DeveloperCrumbtestBogeyRoute = DeveloperCrumbtestBogeyRouteImport.update({
+  id: '/bogey',
+  path: '/bogey',
+  getParentRoute: () => DeveloperCrumbtestRouteRoute,
+} as any)
 const PostsTagTagRoute = PostsTagTagRouteImport.update({
   id: '/tag/$tag',
   path: '/tag/$tag',
   getParentRoute: () => PostsRouteRoute,
 } as any)
+const ProgramsHackathonRegisterIndexRoute =
+  ProgramsHackathonRegisterIndexRouteImport.update({
+    id: '/register/',
+    path: '/register/',
+    getParentRoute: () => ProgramsHackathonRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -206,6 +237,8 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/signature': typeof SignatureRoute
   '/thecakeisalie': typeof ThecakeisalieRoute
+  '/developer/crumbtest': typeof DeveloperCrumbtestRouteRouteWithChildren
+  '/programs/hackathon': typeof ProgramsHackathonRouteWithChildren
   '/about-us': typeof AliasesAboutUsRoute
   '/contact': typeof AliasesContactRoute
   '/feedback': typeof AliasesFeedbackRoute
@@ -219,22 +252,25 @@ export interface FileRoutesByFullPath {
   '/go/$slug': typeof GoSlugRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/posts/@{$author}': typeof PostsAtChar123authorChar125Route
-  '/programs/hackathon': typeof ProgramsHackathonRoute
   '/programs/hackfest': typeof ProgramsHackfestRoute
   '/tools/birdie': typeof ToolsBirdieRoute
   '/tools/bogey': typeof ToolsBogeyRoute
   '/about/': typeof AboutIndexRoute
   '/developer/': typeof DeveloperIndexRoute
   '/posts/': typeof PostsIndexRoute
+  '/programs/': typeof ProgramsIndexRoute
   '/tools/': typeof ToolsIndexRoute
+  '/developer/crumbtest/bogey': typeof DeveloperCrumbtestBogeyRoute
   '/posts/tag/$tag': typeof PostsTagTagRoute
+  '/programs/hackathon/register/': typeof ProgramsHackathonRegisterIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/programs': typeof ProgramsRouteRouteWithChildren
   '/gallery': typeof GalleryRoute
   '/signature': typeof SignatureRoute
   '/thecakeisalie': typeof ThecakeisalieRoute
+  '/developer/crumbtest': typeof DeveloperCrumbtestRouteRouteWithChildren
+  '/programs/hackathon': typeof ProgramsHackathonRouteWithChildren
   '/about-us': typeof AliasesAboutUsRoute
   '/contact': typeof AliasesContactRoute
   '/feedback': typeof AliasesFeedbackRoute
@@ -248,15 +284,17 @@ export interface FileRoutesByTo {
   '/go/$slug': typeof GoSlugRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/posts/@{$author}': typeof PostsAtChar123authorChar125Route
-  '/programs/hackathon': typeof ProgramsHackathonRoute
   '/programs/hackfest': typeof ProgramsHackfestRoute
   '/tools/birdie': typeof ToolsBirdieRoute
   '/tools/bogey': typeof ToolsBogeyRoute
   '/about': typeof AboutIndexRoute
   '/developer': typeof DeveloperIndexRoute
   '/posts': typeof PostsIndexRoute
+  '/programs': typeof ProgramsIndexRoute
   '/tools': typeof ToolsIndexRoute
+  '/developer/crumbtest/bogey': typeof DeveloperCrumbtestBogeyRoute
   '/posts/tag/$tag': typeof PostsTagTagRoute
+  '/programs/hackathon/register': typeof ProgramsHackathonRegisterIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -269,6 +307,8 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/signature': typeof SignatureRoute
   '/thecakeisalie': typeof ThecakeisalieRoute
+  '/developer/crumbtest': typeof DeveloperCrumbtestRouteRouteWithChildren
+  '/programs/hackathon': typeof ProgramsHackathonRouteWithChildren
   '/_aliases/about-us': typeof AliasesAboutUsRoute
   '/_aliases/contact': typeof AliasesContactRoute
   '/_aliases/feedback': typeof AliasesFeedbackRoute
@@ -282,15 +322,17 @@ export interface FileRoutesById {
   '/go/$slug': typeof GoSlugRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/posts/@{$author}': typeof PostsAtChar123authorChar125Route
-  '/programs/hackathon': typeof ProgramsHackathonRoute
   '/programs/hackfest': typeof ProgramsHackfestRoute
   '/tools/birdie': typeof ToolsBirdieRoute
   '/tools/bogey': typeof ToolsBogeyRoute
   '/about/': typeof AboutIndexRoute
   '/developer/': typeof DeveloperIndexRoute
   '/posts/': typeof PostsIndexRoute
+  '/programs/': typeof ProgramsIndexRoute
   '/tools/': typeof ToolsIndexRoute
+  '/developer/crumbtest/bogey': typeof DeveloperCrumbtestBogeyRoute
   '/posts/tag/$tag': typeof PostsTagTagRoute
+  '/programs/hackathon/register/': typeof ProgramsHackathonRegisterIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -303,6 +345,8 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/signature'
     | '/thecakeisalie'
+    | '/developer/crumbtest'
+    | '/programs/hackathon'
     | '/about-us'
     | '/contact'
     | '/feedback'
@@ -316,22 +360,25 @@ export interface FileRouteTypes {
     | '/go/$slug'
     | '/posts/$postId'
     | '/posts/@{$author}'
-    | '/programs/hackathon'
     | '/programs/hackfest'
     | '/tools/birdie'
     | '/tools/bogey'
     | '/about/'
     | '/developer/'
     | '/posts/'
+    | '/programs/'
     | '/tools/'
+    | '/developer/crumbtest/bogey'
     | '/posts/tag/$tag'
+    | '/programs/hackathon/register/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/programs'
     | '/gallery'
     | '/signature'
     | '/thecakeisalie'
+    | '/developer/crumbtest'
+    | '/programs/hackathon'
     | '/about-us'
     | '/contact'
     | '/feedback'
@@ -345,15 +392,17 @@ export interface FileRouteTypes {
     | '/go/$slug'
     | '/posts/$postId'
     | '/posts/@{$author}'
-    | '/programs/hackathon'
     | '/programs/hackfest'
     | '/tools/birdie'
     | '/tools/bogey'
     | '/about'
     | '/developer'
     | '/posts'
+    | '/programs'
     | '/tools'
+    | '/developer/crumbtest/bogey'
     | '/posts/tag/$tag'
+    | '/programs/hackathon/register'
   id:
     | '__root__'
     | '/'
@@ -365,6 +414,8 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/signature'
     | '/thecakeisalie'
+    | '/developer/crumbtest'
+    | '/programs/hackathon'
     | '/_aliases/about-us'
     | '/_aliases/contact'
     | '/_aliases/feedback'
@@ -378,15 +429,17 @@ export interface FileRouteTypes {
     | '/go/$slug'
     | '/posts/$postId'
     | '/posts/@{$author}'
-    | '/programs/hackathon'
     | '/programs/hackfest'
     | '/tools/birdie'
     | '/tools/bogey'
     | '/about/'
     | '/developer/'
     | '/posts/'
+    | '/programs/'
     | '/tools/'
+    | '/developer/crumbtest/bogey'
     | '/posts/tag/$tag'
+    | '/programs/hackathon/register/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -540,6 +593,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeveloperBsodRouteImport
       parentRoute: typeof DeveloperRouteRoute
     }
+    '/developer/crumbtest': {
+      id: '/developer/crumbtest'
+      path: '/crumbtest'
+      fullPath: '/developer/crumbtest'
+      preLoaderRoute: typeof DeveloperCrumbtestRouteRouteImport
+      parentRoute: typeof DeveloperRouteRoute
+    }
     '/eda/report': {
       id: '/eda/report'
       path: '/eda/report'
@@ -582,6 +642,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsAtChar123authorChar125RouteImport
       parentRoute: typeof PostsRouteRoute
     }
+    '/programs/': {
+      id: '/programs/'
+      path: '/'
+      fullPath: '/programs/'
+      preLoaderRoute: typeof ProgramsIndexRouteImport
+      parentRoute: typeof ProgramsRouteRoute
+    }
+    '/programs/hackathon': {
+      id: '/programs/hackathon'
+      path: '/hackathon'
+      fullPath: '/programs/hackathon'
+      preLoaderRoute: typeof ProgramsHackathonRouteRouteImport
+      parentRoute: typeof ProgramsRouteRoute
+    }
     '/programs/hackathon': {
       id: '/programs/hackathon'
       path: '/hackathon'
@@ -617,12 +691,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsBogeyRouteImport
       parentRoute: typeof ToolsRouteRoute
     }
+    '/developer/crumbtest/bogey': {
+      id: '/developer/crumbtest/bogey'
+      path: '/bogey'
+      fullPath: '/developer/crumbtest/bogey'
+      preLoaderRoute: typeof DeveloperCrumbtestBogeyRouteImport
+      parentRoute: typeof DeveloperCrumbtestRouteRoute
+    }
     '/posts/tag/$tag': {
       id: '/posts/tag/$tag'
       path: '/tag/$tag'
       fullPath: '/posts/tag/$tag'
       preLoaderRoute: typeof PostsTagTagRouteImport
       parentRoute: typeof PostsRouteRoute
+    }
+    '/programs/hackathon/register/': {
+      id: '/programs/hackathon/register/'
+      path: '/register'
+      fullPath: '/programs/hackathon/register/'
+      preLoaderRoute: typeof ProgramsHackathonRegisterIndexRouteImport
+      parentRoute: typeof ProgramsHackathonRoute
     }
   }
 }
@@ -651,12 +739,28 @@ const AliasesRouteRouteWithChildren = AliasesRouteRoute._addFileChildren(
   AliasesRouteRouteChildren,
 )
 
+interface DeveloperCrumbtestRouteRouteChildren {
+  DeveloperCrumbtestBogeyRoute: typeof DeveloperCrumbtestBogeyRoute
+}
+
+const DeveloperCrumbtestRouteRouteChildren: DeveloperCrumbtestRouteRouteChildren =
+  {
+    DeveloperCrumbtestBogeyRoute: DeveloperCrumbtestBogeyRoute,
+  }
+
+const DeveloperCrumbtestRouteRouteWithChildren =
+  DeveloperCrumbtestRouteRoute._addFileChildren(
+    DeveloperCrumbtestRouteRouteChildren,
+  )
+
 interface DeveloperRouteRouteChildren {
+  DeveloperCrumbtestRouteRoute: typeof DeveloperCrumbtestRouteRouteWithChildren
   DeveloperBsodRoute: typeof DeveloperBsodRoute
   DeveloperIndexRoute: typeof DeveloperIndexRoute
 }
 
 const DeveloperRouteRouteChildren: DeveloperRouteRouteChildren = {
+  DeveloperCrumbtestRouteRoute: DeveloperCrumbtestRouteRouteWithChildren,
   DeveloperBsodRoute: DeveloperBsodRoute,
   DeveloperIndexRoute: DeveloperIndexRoute,
 }
@@ -683,14 +787,29 @@ const PostsRouteRouteWithChildren = PostsRouteRoute._addFileChildren(
   PostsRouteRouteChildren,
 )
 
+interface ProgramsHackathonRouteChildren {
+  ProgramsHackathonRegisterIndexRoute: typeof ProgramsHackathonRegisterIndexRoute
+}
+
+const ProgramsHackathonRouteChildren: ProgramsHackathonRouteChildren = {
+  ProgramsHackathonRegisterIndexRoute: ProgramsHackathonRegisterIndexRoute,
+}
+
+const ProgramsHackathonRouteWithChildren =
+  ProgramsHackathonRoute._addFileChildren(ProgramsHackathonRouteChildren)
+
 interface ProgramsRouteRouteChildren {
-  ProgramsHackathonRoute: typeof ProgramsHackathonRoute
+  ProgramsHackathonRouteRoute: typeof ProgramsHackathonRouteRoute
+  ProgramsHackathonRoute: typeof ProgramsHackathonRouteWithChildren
   ProgramsHackfestRoute: typeof ProgramsHackfestRoute
+  ProgramsIndexRoute: typeof ProgramsIndexRoute
 }
 
 const ProgramsRouteRouteChildren: ProgramsRouteRouteChildren = {
-  ProgramsHackathonRoute: ProgramsHackathonRoute,
+  ProgramsHackathonRouteRoute: ProgramsHackathonRouteRoute,
+  ProgramsHackathonRoute: ProgramsHackathonRouteWithChildren,
   ProgramsHackfestRoute: ProgramsHackfestRoute,
+  ProgramsIndexRoute: ProgramsIndexRoute,
 }
 
 const ProgramsRouteRouteWithChildren = ProgramsRouteRoute._addFileChildren(
