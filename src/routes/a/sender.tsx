@@ -41,10 +41,10 @@ We've got some exciting things happening!
       return;
     }
 
-    if (!secret.trim()) {
-      setStatus("Enter the newsletter sender token.");
-      return;
-    }
+    // if (!secret.trim()) {
+    //   setStatus("Enter the newsletter sender token.");
+    //   return;
+    // }
 
     if (!subject.trim()) {
       setStatus("Enter an email subject.");
@@ -221,12 +221,16 @@ We've got some exciting things happening!
             </button>
           </section>
 
-          <section className="rounded-2xl border border-zinc-200 bg-zinc-100 p-4">
+          <section className="border border-zinc-200 bg-zinc-100 p-4">
             <div className="mb-3 px-2 text-sm font-medium text-zinc-500">Preview</div>
 
             <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-              <div className="flex items-center justify-center bg-zinc-900 px-6 py-8">
-                <img src="/favicon.png" alt="HackGwinnett" className="max-h-16 max-w-[220px]" />
+              <div className="flex items-center justify-center bg-[#01A63E] px-6 py-8">
+                <img
+                  src="/assets/images/brand/hackgwinnett.svg"
+                  alt="HackGwinnett"
+                  className="max-h-16 max-w-[220px]"
+                />
               </div>
 
               <div className="px-8 py-10">
