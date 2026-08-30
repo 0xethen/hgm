@@ -8,7 +8,7 @@ export function HomepageFooter() {
     <Footer
       link={
         <button
-          className="link text-sm"
+          className="link not-hover:text-white/50"
           onClick={() =>
             document
               .getElementById("top")

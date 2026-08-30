@@ -106,7 +106,7 @@ export function NewsletterCTA({
                 ? {
                     type: "info",
                     message: "You're already subscribed",
-                    description: `${value.email} is verified, so there's nothing to do. Email us at hackgwinnett@gmail.com or hit the "Unsubscribe" link in our emails if you want out.`,
+                    description: `${value.email} is recieving our messages. Email us at hackgwinnett@gmail.com or hit the "Unsubscribe" link in our emails if you want out.`,
                     duration: 12000,
                   }
                 : {

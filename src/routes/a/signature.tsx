@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { noindex } from "#/lib/seo";
 
-export const Route = createFileRoute("/signature")({
+export const Route = createFileRoute("/a/signature")({
   component: RouteComponent,
   staticData: { title: "Signature" },
   head: () => ({ meta: noindex() }),

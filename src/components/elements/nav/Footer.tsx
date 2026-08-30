@@ -30,17 +30,17 @@ export function Footer({ link }: { link?: React.ReactNode }) {
           </Link>
           )
         </span>
-        <div className="flex flex-row flex-wrap justify-center gap-4 text-sm text-white/50">
+        <div className="flex flex-row flex-wrap justify-center gap-4 text-sm">
           <Link
             to="/contact"
-            className="link" // text-sm text-white/50 hover:text-white
+            className="link not-hover:text-white/50" // text-sm text-white/50 hover:text-white
           >
             Contact Us
           </Link>
           <a
             href={"https://ethen.app/legal?s=hgm"}
             target="_blank"
-            className="link" // text-sm text-white/50 hover:text-white
+            className="link not-hover:text-white/50" // text-sm text-white/50 hover:text-white
           >
             Cookies & Privacy
           </a>
