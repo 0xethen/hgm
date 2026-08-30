@@ -11,6 +11,7 @@ const goRedirects: Record<string, string> = {
 
   // socials
   instagram: socialLinks.instagram || "/",
+  x: socialLinks.twitter || "/",
   youtube: socialLinks.youtube || "/",
   discord: socialLinks.discord || "/",
 

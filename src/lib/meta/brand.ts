@@ -7,6 +7,8 @@ export const brand = {
   handles: {
     // https://instagram.com/
     instagram: "hackgwinnett",
+    // https://x.com/
+    twitter: "hackgwinnettATL",
     // https://youtube.com/@
     youtube: "hackgwinnett",
     // NOTE: https://discord.gg/amcVA5Yp5a ---- .gg/hackgwinnett vanity link would be tuff
@@ -29,6 +31,7 @@ export const repo = {
 
 export const socialLinks = {
   instagram: `https://instagram.com/${brand.handles.instagram}`,
+  twitter: `https://x.com/${brand.handles.twitter}`,
   youtube: `https://youtube.com/@${brand.handles.youtube}`,
   discord: `https://discord.gg/${brand.handles.discord}`,
 };
