@@ -4,7 +4,7 @@ The repository for the official HackGwinnett marketing website ([hackgwinnett.or
 
 Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https://hackgwinnett.org/go/issues)**
 
-> remaining TODOs: Taskade logo sometimes black in Safari? ask sponsors for vectors. sponsor tabbing from an element l8r in the dom is still broken, probably because it's not rendered yet. TODO: make a posts collection renderer that uses the style from /posts instead of the Cards in $tag bc its ugly. this collection renderer should be used in /posts/$tag, in /posts, and /posts/@{username}. also make an authors page. make the Media Gallery (officer input required). investigate what percentage of users have trouble with the anchor-positioning + popover stuff (prob. in old Firefox). is it worth removing the expensive getBoundingClientRect operation? (probably)
+> remaining TODOs: Taskade logo sometimes black in Safari? ask sponsors for vectors. sponsor tabbing from an element l8r in the dom is still broken, probably because it's not rendered yet. TODO: make a posts collection renderer that uses the style from /posts instead of the Cards in $tag bc its ugly. this collection renderer should be used in /posts/$tag, in /posts, and /posts/@{username}. also make an authors page. make the Media Gallery (officer input required). investigate what percentage of users have trouble with the anchor-positioning + popover stuff (prob. in old Firefox). is it worth removing the expensive getBoundingClientRect operation? (probably). also the <Fallback> components should be used everywhere instead of <NotFound title="..." link="..."> like it was before
 
 ## Contributing
 
