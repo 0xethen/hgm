@@ -163,6 +163,7 @@ export function ContactForm() {
                       value={field.value}
                       placeholder="Include your name and/or organization"
                       aria-invalid={isInvalid}
+                      autoComplete="off"
                       minLength={2}
                       required
                     />
@@ -189,6 +190,7 @@ export function ContactForm() {
                       aria-invalid={isInvalid}
                       minLength={1}
                       maxLength={500}
+                      autoComplete="off"
                       required
                     />
                     {isInvalid && <FieldError errors={field.errors} />}
