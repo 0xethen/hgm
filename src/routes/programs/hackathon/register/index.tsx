@@ -1,12 +1,12 @@
 import * as React from "react";
-import { createFileRoute, Link, type ErrorComponentProps } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useForm, useSelector } from "@tanstack/react-form";
 import { toast } from "sonner";
 import { RiArrowRightLine, RiResetLeftLine } from "@remixicon/react";
 import { Kbd } from "#/components/ui/kbd";
 import { Button } from "#/components/ui/button";
 import { Separator } from "#/components/ui/separator";
-import { Fallback, type FallbackAction } from "#/components/Fallback.tsx";
+import { Fallback } from "#/components/Fallback.tsx";
 import { events } from "#/lib/meta/events";
 import { cn } from "#/lib/utils";
 import { JsonEditor, type EditorTab, type JsonEditorHandle } from "./-editor.tsx";
@@ -40,21 +40,30 @@ export const Route = createFileRoute("/programs/hackathon/register/")({
     breadcrumb: `Register for ${event.shortName}`,
     description: `Register for ${event.name}, Metro Atlanta's premier hackathon, in an interactive JSON editor!`,
   },
-  // a thrown Response can't be serialized across SSR, so the closed state is rendered, not thrown
-  component: event.registration?.closed ? ClosedComponent : RouteComponent,
-  errorComponent: ErrorComponent,
+  component: RouteComponent,
 });
 
-function ClosedComponent() {
-  return (
-    <Fallback
-      title="registration hasn't opened yet"
-      actions={[{ label: `back to ${event.shortName}`, to: event.registration?.page ?? "/programs/hackathon" }]}
-    />
-  );
+function RouteComponent() {
+  if (event.registration?.closed)
+    return (
+      <Fallback
+        title="registration isn't open at this time"
+        actions={[
+          { label: "register manually", to: FORM_URL },
+          {
+            label: "report issue",
+            to: "/report",
+            search: { from: Route.id, t: "error" },
+            tone: "destructive",
+          },
+        ]}
+      />
+    );
+
+  return Interactive;
 }
 
-function RouteComponent() {
+function Interactive() {
   const editorRef = React.useRef<JsonEditorHandle>(null);
   const [tab, setTab] = React.useState<DocumentId>("about");
 
@@ -160,7 +169,7 @@ function RouteComponent() {
     requestAnimationFrame(() => editorRef.current?.select(...selectionOf(issue)));
   };
 
-  const review = async (submitEvent: React.FormEvent) => {
+  const review = async (submitEvent: React.SubmitEvent) => {
     submitEvent.preventDefault();
 
     // tidy up first, so the line numbers they're about to be sent to are the tidy ones
@@ -344,23 +353,4 @@ function FieldReference({ document }: { document: RegistrationDocument }) {
       </p>
     </aside>
   );
-}
-
-function ErrorComponent({ error }: ErrorComponentProps) {
-  const isResponse = error instanceof Response;
-  const title = isResponse
-    ? `${error.statusText || "request failed"} (${error.status})`
-    : "error launching interactive!";
-
-  const actions: FallbackAction[] = [
-    ...(!isResponse ? [{ label: "register manually", to: FORM_URL }] : []),
-    {
-      label: "report issue",
-      to: "/report",
-      search: { from: Route.id, c: isResponse ? error.status : undefined, t: "error" },
-      tone: "destructive",
-    },
-  ];
-
-  return <Fallback title={title} actions={actions} />;
 }

@@ -160,7 +160,15 @@ export const ABOUT_DOCUMENT: RegistrationDocument = {
   id: "about",
   name: "me.json",
   fields: ABOUT_FIELDS,
-  boilerplate: ["// tell us more about yourself!", "{", '  "name": ""', "}"].join("\n"),
+  boilerplate: [
+    "// tell us more about yourself!",
+    "// hit return (enter) to move on to the next field!",
+    "",
+    "{",
+    '  "name": "",',
+    // '  "school": "",',
+    "}",
+  ].join("\n"),
 };
 
 export const TEAM_DOCUMENT: RegistrationDocument = {
