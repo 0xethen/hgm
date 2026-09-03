@@ -10,6 +10,7 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 > - Media Gallery (officer input required)
 > - Investigate what percentage of visitors have trouble with the anchor-positioning/popover behavior in older Firefox (yes, we use anchored popovers instead of getBoundingClientRect() for the register tooltip!)
 > - Revert to old PostCards on /posts (index)
+> - fix newsletter stuff... again...
 
 ## Contributing
 
