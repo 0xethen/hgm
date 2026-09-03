@@ -32,7 +32,8 @@ import {
   type RegistrationDocument,
 } from "./-registration.ts";
 
-const event = events.hackathon;
+const eventId = "hackathon";
+const event = events[eventId];
 type DocumentId = RegistrationDocument["id"];
 
 export const Route = createFileRoute("/programs/hackathon/register/")({
@@ -41,6 +42,7 @@ export const Route = createFileRoute("/programs/hackathon/register/")({
     description: `Register for ${event.name}, Metro Atlanta's premier hackathon, in an interactive JSON editor!`,
   },
   component: RouteComponent,
+  errorComponent: ErrorComponent
 });
 
 function RouteComponent() {
@@ -49,7 +51,10 @@ function RouteComponent() {
       <Fallback
         title="registration isn't open at this time"
         actions={[
-          { label: "register manually", to: FORM_URL },
+          {
+            label: `about ${event.shortName}`,
+            to: `/programs/${eventId}`
+          },
           {
             label: "report issue",
             to: "/report",
@@ -89,7 +94,7 @@ function Interactive() {
         },
       },
       {
-        // review is the moment the answers they never filled in start counting
+        // review = everything is checked
         triggers: [],
         run: ({ value, createErrorMap }) => {
           const errors = createErrorMap();
@@ -102,7 +107,7 @@ function Interactive() {
             if (team) errors.fields.team = team.message;
           }
 
-          if (about || errors.fields.team) errors.form = "Some answers still need a look.";
+          if (about || errors.fields.team) errors.form = "Some answers still need a look!";
 
           return errors;
         },
@@ -355,5 +360,22 @@ function FieldReference({ document }: { document: RegistrationDocument }) {
         When you're done, you'll pick your workshops on the form itself.
       </p>
     </aside>
+  );
+}
+
+function ErrorComponent() {
+  return (
+    <Fallback
+      title="failed to load interactive registration"
+      actions={[
+        { label: "register manually", to: FORM_URL },
+        {
+          label: "report issue",
+          to: "/report",
+          search: { from: Route.id, t: "error" },
+          tone: "destructive",
+        },
+      ]}
+    />
   );
 }
