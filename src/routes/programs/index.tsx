@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { RiArrowRightLine, RiMapPinLine, RiTimeLine } from "@remixicon/react";
-
 import { Button } from "#/components/ui/button";
 import { events, type EventKey } from "#/lib/meta/events";
 import { formatEventDate } from "./-components";
