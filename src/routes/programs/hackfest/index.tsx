@@ -6,24 +6,24 @@ import { md } from "#/lib/markdown";
 import { eventSchema } from "#/lib/seo";
 import { buildUrl } from "#/lib/utils.ts";
 
-const eventId = "hackfest";
+const event = events.hackfest;
 
 export const Route = createFileRoute("/programs/hackfest/")({
-  staticData: { title: events[eventId].name },
+  staticData: { title: event.name },
   loader: async () => {
-    const content = pages.find((p) => eventId === p._meta.path.slugify());
+    const content = pages.find((p) => "hackfest" === p._meta.path.slugify());
     return content || { content: "" };
   },
   head: () => ({
     meta: [
       eventSchema({
-        name: events[eventId].name,
-        description: events[eventId].description,
-        startDate: events[eventId].date?.start,
-        endDate: events[eventId].date?.end,
+        name: event.name,
+        description: event.description,
+        startDate: event.date?.start,
+        endDate: event.date?.end,
         url: buildUrl("/programs/hackfest"),
-        location: events[eventId].location,
-        price: events[eventId].price || 0,
+        location: event.location,
+        price: event.price || 0,
       }),
     ],
   }),
@@ -40,9 +40,9 @@ function RouteComponent() {
   );
 
   return (
-    <ProgramsEventPage
-      event={events[eventId]}
-      content={content || events[eventId].description}
+    <EventPage
+      event={event}
+      content={content || event.description}
       additions={{
         right: {
           // TODO: end: add hackfest instagram post/photos
