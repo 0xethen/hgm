@@ -61,7 +61,7 @@ export interface ProgramsGalleryImage {
   alt: string;
 }
 
-export function ProgramsEventPage({
+export function EventPage({
   event,
   content,
   gallery,
