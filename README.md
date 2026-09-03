@@ -11,6 +11,7 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 > - Investigate what percentage of visitors have trouble with the anchor-positioning/popover behavior in older Firefox (yes, we use anchored popovers instead of getBoundingClientRect() for the register tooltip!)
 > - Revert to old PostCards on /posts (index)
 > - fix newsletter stuff... again...
+> - /posts should be valid and indexed (? in the url blocks it, so make ?page be ?p and make ?p=1 (page=1) obsolete (should be default page 1)
 
 ## Contributing
 
