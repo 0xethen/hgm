@@ -3,7 +3,7 @@ import { events } from "#/lib/meta/events";
 import { ProgramsEventPage, type ProgramsGalleryImage } from "../-components";
 import { HackathonFAQ } from "#/components/elements/ctas/HackathonFAQ.tsx";
 import { buildUrl } from "#/lib/utils.ts";
-import { RiLink } from "@remixicon/react";
+import { RiInstagramLine, RiLink } from "@remixicon/react";
 import { Separator } from "#/components/ui/separator";
 import { pages } from "cms/pages/pages";
 import { md } from "#/lib/markdown";
@@ -33,11 +33,15 @@ export const Route = createFileRoute("/programs/hackathon/")({
   component: RouteComponent,
 });
 
-const press: { label: string; href: string }[] = [
+const press: { label: string; icon?: React.ReactNode; href: string }[] = [
   { label: "Hackathon 5.0 Recap", href: "https://www.youtube.com/watch?v=aQhZfWQlVXU" },
   { label: "Hackathon 5.0 DMC Recap", href: "https://www.instagram.com/reel/DSlEv4xifqL/" },
   { label: "Hack Club Hackathons", href: "https://hackathons.hackclub.com/" },
-  { label: "@hackgwinnett on Instagram", href: "https://www.instagram.com/hackgwinnett/" },
+  {
+    label: "@hackgwinnett on Instagram",
+    icon: <RiInstagramLine />,
+    href: "https://www.instagram.com/hackgwinnett/",
+  },
 ];
 
 const gallery: ProgramsGalleryImage[] = [
@@ -103,7 +107,7 @@ function RouteComponent() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <RiLink />
+                    {item.icon || <RiLink />}
                     {item.label}
                   </Link>
                 ))}

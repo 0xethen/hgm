@@ -46,24 +46,33 @@ export function Magnetic({
       return;
     }
 
+    // only hooked up while actually hovered, so getBoundingClientRect runs once per
+    // hover (not on every mousemove across the whole document while nowhere near this element).
+    // unhovering (any actionArea) snaps back to rest, same as the isDisabled branch above.
+    if (!isHovered) {
+      x.set(0);
+      y.set(0);
+      return;
+    }
+    if (!ref.current) return;
+
+    const rect = ref.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
     const calculateDistance = (e: MouseEvent) => {
-      if (ref.current) {
-        const rect = ref.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const distanceX = e.clientX - centerX;
-        const distanceY = e.clientY - centerY;
+      const distanceX = e.clientX - centerX;
+      const distanceY = e.clientY - centerY;
 
-        const absoluteDistance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+      const absoluteDistance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
 
-        if (isHovered && absoluteDistance <= range) {
-          const scale = 1 - absoluteDistance / range;
-          x.set(distanceX * intensity * scale);
-          y.set(distanceY * intensity * scale);
-        } else {
-          x.set(0);
-          y.set(0);
-        }
+      if (absoluteDistance <= range) {
+        const scale = 1 - absoluteDistance / range;
+        x.set(distanceX * intensity * scale);
+        y.set(distanceY * intensity * scale);
+      } else {
+        x.set(0);
+        y.set(0);
       }
     };
 
@@ -72,7 +81,7 @@ export function Magnetic({
     return () => {
       document.removeEventListener("mousemove", calculateDistance);
     };
-  }, [ref, isHovered, intensity, range, isDisabled]);
+  }, [isHovered, intensity, range, isDisabled]);
 
   useEffect(() => {
     if (isDisabled) return;
@@ -104,8 +113,6 @@ export function Magnetic({
   const handleMouseLeave = () => {
     if (actionArea === "self") {
       setIsHovered(false);
-      x.set(0);
-      y.set(0);
     }
   };
 

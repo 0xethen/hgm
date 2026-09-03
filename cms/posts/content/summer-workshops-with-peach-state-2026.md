@@ -1,8 +1,9 @@
 ---
 title: "Introducing Summer Workshops"
-authors: ["hg"]
+authors: ["hackgwinnett"]
 date: 1783795504614
 summary: "We've partnered up with Peach State Innovations in our mission to empower novice developers"
+hidden: true
 ---
 
 Hello, world! Big news:

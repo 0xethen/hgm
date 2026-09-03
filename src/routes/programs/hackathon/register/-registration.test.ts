@@ -43,7 +43,7 @@ const VALID_ABOUT = `{
 }`;
 
 const VALID_TEAM = `{
-  "team": "Segfault",
+  "teamName": "Segfault",
   "teammates": [
     { "name": "Emiliano Huerta", "school": "GSMST" },
     { "name": "", "school": "" }
@@ -114,6 +114,16 @@ test("enter adds no comma before a closing brace, or after one already there", (
 
   const already = '{\n  "name": "Ada",\n}';
   expect(newlineEdit(already, already.indexOf(",") + 1).insert).toBe("\n  ");
+});
+
+test("enter inside a string right before an existing trailing comma keeps the comma on the value's line", () => {
+  const source = '{\n  "name": "Ada",\n}';
+  const caret = source.indexOf('"Ada"') + 4; // between the "a" and the closing quote
+
+  const { at, insert } = newlineEdit(source, caret);
+  const next = source.slice(0, at) + insert + source.slice(at);
+
+  expect(next).toBe('{\n  "name": "Ada",\n  \n}');
 });
 
 test("enter adds no comma after a comment or an opener, and indents into the opener", () => {
@@ -213,7 +223,7 @@ test("the caret lands inside the inserted value", () => {
 });
 
 test("inside a teammate entry, only the teammate fields are offered", () => {
-  const source = '{\n  "team": "S",\n  "teammates": [\n    { "na" }\n  ]\n}';
+  const source = '{\n  "teamName": "S",\n  "teammates": [\n    { "na" }\n  ]\n}';
   const labels = completionsAt(source, source.indexOf('"na"') + 3, TEAM_FIELDS)!.items.map(
     (item) => item.label,
   );
@@ -222,7 +232,7 @@ test("inside a teammate entry, only the teammate fields are offered", () => {
 });
 
 test("an array field completes with brackets, not quotes", () => {
-  const source = '{\n  "team": "S",\n  "teamm"\n}';
+  const source = '{\n  "teamName": "S",\n  "teamm"\n}';
   const { next } = complete(source, source.indexOf('"teamm"') + 6, TEAM_FIELDS);
 
   expect(next).toContain('"teammates": []');
@@ -303,7 +313,7 @@ test("more than three teammates is rejected", () => {
     { length: MAX_TEAMMATES + 1 },
     () => '{ "name": "A B", "school": "C D" }',
   );
-  const source = `{ "team": "Segfault", "teammates": [${roster.join(",")}] }`;
+  const source = `{ "teamName": "Segfault", "teammates": [${roster.join(",")}] }`;
 
   expect(diagnose(source, teamSchema).all[0].message).toContain("at most");
 });

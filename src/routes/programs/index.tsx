@@ -13,9 +13,9 @@ const paths: Record<EventKey, string> = {
 };
 
 export const Route = createFileRoute("/programs/")({
-  // the /programs layout owns the crumb this page is the destination for
   staticData: {
-    breadcrumb: false,
+    title: "Programs",
+    breadcrumb: false, // route.tsx
     description: "The events HackGwinnett runs for students across Metro Atlanta.",
   },
   component: RouteComponent,
@@ -26,7 +26,7 @@ function RouteComponent() {
     <div className="flex flex-col gap-8">
       <div className="space-y-2">
         <h1 className="font-semibold text-4xl">Programs</h1>
-        <p className="text-muted-foreground">Events that HackGwinnett runs</p>
+        <p className="text-muted-foreground">Events brought to you by the HackGwinnett Team</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">

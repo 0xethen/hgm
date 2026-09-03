@@ -10,9 +10,7 @@ export type FallbackTone = "default" | "destructive" | "secret";
 export interface FallbackAction {
   label: React.ReactNode;
   tone?: FallbackTone;
-  /** rendered but visually hidden. the secret still needs to be focusable */
   hidden?: boolean;
-  /** note: a link without `to` is a plain button */
   to?: string;
   search?: Record<string, unknown>;
   params?: Record<string, unknown>;

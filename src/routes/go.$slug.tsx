@@ -2,7 +2,8 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { socialLinks } from "#/lib/meta/brand";
 import { events } from "#/lib/meta/events";
 
-const goRedirects: Record<string, string> = {
+const redirects: Record<string, string> = {
+  // redirects
   register: events.hackathon.registration?.page || "/programs/hackathon",
   form: events.hackathon.registration?.url || "/programs/hackathon",
   issues: "/report",
@@ -16,7 +17,7 @@ const goRedirects: Record<string, string> = {
   discord: socialLinks.discord || "/",
 
   // time-sensitive redirects
-  summerws26: "/posts/summer-workshops-with-peach-state-2026",
+  // summerws26: "/posts/summer-workshops-with-peach-state-2026",
 };
 
 // FOR THE RECORD, I opened #7141 in TanStack/router TWO MONTHS AGO
@@ -25,9 +26,7 @@ const goRedirects: Record<string, string> = {
 // update 7/14: bug only occurs when a route tries to preload via link hover
 // update 8/1: we're going to keep patchPath to deal with unexpected behavior
 
-const patchPath = (href: string) => {
-  return href.startsWith("/") ? { to: href } : { href };
-};
+const path = (href: string) => (href.startsWith("/") ? { to: href } : { href });
 
 export const Route = createFileRoute("/go/$slug")({
   staticData: {
@@ -37,8 +36,8 @@ export const Route = createFileRoute("/go/$slug")({
   loader: ({ params }) => {
     const { slug } = params;
 
-    if (goRedirects[slug]) {
-      return Route.redirect(patchPath(goRedirects[slug]));
+    if (redirects[slug]) {
+      return Route.redirect(path(redirects[slug]));
     }
 
     throw notFound();

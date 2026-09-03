@@ -1,4 +1,4 @@
-import { type JSX, useEffect, useState, useRef, useMemo } from "react";
+import { type JSX, useEffect, useState, useRef } from "react";
 import { motion, type MotionProps } from "motion/react";
 
 export type TextScrambleProps = {
@@ -27,15 +27,13 @@ export function TextScramble({
   onScrambleComplete,
   ...props
 }: TextScrambleProps) {
-  // TODO: motion.create() returns a new component type per call. add react compiler support to drop memo
-  const MotionComponent = useMemo(
-    () => motion.create(Component as keyof JSX.IntrinsicElements),
-    [Component],
-  );
+  // React Compiler memoizes this automatically (see `compiler: true` in vite.config.ts)
+  const MotionComponent = motion.create(Component as keyof JSX.IntrinsicElements);
 
   const [scrambledText, setScrambledText] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const stepRef = useRef(0);
 
   const text = children;
   const displayText = scrambledText ?? children;
@@ -54,14 +52,14 @@ export function TextScramble({
     setIsAnimating(true);
 
     const steps = duration / speed;
-    let step = 0;
+    stepRef.current = 0;
 
     // Safety catch: clear any rogue intervals before starting a new one
     if (intervalRef.current) clearInterval(intervalRef.current);
 
     intervalRef.current = setInterval(() => {
       let scrambled = "";
-      const progress = step / steps;
+      const progress = stepRef.current / steps;
 
       for (let i = 0; i < text.length; i++) {
         if (text[i] === " ") {
@@ -77,9 +75,9 @@ export function TextScramble({
       }
 
       setScrambledText(scrambled);
-      step++;
+      stepRef.current++;
 
-      if (step > steps) {
+      if (stepRef.current > steps) {
         stopAnimation();
         onScrambleComplete?.();
       }
@@ -87,12 +85,6 @@ export function TextScramble({
   };
 
   useEffect(() => {
-    // unneeded: reduced motion: render the final text straight away
-    // if (reducedMotion) {
-    //   stopAnimation();
-    //   return;
-    // }
-
     if (trigger) {
       void scramble();
     } else if (deTriggerStopsScramble) {
@@ -104,7 +96,7 @@ export function TextScramble({
         clearInterval(intervalRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // undo: eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trigger, deTriggerStopsScramble]);
 
   return (

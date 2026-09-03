@@ -249,12 +249,25 @@ export function locate(source: string): { spans: Map<string, Span>; failure?: nu
 
 type Node =
   | { kind: "scalar"; text: string }
-  | { kind: "object" | "array"; members: Member[]; trailing: string[] };
+  | {
+      kind: "object" | "array";
+      members: Member[];
+      trailing: string[];
+      /** the author left a comma dangling after the last member; keep it, don't "fix" it away */
+      danglingComma: boolean;
+    };
 
 interface Member {
   comments: string[];
   key?: string;
   value: Node;
+  /** an author put a blank line above this member (a paragraph break); worth keeping regardless of file shape */
+  blankBefore: boolean;
+}
+
+/** more than one line break between two offsets means the author left a blank line there */
+function hasBlankLine(source: string, from: number, to: number): boolean {
+  return (source.slice(from, to).match(/\n/g)?.length ?? 0) > 1;
 }
 
 function render(node: Node, depth: number): string {
@@ -270,10 +283,12 @@ function render(node: Node, depth: number): string {
 
   const inline = `${open} ${parts.join(", ")} ${close}`;
   const hasComments = node.members.some((member) => member.comments.length) || node.trailing.length;
+  const hasBlankLines = node.members.some((member) => member.blankBefore);
 
   if (
     depth > 0 &&
     !hasComments &&
+    !hasBlankLines &&
     !inline.includes("\n") &&
     inline.length + pad.length <= INLINE_WIDTH
   ) {
@@ -282,10 +297,11 @@ function render(node: Node, depth: number): string {
 
   const lines = node.members.map(
     (member, position) =>
+      (member.blankBefore && position > 0 ? "\n" : "") +
       member.comments.map((comment) => pad + comment + "\n").join("") +
       pad +
       parts[position] +
-      (position < node.members.length - 1 ? "," : ""),
+      (position < node.members.length - 1 || node.danglingComma ? "," : ""),
   );
 
   return [
@@ -329,37 +345,59 @@ export function format(source: string): string {
 
   function parseBody(kind: "object" | "array", closer: string): Node {
     const members: Member[] = [];
+    // the opener (`{`/`[`) or `,` just consumed by the caller
+    let prevEnd = tokens[cursor - 1]?.end ?? 0;
+    let danglingComma = false;
 
     for (;;) {
+      const blankBefore = peek() ? hasBlankLine(source, prevEnd, peek()!.start) : false;
       const comments = takeComments();
       const token = peek();
 
       if (!token || (token.kind === "punct" && text(token) === closer)) {
         cursor++;
-        return { kind, members, trailing: comments };
+        return { kind, members, trailing: comments, danglingComma };
       }
 
       if (token.kind === "punct" && text(token) === ",") {
         cursor++;
+        prevEnd = token.end;
+        danglingComma = true;
         continue;
       }
+
+      danglingComma = false;
 
       if (kind === "object") {
         const key = text(tokens[cursor++]);
         // step over the colon
         if (peek()?.kind === "punct" && text(peek()) === ":") cursor++;
-        members.push({ comments, key, value: parseValue() });
+        members.push({ comments, key, value: parseValue(), blankBefore });
       } else {
-        members.push({ comments, value: parseValue() });
+        members.push({ comments, value: parseValue(), blankBefore });
       }
+
+      prevEnd = tokens[cursor - 1]?.end ?? prevEnd;
     }
   }
 
   const header = takeComments();
+  const afterHeader = tokens[cursor - 1]?.end ?? 0;
+  const blankAfterHeader = peek() ? hasBlankLine(source, afterHeader, peek()!.start) : false;
+
   const root = parseValue();
+  const afterRoot = tokens[cursor - 1]?.end ?? afterHeader;
+  const blankBeforeTail = peek() ? hasBlankLine(source, afterRoot, peek()!.start) : false;
+
   const tail = takeComments();
 
-  const formatted = [...header, render(root, 0), ...tail].join("\n");
+  const formatted = [
+    ...header,
+    ...(blankAfterHeader ? [""] : []),
+    render(root, 0),
+    ...(blankBeforeTail ? [""] : []),
+    ...tail,
+  ].join("\n");
 
   // never hand back something that stopped being the same document
   try {
@@ -458,7 +496,10 @@ export interface Edit {
 
 // return return return
 export function newlineEdit(source: string, caret: number): Edit {
-  const at = escapeString(source, caret);
+  let at = escapeString(source, caret);
+  // stepping out of the string can land right before a comma that's already there; breaking the
+  // line before it would strand that comma alone on the next line instead of after the value
+  if (source[at] === ",") at++;
 
   const lineStart = source.lastIndexOf("\n", at - 1) + 1;
   const head = source.slice(lineStart, at);

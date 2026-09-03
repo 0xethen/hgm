@@ -1,5 +1,7 @@
 import { z } from "zod/mini";
 import { events } from "#/lib/meta/events";
+import { tokenize } from "./-jsonc.ts";
+import { parseLoose } from "./-diagnostics.ts";
 
 export const FORM_URL = events.hackathon.registration?.url ?? "";
 
@@ -72,7 +74,7 @@ export function isEmptyTeammate(teammate: { name: string; school: string }): boo
 
 export const teamSchema = z
   .strictObject({
-    team: shortText("team", 60),
+    teamName: shortText("teamName", 60),
     teammates: z
       .array(teammateSchema)
       .check(z.maxLength(MAX_TEAMMATES, `a team is you plus at most ${MAX_TEAMMATES} others`)),
@@ -135,7 +137,7 @@ const ABOUT_FIELDS: FieldDoc[] = [
 ];
 
 const TEAM_FIELDS: FieldDoc[] = [
-  { key: "name", type: "string", required: true, hint: "what your team is called" },
+  { key: "teamName", type: "string", required: true, hint: "what your team is called" },
   {
     key: "teammates",
     type: "object[]",
@@ -162,7 +164,7 @@ export const ABOUT_DOCUMENT: RegistrationDocument = {
   fields: ABOUT_FIELDS,
   boilerplate: [
     "// tell us more about yourself!",
-    "// hit return (enter) to move on to the next field!",
+    "// hit return (enter) to advance fields!!",
     "",
     "{",
     '  "name": "",',
@@ -179,17 +181,92 @@ export const TEAM_DOCUMENT: RegistrationDocument = {
     `// who you're bringing. teams include you plus up to ${MAX_TEAMMATES} others.`,
     `// make sure teammates complete out their own registration!`,
     "{",
-    '  "team": "",',
+    '  "teamName": "",',
     '  "teammates": [',
     ...Array.from({ length: MAX_TEAMMATES }, (_, slot) => [
+      // a blank line separates slots; format() preserves it, so Review's reformat leaves it alone
+      ...(slot > 0 ? [""] : []),
       `    // Teammate #${slot + 1}${slot > MIN_TEAMMATES - 1 ? " (optional)" : ""}`,
-      // no blank line between slots, so Review's reformat leaves the boilerplate as it found it
       `    { "name": "", "school": "" }${slot < MAX_TEAMMATES - 1 ? "," : ""}`,
     ]).flat(),
     "  ]",
     "}",
   ].join("\n"),
 };
+
+/** every field, in order, filled in from `current` where it already has an answer */
+export function templateValue(
+  fields: readonly FieldDoc[],
+  current: Record<string, unknown> | undefined,
+) {
+  const result: Record<string, unknown> = {};
+
+  for (const field of fields) {
+    const existing = current?.[field.key];
+
+    if (field.type === "object[]") {
+      const rows = Array.isArray(existing) ? existing : [];
+      const slots = Math.max(rows.length, 1);
+
+      result[field.key] = Array.from({ length: slots }, (_, slot) =>
+        templateValue(field.children ?? [], rows[slot] as Record<string, unknown> | undefined),
+      );
+    } else if (field.type === "object") {
+      result[field.key] = templateValue(
+        field.children ?? [],
+        existing as Record<string, unknown> | undefined,
+      );
+    } else {
+      result[field.key] = typeof existing === "string" ? existing : "";
+    }
+  }
+
+  return result;
+}
+
+/** every field has a key, even a blank one, in the (possibly nested) object `current` describes */
+function everyKeyPresent(
+  fields: readonly FieldDoc[],
+  current: Record<string, unknown> | undefined,
+): boolean {
+  if (!current) return false;
+
+  return fields.every((field) => {
+    if (!(field.key in current)) return false;
+    const existing = current[field.key];
+
+    if (field.type === "object[]") {
+      return (
+        Array.isArray(existing) &&
+        existing.length > 0 &&
+        existing.every((row) =>
+          everyKeyPresent(field.children ?? [], row as Record<string, unknown>),
+        )
+      );
+    }
+
+    if (field.type === "object") {
+      return everyKeyPresent(field.children ?? [], existing as Record<string, unknown>);
+    }
+
+    return true;
+  });
+}
+
+/** true once every field has a key in `source` — even a blank one. nothing left for fillTemplate to add */
+export function isFilledOut(fields: readonly FieldDoc[], source: string): boolean {
+  return everyKeyPresent(fields, parseLoose(source));
+}
+
+/** rebuilds the JSON object, but leaves whatever comes before its opening `{` (header comments) alone */
+export function fillTemplate(fields: readonly FieldDoc[], source: string): string {
+  const brace = tokenize(source).find(
+    (token) => token.kind === "punct" && source[token.start] === "{",
+  );
+  const header = brace ? source.slice(0, brace.start) : "";
+
+  return header + JSON.stringify(templateValue(fields, parseLoose(source)), null, 2);
+}
 
 export function wantsRoster(about: Partial<About> | undefined): boolean {
   return about?.team === TEAM_ROSTER_CHOICE;
@@ -211,7 +288,7 @@ export function buildPrefillUrl(about: About, team?: Team): string {
   put(params, ENTRY.team, TEAM_CHOICES[about.team]);
 
   if (team) {
-    put(params, ENTRY.teamName, team.team);
+    put(params, ENTRY.teamName, team.teamName);
 
     // blank slots are how a two-person team is written, so they never reach the form
     team.teammates

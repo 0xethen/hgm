@@ -31,7 +31,6 @@ import {
 } from "#/components/ui/avatar";
 import { RiArrowRightLine } from "@remixicon/react";
 import type { Author } from "cms/posts/authors";
-import { getTitle } from "#/lib/routing.ts";
 import { articleSchema } from "#/lib/seo";
 import { readingTime } from "#/lib/utils";
 import pluralize from "pluralize";
@@ -39,10 +38,7 @@ import pluralize from "pluralize";
 export const Route = createFileRoute("/posts/$postId")({
   staticData: {
     classNames: { container: "max-w-4xl" },
-    breadcrumb: {
-      label: (match) =>
-        posts.find((post) => post._meta.path.slugify() === match.params.postId)?.title,
-    },
+    title: (match) => match.loaderData?.post?.title || "Post",
   },
   loader: async ({ params }) => {
     const post = posts.find((p) => params.postId === p._meta.path.slugify());
@@ -50,32 +46,24 @@ export const Route = createFileRoute("/posts/$postId")({
     if (!post) throw notFound();
     return { post };
   },
-  head: ({ loaderData, matches }) => ({
-    meta: [
-      {
-        title: getTitle(matches, " / ", loaderData?.post.title || "Post"),
-      },
-      ...(loaderData?.post
-        ? [
-            articleSchema({
-              headline: loaderData.post.title,
-              description: loaderData.post.summary,
-              authorNames: loaderData.post.authors.map((author) => author.name),
-              datePublished: loaderData.post.date,
-              image: loaderData.post.cover?.src,
-              url: `https://hackgwinnett.org/posts/${loaderData.post._meta.path.slugify()}`,
-            }),
-          ]
-        : []),
-    ],
+  head: ({ loaderData }) => ({
+    meta: loaderData?.post
+      ? [
+          articleSchema({
+            headline: loaderData.post.title,
+            description: loaderData.post.summary,
+            authorNames: loaderData.post.authors.map((author) => author.name),
+            datePublished: loaderData.post.date,
+            image: loaderData.post.cover?.src,
+            url: `https://hackgwinnett.org/posts/${loaderData.post._meta.path.slugify()}`,
+          }),
+        ]
+      : [],
   }),
   component: RouteComponent,
-  notFoundComponent: (props) =>
-    NotFound({
-      ...props,
-      title: "404: post not found",
-      link: { text: "all posts", href: "/posts" },
-    }),
+  notFoundComponent: (props) => (
+    <NotFound {...props} title="404: post not found" link={{ text: "all posts", href: "/posts" }} />
+  ),
 });
 
 function RouteComponent() {
@@ -99,7 +87,7 @@ function RouteComponent() {
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger>
-              <div className="flex items-center gap-2 cursor-pointer">
+              <div className="flex items-center gap-2">
                 <AvatarGroup>
                   {post.authors.slice(0, 4).map((author) => (
                     <Avatar key={author.id} size="sm">

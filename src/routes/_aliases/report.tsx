@@ -1,9 +1,6 @@
 import { createFileRoute, Link, Navigate, useSearch } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_aliases/report")({
-  loader: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 5000)); // simulate a delay TODO TODO TODO
-  },
   component: RouteComponent,
 });
 

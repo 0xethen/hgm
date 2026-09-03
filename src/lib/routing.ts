@@ -61,12 +61,17 @@ export function isDeadEnd(routeId: string | undefined): boolean {
 //   loaderData: unknown;
 // }
 
-export type TitleOption = string | { page: string; pending?: string; exact?: boolean };
-type TitleData = Exclude<TitleOption, string | undefined>;
+type TitlePage = string | ((match: Match) => string | undefined);
+
+export type TitleOption = TitlePage | { page: TitlePage; pending?: string; exact?: boolean };
+
+type TitleData = Exclude<TitleOption, string | ((match: Match) => string | undefined) | undefined>;
 
 function getTitleData(match: Match): TitleData | undefined {
   const title = match.staticData.title;
-  return typeof title === "string" ? { page: title } : title;
+  if (title === undefined) return undefined;
+
+  return typeof title === "object" ? title : { page: title };
 }
 
 function getMatchTitle(match: Match): string | undefined {
@@ -76,7 +81,7 @@ function getMatchTitle(match: Match): string | undefined {
     return title.pending;
   }
 
-  return title?.page;
+  return typeof title?.page === "function" ? title.page(match) : title?.page;
 }
 
 function findFromLeaf<T>(
@@ -118,7 +123,6 @@ export function getTitle(
   return titles ? `${titles}${separator}${suffix}` : fallback;
 }
 
-// TODO: necessary to some() on each route change?
 function isNotFound(matches: readonly Match[]): boolean {
   return matches.some((match) => match._notFound || match.status === "notFound");
 }
@@ -130,8 +134,13 @@ export function showsChrome(matches: readonly Match[]): boolean {
   return !last.staticData.header?.hidden && !isNotFound(matches) && !last.error;
 }
 
-export function getBreadcrumbs(matches: readonly Match[]): Crumb[] {
-  if (!showsChrome(matches)) return [];
+// `chrome` lets a caller that already computed showsChrome(matches) pass it in instead of
+// paying for a second matches.some() scan (both fire together every route change, e.g. __root.tsx)
+export function getBreadcrumbs(
+  matches: readonly Match[],
+  chrome: boolean = showsChrome(matches),
+): Crumb[] {
+  if (!chrome) return [];
 
   const crumbs: Crumb[] = [];
 

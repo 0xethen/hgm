@@ -11,9 +11,9 @@ export type Author = AuthorInfo & { id: string }; // id is injected in posts.ts
 // keyed by id on purpose: posts and /posts/@{author} both look authors up by key
 
 export const authorInfo: Record<string, AuthorInfo> = {
-  hg: {
+  hackgwinnett: {
     name: "HackGwinnett Team",
-    bio: "HackGwinnett is a student-led CS organization based in Gwinnett County, Georgia.",
+    bio: "Hello, world! HackGwinnett is a student-led CS organization based in Gwinnett County, Georgia.",
     avatar: "https://avatars.githubusercontent.com/hackgwinnett",
     socials: [
       { platform: "Instagram", url: "https://instagram.com/hackgwinnett" },

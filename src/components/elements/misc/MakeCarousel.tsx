@@ -23,11 +23,6 @@ export function MakeCarousel({
   const [playing, setPlaying] = useState<boolean>(false);
   const reducedMotion = useIsReducedMotion();
 
-  // reduced motion: don't autostart
-  useEffect(() => {
-    toggleAutoplay(reducedMotion ? "stop" : "play");
-  }, [emblaApi, reducedMotion]);
-
   const toggleAutoplay = useCallback(
     (override?: "play" | "stop") => {
       const autoplay = emblaApi?.plugins()?.autoplay;
@@ -47,6 +42,11 @@ export function MakeCarousel({
     },
     [emblaApi],
   );
+
+  // reduced motion: don't autostart
+  useEffect(() => {
+    toggleAutoplay(reducedMotion ? "stop" : "play");
+  }, [toggleAutoplay, reducedMotion]);
 
   useEffect(() => {
     const autoplay = emblaApi?.plugins()?.autoplay;

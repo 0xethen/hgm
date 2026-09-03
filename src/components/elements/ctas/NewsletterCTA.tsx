@@ -44,7 +44,6 @@ export function NewsletterCTA({
           throw new Error("Signup endpoint misconfigured!");
         }
 
-        // let response: Response;
         let data: any;
         try {
           const response = await fetch(url, {

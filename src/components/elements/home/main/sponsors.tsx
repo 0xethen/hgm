@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "@tanstack/react-router";
+import { RiGridLine, RiPlayLine } from "@remixicon/react";
 import { cn } from "#/lib/utils";
 import { Scroller } from "#/components/ui/motion-primitives/scroller";
 import { type Sponsor, mainSponsors, otherSponsors } from "#/lib/meta/sponsors";
@@ -10,10 +11,14 @@ export function SponsorSection({ title }: { title: React.ReactNode }) {
   const isMobile = !md;
   const reducedMotion = useIsReducedMotion();
   const [hasKeyboardFocus, setHasKeyboardFocus] = React.useState(false);
+  const [manualGrid, setManualGrid] = React.useState(false);
 
   // the marquee is the only reason the grid isn't the default, so anything that rules the
-  // marquee out (small screens, reduced motion) falls back to the grid
-  const showGrid = isMobile || reducedMotion || hasKeyboardFocus;
+  // marquee out (small screens, reduced motion, an explicit ask) falls back to the grid.
+  // Scroller keeps the same sponsor links mounted across this toggle, so switching layout
+  // while tabbing through never drops focus.
+  const showGrid = isMobile || reducedMotion || hasKeyboardFocus || manualGrid;
+  const canToggle = !isMobile && !reducedMotion;
 
   const handleFocusCapture = (e: React.FocusEvent<HTMLElement>) => {
     if ((e.target as HTMLElement | null)?.matches(":focus-visible")) {
@@ -26,14 +31,6 @@ export function SponsorSection({ title }: { title: React.ReactNode }) {
       setHasKeyboardFocus(false);
     }
   };
-
-  const AllSponsors = () => (
-    <>
-      {otherSponsors.map((sponsor, index) => (
-        <SponsorLogo key={`${sponsor.title}-${index}-logo`} sponsor={sponsor} />
-      ))}
-    </>
-  );
 
   return (
     <div
@@ -58,19 +55,39 @@ export function SponsorSection({ title }: { title: React.ReactNode }) {
         </div>
 
         {/* other sponsors */}
-        {showGrid ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 justify-items-center">
-            <AllSponsors />
-          </div>
-        ) : (
+        <div className="relative mx-auto max-w-4xl w-full">
           <Scroller
-            className="mx-auto max-w-4xl w-full mask-x-from-95%"
+            className="w-full mask-x-from-95%"
             speedOnHover={0.5}
             gap={24}
+            grid={showGrid}
+            gridClassName="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 justify-items-center"
           >
-            <AllSponsors />
+            {otherSponsors.map((sponsor, index) => (
+              <SponsorLogo key={`${sponsor.title}-${index}-logo`} sponsor={sponsor} />
+            ))}
           </Scroller>
-        )}
+
+          {canToggle && (
+            <button
+              type="button"
+              onClick={() => setManualGrid((prev) => !prev)}
+              aria-pressed={manualGrid}
+              title={manualGrid ? "Show scrolling sponsors" : "Show all sponsors as a grid"}
+              className="absolute -bottom-8 right-0 flex items-center gap-1.5 rounded-full border border-border/50 bg-background/80 px-2.5 py-1 text-xs text-muted-foreground backdrop-blur-sm transition hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {manualGrid ? (
+                <>
+                  <RiPlayLine className="size-3.5" /> Scroll
+                </>
+              ) : (
+                <>
+                  <RiGridLine className="size-3.5" /> Show all
+                </>
+              )}
+            </button>
+          )}
+        </div>
       </div>
 
       <div>

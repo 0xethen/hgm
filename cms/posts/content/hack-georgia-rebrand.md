@@ -1,6 +1,6 @@
 ---
 title: "New name, same mission: HackGwinnett is now HackGeorgia!"
-authors: ["hg"]
+authors: ["hackgwinnett"]
 date: 1781016713527
 hidden: true
 ---

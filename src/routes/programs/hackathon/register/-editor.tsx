@@ -6,7 +6,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "#/components/ui/tooltip
 import { completionsAt, type CompletionState } from "./-completions.ts";
 import { positionAt, type Diagnostic } from "./-diagnostics.ts";
 import { matchingBrackets, newlineEdit, outdentEdit, tokenize, type TokenKind } from "./-jsonc.ts";
-import type { FieldDoc } from "./-registration.ts";
+import { fillTemplate, type FieldDoc } from "./-registration.ts";
+import { useBreakpoint } from "#/hooks/browser.ts";
 import pluralize from "pluralize";
 
 const INDENT = "  ";
@@ -23,7 +24,7 @@ const classNames = {
   bracketMatch: "bg-primary/25 text-white",
   gutter:
     "shrink-0 bg-white/3 py-3 pr-2 pl-3 text-right font-mono text-base leading-6 text-white/25 select-none md:text-sm",
-  popover: "anchored border bg-hg-black shadow-xl shadow-black/40",
+  popover: "anchored border border-white/10 bg-hg-black shadow-xl shadow-black/40",
   token: {
     key: "text-primary-light",
     string: "text-white/85",
@@ -102,21 +103,27 @@ export const JsonEditor = React.forwardRef<
     value: string;
     onChange: (value: string) => void;
     diagnostics: readonly Diagnostic[];
+    complete: boolean;
     fields: readonly FieldDoc[];
     tabs: EditorTab[];
     activeTab: string;
     onSelectTab: (id: string) => void;
   }
->(function JsonEditor({ value, onChange, diagnostics, fields, tabs, activeTab, onSelectTab }, ref) {
+>(function JsonEditor(
+  { value, onChange, diagnostics, complete, fields, tabs, activeTab, onSelectTab },
+  ref,
+) {
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const editorId = React.useId().replace(/[^a-zA-Z0-9]/g, "");
+  const { isMobileDevice } = useBreakpoint();
 
   const [caret, setCaret] = React.useState(0);
   const [active, setActive] = React.useState(0);
   const [dismissed, setDismissed] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
 
-  // one anchor per editor, so two on a page would never fight over the same name
-  const anchorName = `--caret-${React.useId().replace(/[^a-zA-Z0-9]/g, "")}`;
+  // one anchor per editor
+  const anchorName = `--caret-${editorId}`;
 
   const completions: CompletionState | undefined = React.useMemo(
     () => (dismissed || !focused ? undefined : completionsAt(value, caret, fields)),
@@ -137,6 +144,11 @@ export const JsonEditor = React.forwardRef<
 
   const lines = value.split("\n");
   const brokenLines = new Set(diagnostics.map((issue) => issue.line));
+
+  // typing JSON by hand on a phone keyboard is miserable; skip straight to the fields that exist
+  React.useEffect(() => {
+    if (isMobileDevice && !complete) onChange(fillTemplate(fields, value));
+  }, [isMobileDevice, complete, fields, value, onChange]);
 
   const put = (next: string, cursor: number) => {
     onChange(next);
@@ -213,9 +225,11 @@ export const JsonEditor = React.forwardRef<
     }
 
     if (event.key === "Enter") {
-      // keep the caret in the object, and close off the line they're leaving with a comma
       event.preventDefault();
+      // a suggestion on screen wins first, the same as Tab
+      if (accept()) return;
 
+      // keep the caret in the object, and close off the line they're leaving with a comma
       const { at, insert } = newlineEdit(value, selectionStart);
 
       put(
@@ -265,7 +279,7 @@ export const JsonEditor = React.forwardRef<
           ))}
         </div>
 
-        <div className="relative flex-1 cursor-text">
+        <div className="relative min-w-0 flex-1 cursor-text">
           <pre
             aria-hidden
             className={cn(
@@ -322,16 +336,31 @@ export const JsonEditor = React.forwardRef<
         </div>
       </div>
 
-      <div className="border-t border-white/10 px-3 py-2 font-mono text-xs text-white/35">
-        line {positionAt(value, caret).line}, column {positionAt(value, caret).column}
-        <span className="mx-2 text-muted-foreground/50">|</span>
-        <span aria-live="polite" className={cn(diagnostics.length > 0 && "text-destructive-text")}>
-          {diagnostics.length > 0
-            ? `${diagnostics.length} ${pluralize("problem", diagnostics.length)}`
-            : "no problems"}
-        </span>
-        {/*type <span className="text-primary-light">"</span> then{" "}
-        <Kbd className="bg-background/10 text-background/70">⇥</Kbd> to autocomplete*/}
+      <div className="flex items-center justify-between gap-2 border-t border-white/10 px-3 py-2 font-mono text-xs text-white/35">
+        <div>
+          line {positionAt(value, caret).line}, column {positionAt(value, caret).column}
+          <span className="mx-2 text-muted-foreground/50">|</span>
+          <span
+            aria-live="polite"
+            className={cn(diagnostics.length > 0 && "text-destructive-text")}
+          >
+            {diagnostics.length > 0
+              ? `${diagnostics.length} ${pluralize("problem", diagnostics.length)}`
+              : "no problems"}
+          </span>
+          {/*type <span className="text-primary-light">"</span> then{" "}
+          <Kbd className="bg-background/10 text-background/70">⇥</Kbd> to autocomplete*/}
+        </div>
+
+        {!complete && (
+          <button
+            type="button"
+            onClick={() => onChange(fillTemplate(fields, value))}
+            className="shrink-0 text-primary-light underline-offset-2 hover:underline"
+          >
+            autofill {label}
+          </button>
+        )}
       </div>
 
       <Anchored open={focused && suggestions.length > 0} anchor={anchorName} className="w-72">

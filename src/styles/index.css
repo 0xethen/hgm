@@ -62,6 +62,11 @@
     @apply cursor-pointer aria-disabled:cursor-not-allowed aria-disabled:opacity-50;
   }
 
+  button:not(:disabled, [aria-disabled="true"]),
+  a[href] {
+    @apply cursor-pointer;
+  }
+
   /* for links that pair an icon with text (nav items, inline CTAs) instead of prose */
   .icon-link {
     @apply aria-disabled:select-none flex gap-1 items-center [&>svg]:size-4;

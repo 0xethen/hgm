@@ -151,6 +151,20 @@ function stub(field: FieldDoc): string {
   return '""';
 }
 
+/** fields already passed over (something later in the list got filled first) sink to the bottom */
+function bySkips(fields: readonly FieldDoc[], siblings: Set<string>): readonly FieldDoc[] {
+  const lastFilled = fields.reduce(
+    (last, field, index) => (siblings.has(field.key) ? index : last),
+    -1,
+  );
+  if (lastFilled < 0) return fields;
+
+  const upNext = fields.filter((_, index) => index > lastFilled);
+  const skipped = fields.filter((field, index) => index < lastFilled && !siblings.has(field.key));
+
+  return [...upNext, ...skipped];
+}
+
 export function completionsAt(
   source: string,
   caret: number,
@@ -182,7 +196,7 @@ export function completionsAt(
     const following = nextNonSpace(source, stringEnd);
     const needsColon = following < 0 || source[following] !== ":";
 
-    const items = fields
+    const items = bySkips(fields, siblings)
       .filter(
         (field) => matches(field.key, prefix) && (!siblings.has(field.key) || field.key === token),
       )
@@ -196,8 +210,12 @@ export function completionsAt(
     return items.length ? { items, start: stringStart, end: stringEnd } : undefined;
   }
 
-  // outside a string, a whole member can be dropped in wherever one would be legal
-  const before = prevNonSpace(source, caret);
+  // outside a string, a whole member can be dropped in wherever one would be legal — even one
+  // typed bare, with the quotes left off, like `team` instead of `"team"`
+  const bareKey = /[A-Za-z0-9_$]*$/.exec(source.slice(0, caret))?.[0] ?? "";
+  const keyStart = caret - bareKey.length;
+
+  const before = prevNonSpace(source, keyStart);
   const beforeChar = before >= 0 ? source[before] : "";
   if (beforeChar !== "{" && beforeChar !== ",") return undefined;
 
@@ -205,11 +223,11 @@ export function completionsAt(
   const suffix = after >= 0 && source[after] === '"' ? "," : "";
 
   // after a comma the new member belongs on its own line, not shoulder to shoulder with the last
-  const indent = ownLineIndent(source, caret);
+  const indent = ownLineIndent(source, keyStart);
   const lead = indent === undefined ? `\n${" ".repeat(caretColumnIndent(source, before))}` : "";
 
-  const items = fields
-    .filter((field) => !siblings.has(field.key))
+  const items = bySkips(fields, siblings)
+    .filter((field) => !siblings.has(field.key) && matches(field.key, bareKey))
     .map((field) => {
       const body = `"${field.key}": ${stub(field)}${suffix}`;
       return {
@@ -220,7 +238,7 @@ export function completionsAt(
       };
     });
 
-  return items.length ? { items, start: caret, end: caret } : undefined;
+  return items.length ? { items, start: keyStart, end: caret } : undefined;
 }
 
 /** the indent of the line the previous token sits on, so a new line matches its siblings */

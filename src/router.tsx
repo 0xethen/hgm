@@ -40,19 +40,13 @@ declare module "@tanstack/react-router" {
       root?: string;
       body?: string;
       main?: string;
-      /**
-       * The page container __root wraps children in, inherited by nested routes.
-       * `false` renders the page full-bleed, with no wrapper at all.
-       */
       container?: string | false;
     };
     header?: {
       className?: string;
       classNames?: HeaderClassNames;
-      /** drops the site header and footer, and with them the breadcrumb trail */
       hidden?: boolean;
-      /** keeps the header-height offset even when the header itself is hidden */
-      forceLayoutOffset?: boolean;
+      offset?: boolean;
     };
   }
 }

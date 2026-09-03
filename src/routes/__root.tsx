@@ -37,33 +37,37 @@ const PAGE_CONTAINER = "mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-9 md:py
 export const Route: RootRoute<Register> = createRootRoute({
   // the first crumb of every trail; see `breadcrumb` in src/router.tsx
   staticData: { breadcrumb: "Home" },
-  head: ({ matches }) => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: BRAND_THEME_COLOR },
-      ...seo({
-        title: getTitle(matches),
-        description: getDescription(matches, brand.description),
-      }),
-      // only when there is a real trail: structured data must match what the page shows
-      ...(getBreadcrumbs(matches).length > 1 ? [breadcrumbSchema(getBreadcrumbs(matches))] : []),
-      organizationSchema({
-        name: brand.name,
-        logo: "/assets/images/brand/hackgwinnett.svg".toAsset(),
-        sameAs: [
-          socialLinks.instagram,
-          socialLinks.youtube,
-          socialLinks.discord,
-          "https://github.com/hackgwinnett",
-        ],
-      }),
-    ],
-    links: [
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico".toAsset() },
-      { rel: "stylesheet", href: css },
-    ],
-  }),
+  head: ({ matches }) => {
+    const breadcrumbs = getBreadcrumbs(matches);
+
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "theme-color", content: BRAND_THEME_COLOR },
+        ...seo({
+          title: getTitle(matches),
+          description: getDescription(matches, brand.description),
+        }),
+        // only when there is a real trail: structured data must match what the page shows
+        ...(breadcrumbs.length > 1 ? [breadcrumbSchema(breadcrumbs)] : []),
+        organizationSchema({
+          name: brand.name,
+          logo: "/assets/images/brand/hackgwinnett.svg".toAsset(),
+          sameAs: [
+            socialLinks.instagram,
+            socialLinks.youtube,
+            socialLinks.discord,
+            "https://github.com/hackgwinnett",
+          ],
+        }),
+      ],
+      links: [
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico".toAsset() },
+        { rel: "stylesheet", href: css },
+      ],
+    };
+  },
   shellComponent: RootDocument,
 });
 
@@ -77,10 +81,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const showChrome = showsChrome(matches);
 
   // a lone "Home" is noise, so a trail needs somewhere to point back to
-  const crumbs = getBreadcrumbs(matches);
+  const crumbs = getBreadcrumbs(matches, showChrome);
   const showBreadcrumbs = crumbs.length > 1;
 
-  const layoutOffset = showChrome || !!staticData.header?.forceLayoutOffset;
+  const layoutOffset = showChrome || !!staticData.header?.offset;
 
   // one place decides how wide a page is and how far it sits from the edges. a page without
   // chrome (the homepage, a 404, the BSOD) is laying itself out full-bleed, so it gets no wrapper

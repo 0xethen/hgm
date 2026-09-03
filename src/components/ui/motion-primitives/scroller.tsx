@@ -15,6 +15,13 @@ export type ScrollerProps = {
   disabled?: boolean; // reduce motion = enabled automatically
   /** keep the marquee running even when the visitor asks for reduced motion */
   ignoreReducedMotion?: boolean;
+  /**
+   * lay `children` out as a static grid instead of animating them. unlike swapping in a
+   * separate grid element yourself, this keeps the same DOM nodes mounted across the toggle
+   * (only their layout classes change), so focus survives a mode switch mid-keyboard-tab
+   */
+  grid?: boolean;
+  gridClassName?: string;
 };
 
 export function Scroller({
@@ -27,9 +34,11 @@ export function Scroller({
   className,
   disabled = false,
   ignoreReducedMotion = false,
+  grid = false,
+  gridClassName,
 }: ScrollerProps) {
   const reducedMotion = useIsReducedMotion();
-  const isDisabled = disabled || (reducedMotion && !ignoreReducedMotion);
+  const isAnimating = !grid && !disabled && !(reducedMotion && !ignoreReducedMotion);
 
   const [isHovering, setIsHovering] = useState(false);
 
@@ -45,7 +54,7 @@ export function Scroller({
   const lastTime = useRef<number | null>(null);
 
   useEffect(() => {
-    if (isDisabled || !speedOnHover) return;
+    if (!isAnimating || !speedOnHover) return;
 
     const targetMultiplier = isHovering ? speedOnHover / speed : 1;
 
@@ -55,10 +64,10 @@ export function Scroller({
     });
 
     return () => controls.stop();
-  }, [isDisabled, isHovering, speed, speedOnHover, speedMultiplier]);
+  }, [isAnimating, isHovering, speed, speedOnHover, speedMultiplier]);
 
   useAnimationFrame((time) => {
-    if (isDisabled || !halfSize) return;
+    if (!isAnimating || !halfSize) return;
 
     if (lastTime.current === null) {
       lastTime.current = time;
@@ -85,19 +94,6 @@ export function Scroller({
     translation.set(next);
   });
 
-  if (isDisabled) {
-    return (
-      <div className={className}>
-        <div
-          className="flex flex-wrap items-center justify-center"
-          style={{ gap, flexDirection: direction === "horizontal" ? "row" : "column" }}
-        >
-          {children}
-        </div>
-      </div>
-    );
-  }
-
   const rowStyle = {
     gap,
     flexDirection: direction === "horizontal" ? ("row" as const) : ("column" as const),
@@ -107,22 +103,28 @@ export function Scroller({
     <div className={cn("overflow-hidden", className)}>
       <motion.div
         ref={ref}
-        className="flex w-max"
-        style={{
-          ...(direction === "horizontal" ? { x: translation } : { y: translation }),
-          gap,
-          flexDirection: direction === "horizontal" ? "row" : "column",
-        }}
-        onHoverStart={speedOnHover ? () => setIsHovering(true) : undefined}
-        onHoverEnd={speedOnHover ? () => setIsHovering(false) : undefined}
+        className={cn(grid ? cn("grid", gridClassName) : "flex w-max")}
+        style={
+          isAnimating
+            ? { ...(direction === "horizontal" ? { x: translation } : { y: translation }), gap }
+            : undefined
+        }
+        onHoverStart={isAnimating && speedOnHover ? () => setIsHovering(true) : undefined}
+        onHoverEnd={isAnimating && speedOnHover ? () => setIsHovering(false) : undefined}
       >
-        <div className="flex" style={rowStyle}>
+        {/* real, focusable content: always the same nodes, whether laid out as a row or a
+            grid, so switching modes (e.g. on keyboard focus) never drops focus mid-tab */}
+        <div className={grid ? "contents" : "flex"} style={grid ? undefined : rowStyle}>
           {children}
         </div>
-        {/* the seam copy is decoration: keep it out of the tab order and the a11y tree */}
-        <div className="flex" style={rowStyle} aria-hidden inert>
-          {children}
-        </div>
+
+        {/* the seam copy is decoration for the marquee loop: keep it out of the tab order
+            and the a11y tree, and drop it entirely outside marquee mode */}
+        {isAnimating && (
+          <div className="flex" style={rowStyle} aria-hidden inert>
+            {children}
+          </div>
+        )}
       </motion.div>
     </div>
   );

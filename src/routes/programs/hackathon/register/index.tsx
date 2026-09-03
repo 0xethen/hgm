@@ -23,6 +23,7 @@ import {
   aboutSchema,
   buildPrefillUrl,
   FORM_URL,
+  isFilledOut,
   TEAM_ROSTER_CHOICE,
   TEAM_DOCUMENT,
   teamSchema,
@@ -37,7 +38,6 @@ type DocumentId = RegistrationDocument["id"];
 export const Route = createFileRoute("/programs/hackathon/register/")({
   staticData: {
     title: "Register",
-    breadcrumb: `Register for ${event.shortName}`,
     description: `Register for ${event.name}, Metro Atlanta's premier hackathon, in an interactive JSON editor!`,
   },
   component: RouteComponent,
@@ -60,7 +60,7 @@ function RouteComponent() {
       />
     );
 
-  return Interactive;
+  return <Interactive />;
 }
 
 function Interactive() {
@@ -216,6 +216,10 @@ function Interactive() {
               value={activeId === "about" ? aboutText : teamText}
               onChange={(next) => form.setFieldValue(activeId, next)}
               diagnostics={activeProblems}
+              complete={isFilledOut(
+                activeDocument.fields,
+                activeId === "about" ? aboutText : teamText,
+              )}
               fields={activeDocument.fields}
             />
 
@@ -348,8 +352,7 @@ function FieldReference({ document }: { document: RegistrationDocument }) {
       <Separator className="my-4" />
 
       <p className="text-sm text-muted-foreground">
-        You'll pick your workshops on the Google Form itself, along with everything else that
-        depends on these answers.
+        When you're done, you'll pick your workshops on the form itself.
       </p>
     </aside>
   );

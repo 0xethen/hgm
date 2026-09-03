@@ -164,22 +164,26 @@ export function LilJadenJr({
 
   return (
     <div className="z-2 [&>img]:drag-none">
+      {/* fixed on the button, not the img: a static button with only an out-of-flow child still
+          claims its own line-height worth of layout space, which was silently adding scroll */}
       <button
         type="button"
         aria-label="Jaden side-eye (click for message)"
         onClick={handleClick}
-        className="p-0 bg-transparent border-0"
+        className={cn(
+          "fixed -bottom-12 p-0 bg-transparent border-0",
+          direction === "left" ? "left-0" : "right-0",
+        )}
       >
         <img
           src={"/assets/images/misc/jadensideeye.png".toAsset()}
           alt="Jaden Dennis side-eyes you"
           className={cn(
-            "fixed -bottom-12",
             "transition-transform w-15 ease-out",
             mountedBubble
               ? "cursor-help duration-300"
               : "cursor-pointer translate-y-26 hover:translate-y-24",
-            direction === "left" ? "left-0 scale-x-[-1]" : "right-0",
+            direction === "left" && "scale-x-[-1]",
           )}
           draggable={false}
         />

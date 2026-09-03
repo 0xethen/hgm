@@ -43,17 +43,19 @@ const config = defineConfig({
         crawlLinks: true,
         // we don't need to prerender /go routes: only clients that run JavaScript need them, not search engines/LLMs
         // also don't preload the secret
+        // /a/sender is a local-officer-only tool (404s outside `vp dev`, see its route file) and never ships
         filter: ({ path: routePath }) =>
           !routePath.includes("?") &&
           !routePath.startsWith("/go") &&
           !routePath.startsWith("/developer") &&
-          !routePath.startsWith("/thecakeisalie"),
+          !routePath.startsWith("/thecakeisalie") &&
+          !routePath.startsWith("/a/sender"),
       },
       server: {
         build: { staticNodeEnv: true },
       },
     }),
-    viteReact(),
+    viteReact({ compiler: true }),
   ]),
   server: {
     allowedHosts: ["ethens-macbook-air.taild52664.ts.net"],

@@ -49,23 +49,20 @@ export function NotFound(
     if (secretLocked) return;
     if (e.ctrlKey || e.metaKey || e.shiftKey) return;
 
-    if (["w", "s", "ArrowUp", "ArrowDown", "Tab"].includes(e.key)) {
-      e.preventDefault();
+    const forward = ["s", "ArrowDown", "Tab"].includes(e.key);
+    const backward = ["w", "ArrowUp"].includes(e.key);
+    if (!forward && !backward) return;
 
-      switch (document.activeElement) {
-        case homeLinkRef.current:
-          reportLinkRef.current?.focus();
-          break;
-        case reportLinkRef.current:
-          homeLinkRef.current?.focus();
-          break;
-        case secretButtonRef.current:
-          homeLinkRef.current?.focus();
-          break;
-      }
+    e.preventDefault();
 
-      countSecret();
-    }
+    // w/up and s/down always move opposite directions through the same order tab does
+    const order = [homeLinkRef, reportLinkRef, ...(showSecret ? [secretButtonRef] : [])];
+    const currentIndex = order.findIndex((ref) => ref.current === document.activeElement);
+    const delta = forward ? 1 : -1;
+    const nextIndex = (((currentIndex + delta) % order.length) + order.length) % order.length;
+    order[nextIndex].current?.focus();
+
+    countSecret();
   };
 
   const tapTitle = () => {

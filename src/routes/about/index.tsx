@@ -25,7 +25,7 @@ function RouteComponent() {
     <div>
       <div className="relative bg-hg-black flex items-center justify-center h-24 overflow-hidden sm:h-36 lg:h-48">
         {/*<div className="absolute inset-0 bg-hg-green" />*/}
-        <div className="absolute inset-0 bg-linear-to-b from-primary to-hg-green" />
+        <div className="absolute inset-0 bg-primary" />
         <div className="absolute inset-0 bg-[url('/assets/images/hero/hexagons.svg')] opacity-30" />
         <h1 className="relative font-light font-brand text-5xl uppercase text-white sm:text-6xl lg:text-8xl">
           ABOUT US

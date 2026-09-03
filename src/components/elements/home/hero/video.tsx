@@ -1,5 +1,5 @@
 import { createDialogHandle, Dialog, DialogContent } from "#/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const YT_HERO_VIDEO_URL = "https://www.youtube.com/watch?v=aQhZfWQlVXU"; // https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
@@ -11,13 +11,26 @@ const getVideoId = (videoUrl: string) => {
 export const videoDialog = createDialogHandle();
 export const videoId = getVideoId(YT_HERO_VIDEO_URL);
 
+// the iframe's onLoad/onError don't always fire (YouTube embeds, flaky networks), which would
+// otherwise leave the loading overlay covering the video forever; this is the backstop
+const LOADING_FALLBACK_MS = 4000;
+
 export function HomepageHeroVideoDialog() {
+  const [isOpen, setIsOpen] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(true);
+
+  useEffect(() => {
+    if (!isOpen || !isVideoLoading) return;
+
+    const timeout = setTimeout(() => setIsVideoLoading(false), LOADING_FALLBACK_MS);
+    return () => clearTimeout(timeout);
+  }, [isOpen, isVideoLoading]);
 
   return (
     <Dialog
       handle={videoDialog}
       onOpenChange={(open) => {
+        setIsOpen(open);
         if (!open) setIsVideoLoading(true);
       }}
     >

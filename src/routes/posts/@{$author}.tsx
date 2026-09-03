@@ -1,7 +1,6 @@
 import { NotFound } from "#/components/NotFound";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "#/components/ui/avatar";
 import { Button } from "#/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/components/ui/card";
 import { ColorBadge } from "#/components/ui/color-badge";
 import { ScrollArea } from "#/components/ui/scroll-area";
 import { Separator } from "#/components/ui/separator";
@@ -11,43 +10,35 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
 import { authorInfo } from "cms/posts/authors";
 import { useBreakpoint } from "#/hooks/browser";
-import { getTitle } from "#/lib/routing.ts";
+import { PostList } from "#/components/elements/posts/PostRenderer";
 import pluralize from "pluralize";
 
 export const Route = createFileRoute("/posts/@{$author}")({
-  staticData: { classNames: { container: "max-w-4xl" } },
+  staticData: {
+    classNames: { container: "max-w-4xl" },
+    title: (match) => `${match.loaderData?.author?.name || "Unknown"}'s posts`,
+  },
   loader: async ({ params }) => {
     const found = posts.filter((post) => post.authors.some((a) => a.id === params.author));
     if (!found || found.length === 0) throw notFound();
 
     const authorId = params.author;
-    if (!authorInfo[authorId]) throw notFound();
+    if (!authorInfo[authorId] || authorId === "unknown") throw notFound();
 
-    return { posts: found, authorId };
+    return { posts: found, author: authorInfo[authorId] };
   },
-  head: ({ loaderData, matches }) => ({
-    meta: [
-      {
-        title: getTitle(
-          matches,
-          " / ",
-          `${authorInfo[loaderData?.authorId || "unknown"].name}'s posts`,
-        ),
-      },
-    ],
-  }),
   component: RouteComponent,
-  notFoundComponent: (props) =>
-    NotFound({
-      ...props,
-      title: "404: author not found",
-      link: { text: "all posts", href: "/posts" },
-    }),
+  notFoundComponent: (props) => (
+    <NotFound
+      {...props}
+      title="404: author not found"
+      link={{ text: "all posts", href: "/posts" }}
+    />
+  ),
 });
 
 function RouteComponent() {
-  const { posts, authorId } = Route.useLoaderData();
-  const author = authorInfo[authorId];
+  const { posts, author } = Route.useLoaderData();
 
   const { md } = useBreakpoint();
   const isMobile = !md;
@@ -97,35 +88,7 @@ function RouteComponent() {
       <Separator className="my-6" />
 
       <ScrollArea className="h-[60vh]">
-        <div className="grid gap-4">
-          {posts.map((post) => (
-            <Card key={post._meta.path}>
-              <CardHeader>
-                <CardTitle>
-                  <a href={`/posts/${post._meta.path}`} className="block">
-                    {post.title}
-                  </a>
-                </CardTitle>
-                <CardDescription className="text-sm">{post.summary}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between">
-                <div className="text-sm text-muted-foreground">
-                  {/* {post.readingTime ? `${post.readingTime} min read · ` : ""}*/}
-                  {post.date ? post.date.toLocaleDateString("en-US", { dateStyle: "long" }) : ""}
-                </div>
-                <div>
-                  <Link
-                    to="/posts/$postId"
-                    params={{ postId: post._meta.path.slugify() }}
-                    className="link"
-                  >
-                    Read article <span aria-hidden="true">&rarr;</span>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <PostList posts={posts} />
       </ScrollArea>
     </div>
   );
