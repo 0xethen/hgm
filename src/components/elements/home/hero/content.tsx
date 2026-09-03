@@ -141,7 +141,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             aria-hidden={isScrolled}
             tabIndex={isScrolled ? -1 : undefined}
             aria-label="Scroll past the hero"
-            variant="glass"
+            variant="ghost"
             size={isMobile ? "icon" : "icon-lg"}
             onClick={() =>
               document
