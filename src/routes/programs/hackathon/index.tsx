@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { events } from "#/lib/meta/events";
-import { ProgramsEventPage, type ProgramsGalleryImage } from "../-components";
+import { EventPage, type ProgramsGalleryImage } from "../-components";
 import { HackathonFAQ } from "#/components/elements/ctas/HackathonFAQ.tsx";
 import { buildUrl } from "#/lib/utils.ts";
 import { RiInstagramLine, RiLink } from "@remixicon/react";
@@ -85,7 +85,7 @@ function RouteComponent() {
   );
 
   return (
-    <ProgramsEventPage
+    <EventPage
       event={events[eventId]}
       content={content || events[eventId].description}
       gallery={gallery}
