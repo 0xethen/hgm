@@ -4,14 +4,15 @@ The repository for the official HackGwinnett marketing website ([hackgwinnett.or
 
 Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https://hackgwinnett.org/go/issues)**
 
-> **remaining TODOs:**
+> **TODOs:**
 >
 > - Taskade logo sometimes renders black in Safari
 > - Media Gallery (officer input required)
 > - Investigate what percentage of visitors have trouble with the anchor-positioning/popover behavior in older Firefox (yes, we use anchored popovers instead of getBoundingClientRect() for the register tooltip!)
 > - Revert to old PostCards on /posts (index)
-> - fix newsletter stuff... again...
 > - /posts should be valid and indexed (? in the url blocks it, so make ?page be ?p and make ?p=1 (page=1) obsolete (should be default page 1)
+> - fix newsletter stuff... again...
+> - lil jaden JR should not pop in in reduce motion--just be there and be clickable
 
 ## Contributing
 
