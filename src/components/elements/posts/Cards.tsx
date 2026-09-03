@@ -31,8 +31,7 @@ export function getExcerpt(post: Post): string {
   );
 }
 
-/** one post, as a list row. every post-listing surface (browse, tags, an author's posts) shares it */
-export function PostRenderer({ post }: { post: Post }) {
+export function PostCard({ post }: { post: Post }) {
   return (
     <Item
       size="sm"
@@ -63,25 +62,23 @@ export function PostRenderer({ post }: { post: Post }) {
           )}
         </ItemDescription>
 
-        <p className="text-xs text-muted-foreground">
-          {post.authors.map((author) => author.name).join(", ")}
+        <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+          <p>{post.authors.map((author) => author.name).join(", ")}</p>
           {" • "}
-          {new Date(post.date).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </p>
-
-        {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
-              <span key={tag} className="bg-muted px-2 py-0.5 text-xs font-medium">
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )}
+          <p>
+            {new Date(post.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+          {post.tags && post.tags.length > 0 && " • "}
+          {post.tags?.map((tag) => (
+            <span key={tag} className="text-xs font-medium">
+              #{tag}
+            </span>
+          ))}
+        </div>
       </ItemContent>
 
       <ItemActions>
@@ -95,7 +92,7 @@ export function PostList({ posts }: { posts: Post[] }) {
   return (
     <ItemGroup>
       {posts.map((post) => (
-        <PostRenderer key={post._meta.path} post={post} />
+        <PostCard key={post._meta.path} post={post} />
       ))}
     </ItemGroup>
   );

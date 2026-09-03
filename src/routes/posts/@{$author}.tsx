@@ -10,7 +10,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
 import { authorInfo } from "cms/posts/authors";
 import { useBreakpoint } from "#/hooks/browser";
-import { PostList } from "#/components/elements/posts/PostRenderer";
+import { PostList } from "#/components/elements/posts/Cards";
 import pluralize from "pluralize";
 
 export const Route = createFileRoute("/posts/@{$author}")({

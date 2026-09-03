@@ -9,7 +9,7 @@ import {
 } from "#/components/ui/pagination";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { posts as everyPost } from "cms/posts/posts";
-import { PostList } from "#/components/elements/posts/PostRenderer";
+import { PostList } from "#/components/elements/posts/Cards";
 import pluralize from "pluralize";
 import { z } from "zod/mini";
 

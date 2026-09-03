@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { posts } from "cms/posts/posts";
 import { Fallback } from "#/components/Fallback";
-import { PostList } from "#/components/elements/posts/PostRenderer";
+import { PostList } from "#/components/elements/posts/Cards";
 
 export const Route = createFileRoute("/posts/tag/$tag")({
   staticData: {
