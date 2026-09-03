@@ -14,6 +14,7 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 > - fix newsletter stuff... again...
 > - lil jaden JR should not pop in in reduce motion--just be there and be clickable
 > - consolidate all primary (green) links with "primary-link" class vs normal "link" class (foreground with green hover underline links)
+> - FOCUS 404 link on load!! rn u have to click on the screen to focus on the first link
 
 ## Contributing
 
