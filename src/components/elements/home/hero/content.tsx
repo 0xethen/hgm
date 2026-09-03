@@ -133,14 +133,15 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
         <Magnetic intensity={0.4}>
           <Button
             className={cn(
-              "transition-opacity mx-auto cursor-none motion-reduce:cursor-pointer",
+              "transition-colors hover:bg-primary hover:text-primary-foreground",
+              "mx-auto cursor-none motion-reduce:cursor-pointer",
               "data-[state=show]:animate-in data-[state=hide]:animate-out fill-mode-forwards fade-in slide-in-from-bottom-5 fade-out",
               isScrolled && "pointer-events-none",
             )}
             data-state={isScrolled ? "hide" : "show"}
             aria-hidden={isScrolled}
             tabIndex={isScrolled ? -1 : undefined}
-            aria-label="Scroll past the hero"
+            aria-label="Scroll to main content"
             variant="ghost"
             size={isMobile ? "icon" : "icon-lg"}
             onClick={() =>
