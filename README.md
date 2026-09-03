@@ -13,6 +13,7 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 > - /posts should be valid and indexed (? in the url blocks it, so make ?page be ?p and make ?p=1 (page=1) obsolete (should be default page 1)
 > - fix newsletter stuff... again...
 > - lil jaden JR should not pop in in reduce motion--just be there and be clickable
+> - consolidate all primary (green) links with "primary-link" class vs normal "link" class (foreground with green hover underline links)
 
 ## Contributing
 
