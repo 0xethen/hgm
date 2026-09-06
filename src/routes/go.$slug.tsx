@@ -18,6 +18,7 @@ const redirects: Record<string, string> = {
 
   // time-sensitive redirects
   // summerws26: "/posts/summer-workshops-with-peach-state-2026",
+  // submit: "https://placeholder.devpost.com/",
 };
 
 // FOR THE RECORD, I opened #7141 in TanStack/router TWO MONTHS AGO
