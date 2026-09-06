@@ -11,7 +11,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { type Register } from "@tanstack/react-start";
 
 import { TooltipProvider } from "#/components/ui/tooltip";
-import { Toaster } from "#/components/ui/sonner";
+import { Toaster } from "#/components/ui/toast";
 import { Header } from "#/components/elements/nav/Header";
 import { Footer } from "#/components/elements/nav/Footer";
 import { ConsoleSecrets } from "#/routes/thecakeisalie";
@@ -121,7 +121,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
           {showChrome ? <Footer /> : null}
 
-          <Toaster theme="light" duration={8000} richColors closeButton position="bottom-center" />
+          <Toaster timeout={8000} />
 
           {import.meta.env.DEV ? (
             <TanStackDevtools

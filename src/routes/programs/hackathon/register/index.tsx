@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useForm, useSelector } from "@tanstack/react-form";
-import { toast } from "sonner";
+import { toast } from "#/components/ui/toast";
 import { RiArrowRightLine, RiCheckLine, RiPencilLine, RiResetLeftLine } from "@remixicon/react";
 import { Kbd } from "#/components/ui/kbd";
 import { Button } from "#/components/ui/button";
@@ -42,10 +42,15 @@ function openPrefillUrl(url: string) {
   const opened = window.open(url, "_blank", "noopener,noreferrer");
   if (opened) return;
 
-  toast.warning("Your browser may have blocked the tab", {
+  toast.add({
+    type: "warning",
+    title: "Your browser may have blocked the tab",
     description: "Open the prefilled form yourself to review and finish registering.",
-    action: { label: "Open", onClick: () => window.open(url, "_blank", "noopener,noreferrer") },
-    duration: 20000,
+    actionProps: {
+      children: "Open",
+      onClick: () => window.open(url, "_blank", "noopener,noreferrer"),
+    },
+    timeout: 20000,
   });
 }
 

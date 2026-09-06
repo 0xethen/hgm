@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod/mini";
-import { toast } from "sonner";
+import { toast } from "#/components/ui/toast";
 import { Field, FieldDescription, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Button } from "#/components/ui/button";
@@ -71,13 +71,13 @@ export function NewsletterCTA({
         };
       })();
 
-      toast.promise(request, {
+      await toast.promise(request, {
         loading: "Sending verification email...",
         success: (data) => {
           form.reset();
 
           return {
-            message: "Thanks! Check your inbox",
+            title: "Thanks! Check your inbox",
             description:
               "We sent a verification link to " + data.email + " to confirm your subscription.",
           };
@@ -86,15 +86,13 @@ export function NewsletterCTA({
           switch (err.cause?.code) {
             case "ERR_MISSING_EMAIL":
               return {
-                type: "error",
-                message: "Missing email",
+                title: "Missing email",
                 description: "Please enter a valid email address.",
               };
 
             case "ERR_INVALID_EMAIL":
               return {
-                type: "error",
-                message: "Invalid email",
+                title: "Invalid email",
                 description: "That email address does not look valid.",
               };
 
@@ -103,34 +101,29 @@ export function NewsletterCTA({
             case "ERR_DUPLICATE_ENTRY":
               return err.cause?.verified
                 ? {
-                    type: "info",
-                    message: "You're already subscribed",
+                    title: "You're already subscribed",
                     description: `${value.email} is recieving our messages. Email us at hackgwinnett@gmail.com or hit the "Unsubscribe" link in our emails if you want out.`,
-                    duration: 12000,
+                    timeout: 12000,
                   }
                 : {
-                    type: "warning",
-                    message: "Pending verification",
+                    title: "Pending verification",
                     description:
                       "That email is already in our system but hasn't been confirmed yet. Check your inbox for the verification email, or wait a moment and try again.",
-                    duration: 12000,
+                    timeout: 12000,
                   };
           }
 
           return {
-            message: err.message,
+            title: err.message,
             description: "Please try again (or file an issue!)",
-            action: {
-              label: "Report",
+            actionProps: {
+              children: "Report",
               onClick: () => navigate({ to: "/report" }),
+              className: "bg-destructive! text-white! border-destructive! hover:bg-destructive/90!",
             },
-            actionButtonStyle: { backgroundColor: "var(--destructive)" },
           };
         },
       });
-
-      // TODO: better way to handle this? handleSubmit needs something to await so isSubmitting stays true until this settles
-      await request.catch(() => {});
     },
   });
 

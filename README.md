@@ -9,7 +9,6 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 > - Media Gallery (officer input required)
 > - Investigate what percentage of visitors have trouble with the anchor-positioning/popover behavior in older Firefox (yes, we use anchored popovers instead of getBoundingClientRect() for the register tooltip!)
 > - YAY! Taskade's sponsor logo (taskade-v2.svg) is FIXED! (it used a <pattern>+<use> raster-embedding trick that broke WebKit)
-> - move to base-ui toast instead of sonner
 > - [needs heavy input] sender.tsx and actual sender should use shared email template
 
 ## Contributing
