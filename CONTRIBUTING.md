@@ -24,14 +24,24 @@ environment — the one [deploy.yml](./.github/workflows/deploy.yml) reads from 
 **It is an allowlist, not "upload everything in `.env`".** Only `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL` is in it today, matching `EXPECTED_ENV` in [build.ts](./build.ts) — the one value the production build actually needs. The three sender-related values documented in [docs/NEWSLETTER.md](./docs/NEWSLETTER.md) (`PUBLIC_APPS_SCRIPT_SENDER_URL`, `PUBLIC_NEWSLETTER_SENDER_SECRET`, `PUBLIC_NEWSLETTER_TEST_EMAIL`) are deliberately **not** included, and must never be added — they're only supposed to exist in your local `.env`. If you ever add a new key to the script's allowlist, add it to `EXPECTED_ENV` in `build.ts` too, and think hard about whether it's actually meant to be public once the site is built.
 
 The script does nothing on its own — nothing in this repo calls it automatically. If you want it
-to run automatically, wire it up yourself as a **pre-push** hook (this is per-clone, not tracked
-by git, so it's genuinely opt-in):
+to run automatically, wire it up yourself as a **pre-push** hook (this is per-clone, gitignored,
+so it's genuinely opt-in):
 
 ```sh
-ln -sf ../../scripts/sync-env.sh .git/hooks/pre-push
+printf 'scripts/sync-env.sh "$@"\n' > .vite-hooks/pre-push
+chmod +x .vite-hooks/pre-push
 ```
 
 > why does Claude like saying "genuinely" so much?
+
+**Don't use `.git/hooks/pre-push` for this** — `vp` (this repo's tooling) sets
+`core.hooksPath` to `.vite-hooks/_`, which replaces git's normal `.git/hooks/` lookup entirely.
+Anything symlinked into `.git/hooks/` is silently never run. `vp`'s hook dispatcher
+(`.vite-hooks/_/<hook>`) instead looks for a same-named file directly under `.vite-hooks/` (e.g.
+`.vite-hooks/pre-push`) and runs it if present, no-ops if it isn't — which is what makes this
+opt-in. That file is gitignored on purpose: it's per-clone state, not something the repo should
+ship. If you've previously followed the old `.git/hooks/pre-push` instructions, that symlink is
+dead — `rm .git/hooks/pre-push` it and switch to the path above.
 
 Pre-push, not post-commit: git hands a pre-push hook the refs actually being pushed, so the
 script only syncs when `main` is one of them — the branch `deploy.yml` watches — instead of
@@ -41,7 +51,7 @@ itself failing) — those get logged and swallowed, not turned into a blocked pu
 that has anything to do with whether your code is safe to push.
 
 You'll need the `gh` CLI installed and authenticated (`gh auth login`) with write access to this
-repo's environments. To remove the hook later: `rm .git/hooks/pre-push`.
+repo's environments. To remove the hook later: `rm .vite-hooks/pre-push`.
 
 ## Routes (webpages)
 

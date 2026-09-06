@@ -21,3 +21,6 @@ todos.json
 
 .vault
 .content-collections
+
+# opt-in, per-clone git hook (see CONTRIBUTING.md)
+.vite-hooks/pre-push
