@@ -20,11 +20,12 @@ import { noindex } from "#/lib/seo";
 
 // yawn
 export const Route = createFileRoute("/a/sender")({
+  staticData: { classNames: { container: false } },
   beforeLoad: () => {
     if (!import.meta.env.DEV) throw notFound();
   },
   head: () => ({ meta: noindex() }),
-  component: SendEmailPage,
+  component: RouteComponent,
 });
 
 const DRAFT_KEY = "hg-newsletter-draft";
@@ -64,9 +65,7 @@ function loadDraft(): Draft {
 
 type Stats = { verified: number; pending: number; unsubscribed: number };
 
-function SendEmailPage() {
-  // never persisted: only ever come from the local .env (see .env.example), never from a
-  // page reload/localStorage draft
+function RouteComponent() {
   const [scriptUrl, setScriptUrl] = useState(
     () => import.meta.env.PUBLIC_APPS_SCRIPT_SENDER_URL || "",
   );
@@ -274,6 +273,12 @@ function SendEmailPage() {
           </div>
         </div>
 
+        <div className="mb-6 border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-800">
+          Only 100 emails (shared across every user) can be sent per day in the free tier. We should
+          move this system to a more robust one soon. Currently, we can send{" "}
+          {stats?.verified || "???"}/100 emails per day.
+        </div>
+
         {statsError && (
           <div className="mb-6 border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
             Couldn't load subscriber stats: {statsError}
@@ -285,11 +290,11 @@ function SendEmailPage() {
         )}
 
         <div className="mb-6 border border-border bg-card p-6">
-          <h2 className="mb-5 text-lg font-semibold">Apps Script</h2>
+          <h2 className="mb-5 text-lg font-semibold">Script</h2>
 
           <div className="grid gap-5 md:grid-cols-3">
             <Field>
-              <FieldLabel>Apps Script /exec URL</FieldLabel>
+              <FieldLabel>Execution URL</FieldLabel>
               <Input
                 value={scriptUrl}
                 onChange={(e) => setScriptUrl(e.target.value)}
@@ -480,7 +485,7 @@ function SendEmailPage() {
                     rel="noreferrer"
                     className="text-primary-foreground hover:underline"
                   >
-                    X
+                    X (Twitter)
                   </a>
                 </div>
 

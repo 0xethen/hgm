@@ -33,9 +33,11 @@ If you're setting it up for the first time:
    the `/exec` URL it gives you.
 5. Run `authorizeMailApp_` once from the Apps Script editor (Run button) and approve the
    permission prompts — this is what lets `MailApp.sendEmail` work at all.
-6. Make sure the `Configuration` sheet tab's `B1` cell contains the **Subscriptions** project's
-   `/exec` URL (used to build unsubscribe links) — the script errors loudly if it's missing or
-   malformed.
+6. In the **Sender** project's **Project Settings → Script Properties**, add `SUBSCRIPTIONS_URL`
+   set to the **Subscriptions** project's `/exec` URL (used to build unsubscribe links) — the
+   script errors loudly if it's missing or malformed. This lives in Script Properties, not a
+   spreadsheet cell, so a Sheet edit can't silently go stale (see the `CONFIGURATION` comment
+   block at the top of `subscriptions.gs`).
 
 ### 2. Configure your local `.env`
 

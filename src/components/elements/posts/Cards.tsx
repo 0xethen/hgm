@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { RiAiGenerateText, RiArrowRightLine } from "@remixicon/react";
-import type { posts as everyPost } from "cms/posts/posts";
+import type { posts as everyPost } from "cms/posts";
 import {
   Item,
   ItemActions,

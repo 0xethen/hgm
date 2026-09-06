@@ -7,23 +7,47 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "#/components/ui/pagination";
+import { RiAiGenerateText } from "@remixicon/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { posts as everyPost } from "cms/posts/posts";
-import { PostList } from "#/components/elements/posts/Cards";
+import { posts as everyPost } from "cms/posts";
 import pluralize from "pluralize";
 import { z } from "zod/mini";
 
 export const Route = createFileRoute("/posts/")({
-  staticData: { breadcrumb: false },
+  // the index route resolves to the same URL as its /posts layout, which owns the crumb
+  staticData: { title: "Posts", breadcrumb: false },
   validateSearch: z.object({
-    page: z.optional(z._default(z.int(), 1)),
+    p: z.optional(z.int()),
   }),
   component: RouteComponent,
 });
 
+// page 1 is the default: linking to it with an explicit `p=1` would give search engines a
+// second, duplicate URL for the same content, so it's only ever added for page 2+
+function pageSearch(page: number) {
+  return page <= 1 ? {} : { p: page };
+}
+
 const POSTS_PER_PAGE = 9;
+const excerptLength = 180; // line-clamp-3 overrides it to three lines max (visually) in the CSS
 
 const posts = everyPost.filter((p) => !p.unlisted); // public posts
+
+function getExcerpt(post: (typeof posts)[number]) {
+  return (
+    post.content
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/!\[[^\]]*]\([^)]+\)/g, "")
+      .replace(/\[[^\]]+]\([^)]+\)/g, "$1")
+      .replace(/^#{1,6}\s+/gm, "")
+      .replace(/[*_>~-]/g, "")
+      .replace(/\n+/g, " ")
+      .trim()
+      .slice(0, excerptLength)
+      .trimEnd() + "..."
+  );
+}
 
 function getVisiblePages(current: number, total: number) {
   if (total <= 7) {
@@ -68,7 +92,7 @@ function getMostUsedTags(maxTags: number = 5) {
 }
 
 function RouteComponent() {
-  const { page: pageNum } = Route.useSearch();
+  const { p: pageNum } = Route.useSearch();
   const page = pageNum || 1;
 
   const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
@@ -109,13 +133,77 @@ function RouteComponent() {
       </div>
 
       <section className="space-y-4">
-        <PostList posts={currentPosts} />
+        <div className="grid-lanes gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {currentPosts.map((post) => (
+            <Link
+              key={post._meta.path}
+              to="/posts/$postId"
+              params={{ postId: post._meta.path }}
+              className="group"
+            >
+              <article className="overflow-hidden border bg-card transition-all hover:shadow-sm flex flex-col">
+                {post.cover && (
+                  <div className="overflow-hidden bg-muted aspect-video">
+                    <img
+                      src={post.cover.src || "/assets/posts/covers/default.png".toAsset()}
+                      alt={post.cover.alt}
+                      className="h-full w-full object-cover transition-transform duration-300 not-motion-reduce:group-hover:scale-105"
+                    />
+                  </div>
+                )}
+
+                <div className="flex flex-col p-5">
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mb-2 flex flex-wrap gap-2">
+                      {post.tags.map((tag) => (
+                        <span key={tag} className="bg-muted px-2 py-1 text-xs font-medium">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <h2 className="text-xl font-semibold leading-tight transition-colors group-hover:text-primary">
+                    {post.title}
+                  </h2>
+
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {post.authors.map((a) => a.name).join(", ")}
+                    {" • "}
+                    {new Date(post.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+
+                  {post.summary ? (
+                    <p className="mt-4 text-sm">
+                      <RiAiGenerateText className="inline text-muted-foreground size-4 mr-px" />{" "}
+                      {post.summary}
+                    </p>
+                  ) : (
+                    <p className="mt-3 line-clamp-3 text-sm">{getExcerpt(post)}</p>
+                  )}
+
+                  <div className="mt-auto pt-6 text-sm font-medium text-primary">
+                    Read article →
+                  </div>
+                </div>
+              </article>
+            </Link>
+          ))}
+        </div>
 
         {totalPages > 1 && (
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <Link to="/posts" search={{ page: Math.max(1, currentPage - 1) }} className="link">
+                <Link
+                  to="/posts"
+                  search={pageSearch(Math.max(1, currentPage - 1))}
+                  className="link"
+                >
                   <PaginationPrevious
                     className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
                   />
@@ -129,7 +217,7 @@ function RouteComponent() {
                   </PaginationItem>
                 ) : (
                   <PaginationItem key={item}>
-                    <Link to="/posts" search={{ page: item }} className="link">
+                    <Link to="/posts" search={pageSearch(item)} className="link">
                       <PaginationLink isActive={item === currentPage}>{item}</PaginationLink>
                     </Link>
                   </PaginationItem>
@@ -139,7 +227,7 @@ function RouteComponent() {
               <PaginationItem>
                 <Link
                   to="/posts"
-                  search={{ page: Math.min(totalPages, currentPage + 1) }}
+                  search={pageSearch(Math.min(totalPages, currentPage + 1))}
                   className="link"
                 >
                   <PaginationNext

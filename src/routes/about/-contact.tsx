@@ -80,7 +80,11 @@ export function ContactForm() {
 
       switch (value.provider) {
         case "gmail":
-          url = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`.replaceAll("%20", "+");
+          url =
+            `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`.replaceAll(
+              "%20",
+              "+",
+            );
           break;
         case "yahoo":
           url = `https://compose.mail.yahoo.com/?to=${to}&subject=${subject}&body=${body}`;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useForm, useSelector } from "@tanstack/react-form";
 import { toast } from "sonner";
-import { RiArrowRightLine, RiResetLeftLine } from "@remixicon/react";
+import { RiArrowRightLine, RiCheckLine, RiPencilLine, RiResetLeftLine } from "@remixicon/react";
 import { Kbd } from "#/components/ui/kbd";
 import { Button } from "#/components/ui/button";
 import { Separator } from "#/components/ui/separator";
@@ -22,6 +22,7 @@ import {
   ABOUT_DOCUMENT,
   aboutSchema,
   buildPrefillUrl,
+  buildPrefillUrlLoose,
   FORM_URL,
   isFilledOut,
   TEAM_ROSTER_CHOICE,
@@ -31,10 +32,22 @@ import {
   type FieldDoc,
   type RegistrationDocument,
 } from "./-registration.ts";
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "#/components/ui/alert.tsx";
 
 const eventId = "hackathon";
 const event = events[eventId];
 type DocumentId = RegistrationDocument["id"];
+
+function openPrefillUrl(url: string) {
+  const opened = window.open(url, "_blank", "noopener,noreferrer");
+  if (opened) return;
+
+  toast.warning("Your browser may have blocked the tab", {
+    description: "Open the prefilled form yourself to review and finish registering.",
+    action: { label: "Open", onClick: () => window.open(url, "_blank", "noopener,noreferrer") },
+    duration: 20000,
+  });
+}
 
 export const Route = createFileRoute("/programs/hackathon/register/")({
   staticData: {
@@ -42,7 +55,7 @@ export const Route = createFileRoute("/programs/hackathon/register/")({
     description: `Register for ${event.name}, Metro Atlanta's premier hackathon, in an interactive JSON editor!`,
   },
   component: RouteComponent,
-  errorComponent: ErrorComponent
+  errorComponent: ErrorComponent,
 });
 
 function RouteComponent() {
@@ -53,7 +66,7 @@ function RouteComponent() {
         actions={[
           {
             label: `about ${event.shortName}`,
-            to: `/programs/${eventId}`
+            to: `/programs/${eventId}`,
           },
           {
             label: "report issue",
@@ -118,16 +131,7 @@ function Interactive() {
       if (!about) return;
 
       const team = wantsRoster(about) ? diagnose(value.team, teamSchema).value : undefined;
-      const url = buildPrefillUrl(about, team);
-      const opened = window.open(url, "_blank", "noopener,noreferrer");
-
-      if (opened) return;
-
-      toast.warning("Your browser may have blocked the tab", {
-        description: "Open the prefilled form yourself to review and finish registering.",
-        action: { label: "Open", onClick: () => window.open(url, "_blank", "noopener,noreferrer") },
-        duration: 20000,
-      });
+      openPrefillUrl(buildPrefillUrl(about, team));
     },
   });
 
@@ -168,6 +172,14 @@ function Interactive() {
     },
   ];
 
+  // an escape hatch for someone who doesn't want the editor's help at all: hand off whatever's
+  // typed so far, unvalidated, rather than blocking on the fields it still has questions about
+  const continueAnyway = () => {
+    const about = parseLoose(aboutText);
+    const team = needsTeam ? parseLoose(teamText) : undefined;
+    openPrefillUrl(buildPrefillUrlLoose(about, team));
+  };
+
   const jumpTo = (id: DocumentId, issue: Diagnostic) => {
     setTab(id);
     // the editor has to re-render with the other document before the range means anything
@@ -199,18 +211,29 @@ function Interactive() {
           <div className="space-y-2">
             <h1 className="font-semibold text-3xl sm:text-4xl">Register</h1>
             <p className="text-base sm:text-lg">
-              Tell us about yourself in this interactive form and we'll carry your answers over. Or,
-              if you prefer,{" "}
-              <Link
-                to={FORM_URL as string}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link font-medium"
-              >
-                fill out the form normally
-              </Link>
+              Try this interactive widget to help you register for {event.shortName} (while brushing
+              up on your syntax!)
             </p>
           </div>
+
+          <Alert className="after:bg-amber-600">
+            <RiPencilLine className="fill-amber-600" />
+            <AlertTitle>
+              <span className="text-amber-700 underline">Heads up!</span> This is just a prefill
+              tool.
+            </AlertTitle>
+            <AlertDescription>You'll need to submit the form to register.</AlertDescription>
+            <AlertAction>
+              <Button
+                variant="outline"
+                size="sm"
+                className="self-start"
+                render={<Link to={FORM_URL as string} target="_blank" rel="noopener noreferrer" />}
+              >
+                Register normally
+              </Button>
+            </AlertAction>
+          </Alert>
 
           <form className="flex flex-col gap-4" onSubmit={review}>
             <JsonEditor
@@ -235,11 +258,11 @@ function Interactive() {
             />
 
             <div className="flex flex-wrap items-center gap-3">
-              {/* never disabled: asking to review is how you find out what's still missing */}
               <Button type="submit" size="lg">
-                Review
+                Review in Google Forms
                 <RiArrowRightLine />
               </Button>
+
               <Button
                 type="button"
                 size="lg"
@@ -251,9 +274,16 @@ function Interactive() {
                 }}
               >
                 <RiResetLeftLine />
-                Start over
+                Restart
               </Button>
             </div>
+
+            <p className="text-sm text-muted-foreground">
+              When you're done, you'll pick your workshops on the form itself.{" "}
+              <button type="button" onClick={continueAnyway} className="link">
+                Continue anyway
+              </button>
+            </p>
           </form>
         </div>
 
@@ -274,8 +304,8 @@ function Problems({
 }) {
   if (!diagnostics.length) {
     return (
-      <p className="font-mono text-sm text-primary" role="status">
-        ✓ {name} {/* looks good */}
+      <p className="inline-flex items-center gap-1 font-mono text-sm text-primary" role="status">
+        <RiCheckLine className="size-4" /> {name} {/* looks good */}
       </p>
     );
   }
@@ -353,12 +383,6 @@ function FieldReference({ document }: { document: RegistrationDocument }) {
           <FieldRow key={field.key} field={field} />
         ))}
       </dl>
-
-      <Separator className="my-4" />
-
-      <p className="text-sm text-muted-foreground">
-        When you're done, you'll pick your workshops on the form itself.
-      </p>
     </aside>
   );
 }

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { pages } from "cms/pages/pages";
+import { pages } from "cms/pages";
 import { md } from "#/lib/markdown";
 import { ContactForm } from "./-contact";
 import { NewsletterCTA } from "#/components/elements/ctas/NewsletterCTA.tsx";
@@ -49,7 +49,7 @@ function RouteComponent() {
           </div>
         </div>
         <NewsletterCTA
-          className="border p-5 md:p-8 my-10"
+          className="border p-6 my-10" // p-5 md:p-8
           description="Be the first to know when officer applications are open. Plus, learn about upcoming events and opportunities from the HackGwinnett team!"
         />
       </div>

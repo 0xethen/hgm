@@ -5,7 +5,14 @@ import { Kbd } from "#/components/ui/kbd";
 import { Tooltip, TooltipContent, TooltipTrigger } from "#/components/ui/tooltip";
 import { completionsAt, type CompletionState } from "./-completions.ts";
 import { positionAt, type Diagnostic } from "./-diagnostics.ts";
-import { matchingBrackets, newlineEdit, outdentEdit, tokenize, type TokenKind } from "./-jsonc.ts";
+import {
+  matchingBrackets,
+  newlineEdit,
+  outdentEdit,
+  stringToken,
+  tokenize,
+  type TokenKind,
+} from "./-jsonc.ts";
 import { fillTemplate, type FieldDoc } from "./-registration.ts";
 import { useBreakpoint } from "#/hooks/browser.ts";
 import pluralize from "pluralize";
@@ -121,13 +128,14 @@ export const JsonEditor = React.forwardRef<
   const [active, setActive] = React.useState(0);
   const [dismissed, setDismissed] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
+  const [selecting, setSelecting] = React.useState(false);
 
   // one anchor per editor
   const anchorName = `--caret-${editorId}`;
 
   const completions: CompletionState | undefined = React.useMemo(
-    () => (dismissed || !focused ? undefined : completionsAt(value, caret, fields)),
-    [dismissed, focused, value, caret, fields],
+    () => (dismissed || !focused || selecting ? undefined : completionsAt(value, caret, fields)),
+    [dismissed, focused, selecting, value, caret, fields],
   );
 
   const suggestions = completions?.items.slice(0, MAX_SUGGESTIONS) ?? [];
@@ -163,16 +171,18 @@ export const JsonEditor = React.forwardRef<
     });
   };
 
-  React.useImperativeHandle(ref, () => ({
-    select: (start, end) => {
-      const textarea = textareaRef.current;
-      if (!textarea) return;
+  const selectRange = (start: number, end: number) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
 
-      textarea.focus();
-      textarea.setSelectionRange(start, end);
-      setCaret(start);
-      setDismissed(true);
-    },
+    textarea.focus();
+    textarea.setSelectionRange(start, end);
+    setCaret(start);
+    setDismissed(true);
+  };
+
+  React.useImperativeHandle(ref, () => ({
+    select: selectRange,
   }));
 
   const accept = (choiceIndex = index) => {
@@ -210,6 +220,23 @@ export const JsonEditor = React.forwardRef<
       event.preventDefault();
       if (accept()) return;
 
+      // there's no reason to indent inside a value's quotes — jump to the next field instead
+      // (and land on nothing at all if there isn't one, rather than typing a tab into the string)
+      const currentValue = tokenize(value).find(
+        (token) =>
+          token.kind === "string" && token.start < selectionStart && selectionStart < token.end,
+      );
+      if (currentValue) {
+        const next = tokenize(value).find(
+          (token) => token.kind === "string" && token.start > currentValue.start,
+        );
+        if (next) {
+          const { end, terminated } = stringToken(value, next.start);
+          selectRange(next.start + 1, terminated ? end - 1 : end);
+        }
+        return;
+      }
+
       if (event.shiftKey) {
         // outdent the line the caret is on, wherever on it the caret happens to be
         const outdent = outdentEdit(value, selectionStart);
@@ -226,8 +253,6 @@ export const JsonEditor = React.forwardRef<
 
     if (event.key === "Enter") {
       event.preventDefault();
-      // a suggestion on screen wins first, the same as Tab
-      if (accept()) return;
 
       // keep the caret in the object, and close off the line they're leaving with a comma
       const { at, insert } = newlineEdit(value, selectionStart);
@@ -240,14 +265,21 @@ export const JsonEditor = React.forwardRef<
   };
 
   const syncCaret = (event: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    setCaret(event.currentTarget.selectionStart);
+    const { selectionStart, selectionEnd } = event.currentTarget;
+    setCaret(selectionStart);
+    setSelecting(selectionStart !== selectionEnd);
     setActive(0);
   };
 
   const label = tabs.find((tab) => tab.id === activeTab)?.label ?? "";
 
   const issue = diagnostics.find((entry) => caret >= entry.start && caret <= entry.end);
-  const hint = issue ? undefined : fieldAtCaret(value, caret, fields);
+  // a comment mentioning a field by name (e.g. `// name: first and last`) shouldn't borrow
+  // that field's hint — only the real key gets one
+  const inComment = tokenize(value).some(
+    (token) => token.kind === "comment" && token.start <= caret && caret < token.end,
+  );
+  const hint = issue || inComment ? undefined : fieldAtCaret(value, caret, fields);
   const caretMarker = <span style={{ anchorName } as React.CSSProperties} />;
 
   return (
@@ -313,6 +345,7 @@ export const JsonEditor = React.forwardRef<
             onChange={(event) => {
               onChange(event.target.value);
               setCaret(event.target.selectionStart);
+              setSelecting(false);
               setActive(0);
               setDismissed(false);
             }}
@@ -353,22 +386,31 @@ export const JsonEditor = React.forwardRef<
         </div>
 
         {!complete && (
-          <button
-            type="button"
-            onClick={() => onChange(fillTemplate(fields, value))}
-            className="shrink-0 text-primary-light underline-offset-2 hover:underline"
-          >
-            autofill {label}
-          </button>
+          <Tooltip defaultOpen>
+            <TooltipTrigger
+              type="button"
+              onClick={() => onChange(fillTemplate(fields, value))}
+              className="shrink-0 text-primary-light underline-offset-2 hover:underline"
+            >
+              autofill
+            </TooltipTrigger>
+            <TooltipContent side="bottom" sideOffset={20}>
+              fill {label} with its fields
+            </TooltipContent>
+          </Tooltip>
         )}
       </div>
 
-      <Anchored open={focused && suggestions.length > 0} anchor={anchorName} className="w-72">
+      <Anchored
+        open={focused && !selecting && suggestions.length > 0}
+        anchor={anchorName}
+        className="w-72"
+      >
         <Suggestions items={suggestions} index={index} onPick={(position) => accept(position)} />
       </Anchored>
 
       <Anchored
-        open={focused && !suggestions.length && Boolean(issue || hint)}
+        open={focused && !selecting && !suggestions.length && Boolean(issue || hint)}
         anchor={anchorName}
         className={cn(
           "max-w-xs px-2 py-1 font-mono text-xs",

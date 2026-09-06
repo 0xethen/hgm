@@ -8,7 +8,7 @@ import { RiArrowDownLine, RiArrowRightDoubleLine, RiPlayFill } from "@remixicon/
 import { ColorBadge } from "#/components/ui/color-badge";
 import { events } from "#/lib/meta/events";
 import { DialogTrigger } from "#/components/ui/dialog";
-import { videoDialog, videoId } from "./video";
+import { videoDialog, videoId } from "./video.tsx";
 import { useBreakpoint, useIsReducedMotion } from "#/hooks/browser.ts";
 
 export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
@@ -112,7 +112,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
               alt="HG Hero Video thumbnail"
               className={cn(
                 "w-lg aspect-video select-none drag-none",
-                "bg-hg-black/50 border-3 border-primary-light border-dashed group-hover:border-solid",
+                "bg-hg-black/50 border-3 group-hover:border-primary-light group-hover:border-4",
                 "transition-[scale,filter] not-motion-reduce:group-hover:scale-101 not-motion-reduce:group-hover:group-active:scale-99",
                 "not-group-hover:brightness-80",
               )}
@@ -121,7 +121,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
               className={cn(
                 "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10",
                 "p-1.5 bg-black/50 text-white",
-                "transition-opacity group-hover:opacity-0 cursor-none motion-reduce:cursor-pointer",
+                "transition-opacity group-hover:opacity-0",
               )}
             >
               <RiPlayFill className="size-24" />

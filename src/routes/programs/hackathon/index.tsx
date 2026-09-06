@@ -5,7 +5,7 @@ import { HackathonFAQ } from "#/components/elements/ctas/HackathonFAQ.tsx";
 import { buildUrl } from "#/lib/utils.ts";
 import { RiInstagramLine, RiLink } from "@remixicon/react";
 import { Separator } from "#/components/ui/separator";
-import { pages } from "cms/pages/pages";
+import { pages } from "cms/pages";
 import { md } from "#/lib/markdown";
 import { eventSchema } from "#/lib/seo";
 
@@ -102,7 +102,7 @@ function RouteComponent() {
                 {press.map((item) => (
                   <Link
                     key={item.href}
-                    className="link icon-link text-primary underline not-hover:decoration-primary/50 w-fit"
+                    className="primary-link icon-link w-fit"
                     to={item.href as string}
                     target="_blank"
                     rel="noopener noreferrer"

@@ -6,15 +6,11 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 
 > **TODOs:**
 >
-> - Taskade logo sometimes renders black in Safari
 > - Media Gallery (officer input required)
 > - Investigate what percentage of visitors have trouble with the anchor-positioning/popover behavior in older Firefox (yes, we use anchored popovers instead of getBoundingClientRect() for the register tooltip!)
-> - Revert to old PostCards on /posts (index)
-> - /posts should be valid and indexed (? in the url blocks it, so make ?page be ?p and make ?p=1 (page=1) obsolete (should be default page 1)
-> - fix newsletter stuff... again...
-> - lil jaden JR should not pop in in reduce motion--just be there and be clickable
-> - consolidate all primary (green) links with "primary-link" class vs normal "link" class (foreground with green hover underline links)
-> - FOCUS 404 link on load!! rn u have to click on the screen to focus on the first link
+> - YAY! Taskade's sponsor logo (taskade-v2.svg) is FIXED! (it used a <pattern>+<use> raster-embedding trick that broke WebKit)
+> - move to base-ui toast instead of sonner
+> - [needs heavy input] sender.tsx and actual sender should use shared email template
 
 ## Contributing
 

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { events } from "#/lib/meta/events";
 import { EventPage } from "../-components";
-import { pages } from "cms/pages/pages";
+import { pages } from "cms/pages";
 import { md } from "#/lib/markdown";
 import { eventSchema } from "#/lib/seo";
 import { buildUrl } from "#/lib/utils.ts";

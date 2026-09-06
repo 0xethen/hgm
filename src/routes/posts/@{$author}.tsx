@@ -7,7 +7,7 @@ import { Separator } from "#/components/ui/separator";
 import { cap } from "#/lib/utils";
 import { RiAtLine, RiGithubFill, RiInstagramLine, RiTwitterLine } from "@remixicon/react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { posts } from "cms/posts/posts";
+import { posts } from "cms/posts";
 import { authorInfo } from "cms/posts/authors";
 import { useBreakpoint } from "#/hooks/browser";
 import { PostList } from "#/components/elements/posts/Cards";

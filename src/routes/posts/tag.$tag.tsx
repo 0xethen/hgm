@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { posts } from "cms/posts/posts";
+import { posts } from "cms/posts";
 import { Fallback } from "#/components/Fallback";
 import { PostList } from "#/components/elements/posts/Cards";
 
 export const Route = createFileRoute("/posts/tag/$tag")({
   staticData: {
+    classNames: { container: "max-w-4xl" },
     breadcrumb: {
       label: (match) => `#${match.params.tag}`,
     },

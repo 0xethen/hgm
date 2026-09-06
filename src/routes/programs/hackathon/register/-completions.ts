@@ -1,4 +1,4 @@
-import { stringToken } from "./-jsonc.ts";
+import { stringToken, tokenize } from "./-jsonc.ts";
 import type { FieldDoc } from "./-registration.ts";
 
 /** Just enough of a JSON language service to suggest the field names and enum values. */
@@ -165,11 +165,21 @@ function bySkips(fields: readonly FieldDoc[], siblings: Set<string>): readonly F
   return [...upNext, ...skipped];
 }
 
+/** true when the caret sits inside a comment, where a preceding `,` or `{` from the real JSON
+ *  shouldn't be read as "a new member is legal here" */
+function inComment(source: string, caret: number): boolean {
+  return tokenize(source).some(
+    (token) => token.kind === "comment" && token.start <= caret && caret < token.end,
+  );
+}
+
 export function completionsAt(
   source: string,
   caret: number,
   roots: readonly FieldDoc[],
 ): CompletionState | undefined {
+  if (inComment(source, caret)) return undefined;
+
   const { inString, stringStart, container, siblings } = scan(source, caret);
   const fields = fieldsFor(roots, container);
   if (!fields.length) return undefined;

@@ -32,7 +32,7 @@ import css from "#/styles/index.css?url";
 const BRAND_THEME_COLOR = "rgb(97,178,138)";
 
 /** what most pages were writing out by hand; override per route with staticData.classNames.container */
-const PAGE_CONTAINER = "mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-9 md:py-9";
+const PAGE_CONTAINER = "mx-auto w-full max-w-7xl px-5 py-6 sm:px-6 md:px-9 md:py-9";
 
 export const Route: RootRoute<Register> = createRootRoute({
   // the first crumb of every trail; see `breadcrumb` in src/router.tsx

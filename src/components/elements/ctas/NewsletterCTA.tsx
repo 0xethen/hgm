@@ -128,6 +128,9 @@ export function NewsletterCTA({
           };
         },
       });
+
+      // TODO: better way to handle this? handleSubmit needs something to await so isSubmitting stays true until this settles
+      await request.catch(() => {});
     },
   });
 
@@ -176,7 +179,7 @@ export function NewsletterCTA({
           selector={(state) => state.isSubmitting}
           children={(isSubmitting) => (
             <Button type="submit" size={!md ? "sm" : "default"} disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : button}
+              {isSubmitting ? "Please wait..." : button}
             </Button>
           )}
         />

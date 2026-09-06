@@ -51,7 +51,15 @@ export function FallbackActionLabel({
   );
 }
 
-function FallbackActionItem({ action, index }: { action: FallbackAction; index: number }) {
+function FallbackActionItem({
+  action,
+  index,
+  autoFocus,
+}: {
+  action: FallbackAction;
+  index: number;
+  autoFocus?: boolean;
+}) {
   const { label, tone = "default", hidden, to, search, params, ...handlers } = action;
 
   const className = cn("group focus-visible:outline-none", TONE_CLASS[tone], hidden && "hidden");
@@ -63,7 +71,7 @@ function FallbackActionItem({ action, index }: { action: FallbackAction; index: 
 
   if (!to) {
     return (
-      <button className={className} {...handlers}>
+      <button className={className} autoFocus={autoFocus} {...handlers}>
         {content}
       </button>
     );
@@ -75,6 +83,7 @@ function FallbackActionItem({ action, index }: { action: FallbackAction; index: 
       search={search as never}
       params={params as never}
       className={className}
+      autoFocus={autoFocus}
       {...handlers}
     >
       {content}
@@ -125,7 +134,16 @@ export function Fallback({
       </span>
 
       {actions.map((action, index) => (
-        <FallbackActionItem key={index} action={action} index={index} />
+        <FallbackActionItem
+          key={index}
+          action={action}
+          index={index}
+          // land keyboard/screen-reader focus on the first real action without making
+          // visitors click into the page first — 404s especially have nothing else to focus
+          autoFocus={
+            index === actions.findIndex((candidate) => !candidate.hidden) && !action.hidden
+          }
+        />
       ))}
 
       {children}

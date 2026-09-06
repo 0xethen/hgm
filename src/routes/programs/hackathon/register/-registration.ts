@@ -164,7 +164,7 @@ export const ABOUT_DOCUMENT: RegistrationDocument = {
   fields: ABOUT_FIELDS,
   boilerplate: [
     "// tell us more about yourself!",
-    "// hit return (enter) to advance fields!!",
+    "// hit return (enter) to advance and tab to autocomplete!!",
     "",
     "{",
     '  "name": "",',
@@ -180,6 +180,7 @@ export const TEAM_DOCUMENT: RegistrationDocument = {
   boilerplate: [
     `// who you're bringing. teams include you plus up to ${MAX_TEAMMATES} others.`,
     `// make sure teammates complete out their own registration!`,
+    "",
     "{",
     '  "teamName": "",',
     '  "teammates": [',
@@ -299,6 +300,44 @@ export function buildPrefillUrl(about: About, team?: Team): string {
         put(params, ENTRY.teammates[slot].school, teammate.school);
       });
   }
+
+  return `${FORM_URL}?${params.toString()}`;
+}
+
+/** same idea as buildPrefillUrl, but for "Continue anyway": hands off whatever's typed so far,
+ *  valid or not, instead of waiting on the schemas to be satisfied */
+export function buildPrefillUrlLoose(
+  about: Record<string, unknown> | undefined,
+  team?: Record<string, unknown>,
+): string {
+  const params = new URLSearchParams({ usp: "pp_url" });
+  const str = (value: unknown) => (typeof value === "string" ? value : undefined);
+
+  put(params, ENTRY.name, str(about?.name));
+  put(params, ENTRY.preferredName, str(about?.preferredName));
+  put(params, ENTRY.school, str(about?.school));
+  put(params, ENTRY.schoolEmail, str(about?.schoolEmail));
+  put(params, ENTRY.grade, str(about?.grade));
+
+  const teamChoice = str(about?.team);
+  if (teamChoice && teamChoice in TEAM_CHOICES) {
+    put(params, ENTRY.team, TEAM_CHOICES[teamChoice as TeamChoice]);
+  }
+
+  put(params, ENTRY.teamName, str(team?.teamName));
+
+  const teammates = Array.isArray(team?.teammates) ? team.teammates : [];
+
+  teammates.slice(0, MAX_TEAMMATES).forEach((teammate, slot) => {
+    if (typeof teammate !== "object" || !teammate) return;
+
+    const name = str((teammate as Record<string, unknown>).name);
+    const school = str((teammate as Record<string, unknown>).school);
+    if (!name?.trim() && !school?.trim()) return;
+
+    put(params, ENTRY.teammates[slot].name, name);
+    put(params, ENTRY.teammates[slot].school, school);
+  });
 
   return `${FORM_URL}?${params.toString()}`;
 }

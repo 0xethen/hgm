@@ -182,7 +182,8 @@ export function LilJadenJr({
             "transition-transform w-15 ease-out",
             mountedBubble
               ? "cursor-help duration-300"
-              : "cursor-pointer translate-y-26 hover:translate-y-24",
+              : // motion-reduce: skip the peek-up-on-hover tease — he's just there, already clickable
+                "cursor-pointer translate-y-26 hover:translate-y-24 motion-reduce:translate-y-0",
             direction === "left" && "scale-x-[-1]",
           )}
           draggable={false}

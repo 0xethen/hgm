@@ -26,12 +26,7 @@ const sponsorList: { main: Array<Sponsor>; other: Array<Sponsor> } = {
     { title: "Taskade", href: "https://taskade.com", src: "taskade-v2.svg", utm: true },
     { title: "egghead.io", href: "https://egghead.io", src: "egghead.svg", utm: true },
     { title: "Hack Club", href: "https://hackclub.com", src: "hackclub.svg", utm: true },
-    {
-      title: "Interview Cake",
-      href: "https://www.interviewcake.com",
-      src: "intcake.svg",
-      utm: true,
-    },
+    { title: "Interview Cake", href: "https://interviewcake.com", src: "intcake.svg", utm: true },
     { title: "MIE Coach", href: "https://miecoach.com", src: "mie-logo.png", utm: true },
     { title: "GSMST", href: "https://www.gsmst.org", src: "gsmst.webp", utm: false },
   ],

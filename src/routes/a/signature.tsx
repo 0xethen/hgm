@@ -4,7 +4,7 @@ import { noindex } from "#/lib/seo";
 
 export const Route = createFileRoute("/a/signature")({
   component: RouteComponent,
-  staticData: { title: "Signature" },
+  staticData: { title: "Signature", classNames: { container: "max-w-4xl" } },
   head: () => ({ meta: noindex() }),
 });
 
@@ -151,7 +151,7 @@ ${paths}
   }
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-6 p-8">
+    <div className="flex flex-col gap-6">
       <div>
         <h2 className="text-3xl font-bold">Capture Signature Tool</h2>
         <p className="mt-2 text-muted-foreground">

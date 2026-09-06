@@ -71,7 +71,7 @@ function RouteComponent() {
 
   return (
     <div className="flex font-heading flex-col min-h-safe-dvh max-w-lg mx-auto items-center justify-center text-center gap-4 px-4">
-      <h3>Let's get you on the right path.</h3>
+      <h3>Sorry about that!</h3>
       {/*<p>Click below to report an issue or submit feedback:</p>*/}
       <div className="flex flex-col items-center text-center gap-2">
         <Button

@@ -1,6 +1,6 @@
 import React from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { posts } from "cms/posts/posts";
+import { posts } from "cms/posts";
 import { md } from "#/lib/markdown";
 import { NotFound } from "#/components/NotFound";
 import { Badge } from "#/components/ui/badge";

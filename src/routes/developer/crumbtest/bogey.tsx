@@ -7,7 +7,7 @@ export const Route = createFileRoute("/developer/crumbtest/bogey")({
 
 function RouteComponent() {
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-3 p-6 md:p-9">
+    <div className="space-y-3">
       <p>
         /developer/crumbtest has no index route, so the trail above reads Home / Crumb Test / Bogey
         with "Crumb Test" as plain text, not a link.

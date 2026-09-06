@@ -7,6 +7,7 @@ import {
   RiMenu3Line,
   RiYoutubeFill,
   RiExternalLinkLine,
+  RiFlagLine,
 } from "@remixicon/react";
 import {
   NavigationMenu as NavMenu,
@@ -147,8 +148,10 @@ const navItems = [
   },
   {
     title: "Report issue",
+    description: "Found a bug or issue in the new site? Let us know so we can fix it!",
+    icon: <RiFlagLine className="size-4" />,
     className: "hidden", // drawer-only
-    href: "/report",
+    href: "/eda/report",
   },
 ] satisfies NavItem[];
 

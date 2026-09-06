@@ -15,6 +15,34 @@ Your commit messages should have at least 1 (one) of the following prefixes:
 
 When adding static assets like images, sound, etc. to the site, call the .toAsset() string function on the src path. For example, `<img src={"/assets/images/misc/jadensideeye.png".toAsset()} />` in [LilJadenJr](./src/components/elements/misc/LilJadenJr.tsx#58).
 
+## Syncing your local `.env` to the `pages` (prod) GitHub environment (optional) [vibe]
+
+[`scripts/sync-env.sh`](./scripts/sync-env.sh) pushes a small, fixed allowlist of
+values from your local `.env` (never `.env.local`) into this repo's `pages` GitHub Actions
+environment — the one [deploy.yml](./.github/workflows/deploy.yml) reads from at build time — using the `gh` CLI. It exists so a value you've already set up locally doesn't also need to be retyped by hand into GitHub's UI.
+
+**It is an allowlist, not "upload everything in `.env`".** Only `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL` is in it today, matching `EXPECTED_ENV` in [build.ts](./build.ts) — the one value the production build actually needs. The three sender-related values documented in [docs/NEWSLETTER.md](./docs/NEWSLETTER.md) (`PUBLIC_APPS_SCRIPT_SENDER_URL`, `PUBLIC_NEWSLETTER_SENDER_SECRET`, `PUBLIC_NEWSLETTER_TEST_EMAIL`) are deliberately **not** included, and must never be added — they're only supposed to exist in your local `.env`. If you ever add a new key to the script's allowlist, add it to `EXPECTED_ENV` in `build.ts` too, and think hard about whether it's actually meant to be public once the site is built.
+
+The script does nothing on its own — nothing in this repo calls it automatically. If you want it
+to run automatically, wire it up yourself as a **pre-push** hook (this is per-clone, not tracked
+by git, so it's genuinely opt-in):
+
+```sh
+ln -sf ../../scripts/sync-env.sh .git/hooks/pre-push
+```
+
+> why does Claude like saying "genuinely" so much?
+
+Pre-push, not post-commit: git hands a pre-push hook the refs actually being pushed, so the
+script only syncs when `main` is one of them — the branch `deploy.yml` watches — instead of
+firing on every local commit to some WIP branch that may never reach main. It also never fails
+the push over a sync issue (gh missing, not authenticated, a network hiccup, `gh variable set`
+itself failing) — those get logged and swallowed, not turned into a blocked push, since none of
+that has anything to do with whether your code is safe to push.
+
+You'll need the `gh` CLI installed and authenticated (`gh auth login`) with write access to this
+repo's environments. To remove the hook later: `rm .git/hooks/pre-push`.
+
 ## Routes (webpages)
 
 Routes are defined in the `src/routes` directory. Each route is a separate file that defines the component to be rendered for that route. See the Start [Routing guide](https://tanstack.com/start/latest/docs/framework/react/guide/routing) for more information.
