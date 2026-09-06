@@ -59,6 +59,10 @@ sync_env() {
     fi
 
     value="${line#*=}"
+    # strip one layer of surrounding quotes: KEY="value" or KEY='value'
+    if [[ "$value" =~ ^\"(.*)\"$ || "$value" =~ ^\'(.*)\'$ ]]; then
+      value="${BASH_REMATCH[1]}"
+    fi
 
     if [ -z "$value" ]; then
       log "$key is blank in $ENV_FILE, skipping..."
@@ -67,7 +71,7 @@ sync_env() {
 
     log "setting $key on the \"$GH_ENVIRONMENT\" environment..."
     if ! gh variable set "$key" --env "$GH_ENVIRONMENT" --body "$value"; then
-      log "failed to set $key (not blocking your push over it though)"
+      log "failed to set $key (push will still succeed, but you may need to run \`gh variable set\` by hand)"
     fi
   done
 
@@ -75,8 +79,8 @@ sync_env() {
 }
 
 # Pre-push passes <remote-name> <remote-url> as args and pipes one
-# "<local-ref> <local-sha> <remote-ref> <remote-sha>" line per pushed ref over stdin — that's
-# how we tell "this is a real pre-push invocation" from "someone ran the script by hand".
+# "<local-ref> <local-sha> <remote-ref> <remote-sha>" line per pushed ref over stdin
+# if this is not present, we're being run by hand (not as a git hook) and should always sync.
 if [ "$#" -ge 2 ] && [ ! -t 0 ]; then
   pushing_main=false
 

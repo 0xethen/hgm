@@ -53,7 +53,7 @@ export function NewsletterCTA({
 
           data = await response.json();
         } catch {
-          throw new Error("Unexpected response from signup service!");
+          throw new Error("Unexpected response from the signup service!");
         }
 
         if (!data.success) {
