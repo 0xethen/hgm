@@ -106,7 +106,7 @@ So here's how it works:
 - [`cms/pages/content`](./cms/pages/content) folder
   - Some page content, like the "About" page, has content also stored as Markdown files. This is where those files are stored. If there ever is some content that should be prose or easily editable from a markdown file, make a new entry in this folder and render it with `const { post } = useLoaderData()` and `{md(post.content)}` in JSX. See [/about](./src/routes/about/index.tsx) for an example.
 
-- [`cms/posts/posts.ts`](./cms/posts/posts.ts) file
+- [`cms/posts/index.ts`](./cms/posts/index.ts) file
   - This is where post data is transformed to be compatible with our web routes. Usually, you won't need to touch this.
 
 - [`cms/posts/authors.ts`](./cms/posts/authors.ts) file
