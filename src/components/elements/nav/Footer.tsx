@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useHydrated } from "@tanstack/react-router";
 import { brand, repo } from "#/lib/meta/brand";
 
-const FALLBACK_COMMIT_SHA = "dev";
+const FALLBACK_COMMIT_SHA = import.meta.env.DEV ? "dev" : "prod";
 
 export function Footer({ link }: { link?: React.ReactNode }) {
   const [date, setDate] = useState<Date | null>(null);
