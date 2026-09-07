@@ -1,7 +1,7 @@
 // import { clsx, type ClassValue } from "cn";
 // import { twMerge } from "cn";
-import { cn as shadcn } from "cn";
 import { brand } from "./meta/brand";
+export { cn } from "cn";
 
 export class EDATestingError extends Error {
   constructor(message: string) {
@@ -97,8 +97,6 @@ const GW_EMAIL_DOMAIN = "gwinnett.k12.ga.us";
 // export function cn(...inputs: ClassValue[]) {
 //   return twMerge(clsx(inputs));
 // }
-
-export const cn = shadcn;
 
 export function getGWEmailUrl(data: {
   to: string;
