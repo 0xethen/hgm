@@ -184,7 +184,3 @@ The rest (you know, the actual "writing") is up to you. Remember, it's a **Markd
 - or ask another friendly officer :)
 
 Happy writing! ✍️
-
----
-
-> [Ethen](https://github.com/0xethen) wrote this very detailed, very thorough, very well-documented documentation with his own two hands!
