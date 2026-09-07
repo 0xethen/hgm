@@ -10,6 +10,8 @@ Non-contributors, **please report issues at [hackgwinnett.org/go/issues](https:/
 > - Investigate what percentage of visitors have trouble with the anchor-positioning/popover behavior in older Firefox (yes, we use anchored popovers instead of getBoundingClientRect() for the register tooltip!)
 > - YAY! Taskade's sponsor logo (taskade-v2.svg) is FIXED! (it used a <pattern>+<use> raster-embedding trick that broke WebKit)
 > - [needs heavy input] sender.tsx and actual sender should use shared email template
+> - investigate overlap between low power mode output on Safari with reduce-motion. does it set reduce-motion to true on page load then to false immediately? bc there's some interesting behavior
+> - the SECOND nested div in the rendered scroller output (.vault/RENDERED_SCROLLER_EXAMPLE.html) has links that don't work in safari. on hover there is no link (default cursor, doesn't light up on hover, doesn't lead to a link even though there's a valid <a href>. pointer-events-none issue maybe?)
 
 ## Contributing
 
