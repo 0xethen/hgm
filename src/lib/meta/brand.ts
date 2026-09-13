@@ -12,7 +12,7 @@ export const brand = {
     // https://youtube.com/@
     youtube: "hackgwinnett",
     // NOTE: https://discord.gg/amcVA5Yp5a ---- .gg/hackgwinnett vanity link would be tuff
-    discord: "QhsBjMAEJ",
+    discord: "mAFVKz3RSH",
   },
 };
 
