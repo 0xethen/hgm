@@ -440,7 +440,7 @@ function RouteComponent() {
                 {title && <h1 className="mb-6 text-3xl font-bold">{title}</h1>}
 
                 <div
-                  className="prose space-y-4 max-w-none"
+                  className="prose typeset space-y-4 max-w-none"
                   dangerouslySetInnerHTML={{
                     __html: String(previewHtml),
                   }}
@@ -448,7 +448,10 @@ function RouteComponent() {
 
                 {postUrl && (
                   <div className="mt-8">
-                    <Button render={<a href={postUrl} target="_blank" rel="noreferrer" />}>
+                    <Button
+                      render={<a href={postUrl} target="_blank" rel="noreferrer" />}
+                      nativeButton={false}
+                    >
                       Read on HackGwinnett →
                     </Button>
                   </div>
