@@ -342,6 +342,6 @@ export function buildPrefillUrlLoose(
     put(params, ENTRY.teammates[slot].school, school);
   });
 
-  put(params, ENTRY._interactive, "I+tried,+but+couldn't+figure+it+out");
+  put(params, ENTRY._interactive, "I tried, but couldn't figure it out");
   return `${FORM_URL}?${params.toString()}`;
 }
