@@ -7,7 +7,8 @@ const redirects: Record<string, string> = {
   register: events.hackathon.registration?.page || "/programs/hackathon",
   form: events.hackathon.registration?.url || "/programs/hackathon",
   issues: "/report",
-  workshops: "/programs/hackathon#workshops",
+  workshops: "https://github.com/hackgwinnett/workshops",
+  aboutworkshops: "/programs/hackathon#workshops",
   wsarchive: "https://github.com/hackgwinnett/workshops",
 
   // socials
