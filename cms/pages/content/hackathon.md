@@ -15,7 +15,7 @@ Here's what you can choose from when you [sign up](/go/register) for Hackathon 6
 **Beginner**
 
 - Essential Sorting and Searching Algorithms
-- Intro to Cybersecurity
+- Cybersecurity and Web Vulnerabilities
 - Github and Git
 
 **Advanced**
