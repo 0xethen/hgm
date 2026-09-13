@@ -546,7 +546,7 @@ function Suggestions({
       ))}
 
       <div className="border-t border-white/10 px-2 py-1 font-mono text-[11px] text-white/35">
-        <Kbd className="bg-white/10 text-white/70">⇥</Kbd> accept{" "}
+        <Kbd className="bg-white/10 text-white/70">⇥ tab</Kbd> accept{" "}
         <Kbd className="ml-1 bg-white/10 text-white/70">↑↓</Kbd> move{" "}
         <Kbd className="ml-1 bg-white/10 text-white/70">esc</Kbd> dismiss
       </div>
