@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useForm, useSelector } from "@tanstack/react-form";
 import { toast } from "#/components/ui/toast";
 import { RiArrowRightLine, RiCheckLine, RiPencilLine, RiResetLeftLine } from "@remixicon/react";
@@ -233,11 +233,10 @@ function Interactive() {
             <AlertDescription>You'll need to submit the Google Form to register.</AlertDescription>
             <AlertAction>
               <Button
-                variant="outline"
+                variant={hasVisibleProblems ? "default" : "outline"}
                 size="sm"
                 className="self-start"
-                render={<Link to={FORM_URL as string} target="_blank" rel="noopener noreferrer" />}
-                nativeButton={false}
+                onClick={continueAnyway}
               >
                 Register normally
               </Button>

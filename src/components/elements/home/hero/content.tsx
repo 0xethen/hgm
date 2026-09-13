@@ -75,7 +75,7 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
             {!events.hackathon.registration?.closed && (
               <Magnetic intensity={0.4}>
                 <Button
-                  render={<Link to="/go/$slug" params={{ slug: "register" }} />}
+                  render={<Link to="/go/$slug" params={{ slug: "form" }} />}
                   className="cursor-none motion-reduce:cursor-pointer striped-hg-green hover:brightness-110 not-motion-reduce:hover:not-active:scale-103"
                   variant="hero"
                   size={isMobile ? "sm" : "lg"}
