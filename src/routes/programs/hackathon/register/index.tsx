@@ -230,7 +230,7 @@ function Interactive() {
               <span className="text-amber-700 underline">Heads up!</span> This is just a prefill
               tool.
             </AlertTitle>
-            <AlertDescription>You'll need to submit the form to register.</AlertDescription>
+            <AlertDescription>You'll need to submit the Google Form to register.</AlertDescription>
             <AlertAction>
               <Button
                 variant="outline"
