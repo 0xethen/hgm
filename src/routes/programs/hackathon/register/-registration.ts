@@ -38,6 +38,8 @@ const ENTRY = {
     { name: "entry.859848346", school: "entry.2123245281" },
     { name: "entry.1965091872", school: "entry.1430270724" },
   ],
+
+  _interactive: "entry.1396183772",
 } as const;
 
 const shortText = (label: string, max = 120) =>
@@ -278,6 +280,11 @@ function put(params: URLSearchParams, entry: string, value: string | undefined) 
   if (trimmed) params.set(entry, trimmed);
 }
 
+function finishUrl(FORM_URL: string, params: URLSearchParams): string {
+  put(params, ENTRY._interactive, "Yes!");
+  return `${FORM_URL}?${params.toString()}`;
+}
+
 export function buildPrefillUrl(about: About, team?: Team): string {
   const params = new URLSearchParams({ usp: "pp_url" });
 
@@ -301,7 +308,7 @@ export function buildPrefillUrl(about: About, team?: Team): string {
       });
   }
 
-  return `${FORM_URL}?${params.toString()}`;
+  return finishUrl(FORM_URL, params);
 }
 
 /** same idea as buildPrefillUrl, but for "Continue anyway": hands off whatever's typed so far,
@@ -339,5 +346,5 @@ export function buildPrefillUrlLoose(
     put(params, ENTRY.teammates[slot].school, school);
   });
 
-  return `${FORM_URL}?${params.toString()}`;
+  return finishUrl(FORM_URL, params);
 }
