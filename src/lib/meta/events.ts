@@ -18,7 +18,7 @@ const eventList = {
     registration: {
       url: "https://docs.google.com/forms/d/e/1FAIpQLSfZn384gkF09tDDLrMyxB9WhqiCsW3_hMMEek7lDLB_L-gjNw/viewform",
       page: "/programs/hackathon/register",
-      closed: true,
+      // closed: true, REGISTRATION... IS NOW... OPEN!
     },
   },
   hackfest: {

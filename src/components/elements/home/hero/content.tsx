@@ -58,10 +58,16 @@ export function HomepageHero({ isScrolled }: { isScrolled: boolean }) {
                 ) : (
                   " is coming soon. "
                 )}
-                <Link to="." hash="newslettercta" className="link">
-                  Get notified
-                </Link>{" "}
-                when registration opens
+                {!events.hackathon.registration?.closed ? (
+                  "Register now!"
+                ) : (
+                  <>
+                    <Link to="." hash="newslettercta" className="link">
+                      Get notified
+                    </Link>{" "}
+                    when registration opens
+                  </>
+                )}
               </>
             )}
           </p>

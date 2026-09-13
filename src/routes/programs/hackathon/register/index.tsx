@@ -159,6 +159,9 @@ function Interactive() {
   const activeDocument = activeId === "about" ? ABOUT_DOCUMENT : TEAM_DOCUMENT;
   const activeProblems = problemsIn(activeId);
 
+  const hasVisibleProblems =
+    problemsIn("about").length > 0 || (needsTeam && problemsIn("team").length > 0);
+
   const tabs: EditorTab[] = [
     { id: ABOUT_DOCUMENT.id, label: ABOUT_DOCUMENT.name },
     {
@@ -234,6 +237,7 @@ function Interactive() {
                 size="sm"
                 className="self-start"
                 render={<Link to={FORM_URL as string} target="_blank" rel="noopener noreferrer" />}
+                nativeButton={false}
               >
                 Register normally
               </Button>
@@ -285,8 +289,12 @@ function Interactive() {
 
             <p className="text-sm text-muted-foreground">
               When you're done, you'll pick your workshops on the form itself.{" "}
-              <button type="button" onClick={continueAnyway} className="link">
-                Continue anyway
+              <button
+                type="button"
+                onClick={continueAnyway}
+                className={cn(hasVisibleProblems ? "font-semibold primary-link" : "link")}
+              >
+                Continue to form anyway
               </button>
             </p>
           </form>

@@ -361,7 +361,7 @@ export const JsonEditor = React.forwardRef<
             autoCorrect="off"
             spellCheck={false}
             className={cn(
-              "absolute inset-0 h-full w-full resize-none overflow-hidden bg-transparent text-transparent outline-none",
+              "absolute inset-0 h-full w-full resize-none overflow-hidden bg-transparent text-transparent outline-none focus-visible:ring-0",
               "caret-primary-light selection:bg-primary/40 selection:text-transparent",
               classNames.textBox,
             )}
