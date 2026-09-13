@@ -280,11 +280,6 @@ function put(params: URLSearchParams, entry: string, value: string | undefined) 
   if (trimmed) params.set(entry, trimmed);
 }
 
-function finishUrl(FORM_URL: string, params: URLSearchParams): string {
-  put(params, ENTRY._interactive, "Yes!");
-  return `${FORM_URL}?${params.toString()}`;
-}
-
 export function buildPrefillUrl(about: About, team?: Team): string {
   const params = new URLSearchParams({ usp: "pp_url" });
 
@@ -308,7 +303,8 @@ export function buildPrefillUrl(about: About, team?: Team): string {
       });
   }
 
-  return finishUrl(FORM_URL, params);
+  put(params, ENTRY._interactive, "Yes!");
+  return `${FORM_URL}?${params.toString()}`;
 }
 
 /** same idea as buildPrefillUrl, but for "Continue anyway": hands off whatever's typed so far,
@@ -346,5 +342,6 @@ export function buildPrefillUrlLoose(
     put(params, ENTRY.teammates[slot].school, school);
   });
 
-  return finishUrl(FORM_URL, params);
+  put(params, ENTRY._interactive, "I+tried,+but+couldn't+figure+it+out");
+  return `${FORM_URL}?${params.toString()}`;
 }
