@@ -48,7 +48,7 @@ export function SponsorSection({ title }: { title: React.ReactNode }) {
               key={`main-${sponsor.title}-${index}`}
               sponsor={sponsor}
               classNames={{
-                image: "w-70",
+                image: "h-10 w-auto max-w-40 sm:h-12 sm:max-w-56",
               }}
             />
           ))}
