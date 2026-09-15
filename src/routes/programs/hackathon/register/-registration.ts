@@ -303,7 +303,7 @@ export function buildPrefillUrl(about: About, team?: Team): string {
       });
   }
 
-  put(params, ENTRY._interactive, "Yes!");
+  put(params, ENTRY._interactive, "I used the interactive registration activity!");
   return `${FORM_URL}?${params.toString()}`;
 }
 
