@@ -6,7 +6,7 @@ import { Input } from "#/components/ui/input";
 import { Button } from "#/components/ui/button";
 import { cn } from "#/lib/utils";
 import { useBreakpoint } from "#/hooks/browser.ts";
-import { useNavigate } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { brand } from "#/lib/meta/brand";
 
 const formSchema = z.object({
@@ -24,6 +24,7 @@ export function NewsletterCTA({
   description?: React.ReactNode;
   button?: React.ReactNode;
 }) {
+  const location = useLocation();
   const navigate = useNavigate();
   const { md } = useBreakpoint();
 
@@ -130,7 +131,11 @@ export function NewsletterCTA({
   return (
     <div className={cn("space-y-6", className)}>
       <div>
-        <h3 className="text-2xl font-bold mt-0 mb-2">{title}</h3>
+        <h3 className="text-2xl font-bold mt-0 mb-2">
+          <span className={cn(location.hash === "newslettercta" && "bg-amber-300 px-2")}>
+            {title}
+          </span>
+        </h3>
         <p className="text-gray-600 text-sm md:text-base">{description}</p>
       </div>
 

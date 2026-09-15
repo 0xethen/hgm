@@ -135,6 +135,15 @@
   .bg-primary ::selection {
     @apply bg-primary-foreground/40;
   }
+
+  [class$="text-muted-foreground"],
+  [class*="text-muted-foreground "],
+  [class*="text-muted-foreground/"] {
+    & ::selection,
+    &::selection {
+      @apply text-foreground;
+    }
+  }
 }
 
 @theme inline {

@@ -15,7 +15,6 @@ import { z } from "zod/mini";
 
 export const Route = createFileRoute("/posts/")({
   // the index route resolves to the same URL as its /posts layout, which owns the crumb
-  staticData: { title: "Posts", breadcrumb: false },
   validateSearch: z.object({
     p: z.optional(z.int()),
   }),
