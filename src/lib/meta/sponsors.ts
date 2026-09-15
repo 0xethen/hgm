@@ -18,7 +18,7 @@ const UTM = {
 const sponsorList: { main: Array<Sponsor>; other: Array<Sponsor> } = {
   // main / premier sponsors
   main: [
-    { title: "State Farm", href: "https://st8.fm/hg", src: "statefarm-v2.svg", utm: false },
+    { title: "State Farm", href: "https://st8.fm/hg", src: "statefarm.svg", utm: false },
     { title: "Amazon", href: "https://amazon.com/", src: "amazon.svg", utm: false },
     { title: "OpenAI", href: "https://openai.com/", src: "oaiwordmark.svg", utm: false },
   ],
@@ -32,7 +32,7 @@ const sponsorList: { main: Array<Sponsor>; other: Array<Sponsor> } = {
     { title: "Hack Club", href: "https://hackclub.com", src: "hackclub.svg", utm: true },
     { title: "Interview Cake", href: "https://interviewcake.com", src: "intcake.svg", utm: true },
     { title: "MIE Coach", href: "https://miecoach.com", src: "mie-logo.png", utm: true },
-    { title: "GSMST", href: "https://www.gsmst.org", src: "gsmst.webp", utm: false },
+    { title: "GSMST", href: "https://gsmst.gcpsk12.org", src: "gsmst.webp", utm: false },
   ],
 };
 

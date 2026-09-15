@@ -91,13 +91,19 @@ export function SponsorSection({ title }: { title: React.ReactNode }) {
       </div>
 
       <div>
-        <span className="text-muted-foreground/50">
+        {/* <span className="text-muted-foreground/50">
           Prizes brought to you by{" "}
           <img
             src={"/assets/images/sponsors/sf-symbol.svg".toAsset()}
             alt="State Farm Brand Icon"
             className="inline h-[1em] not-hover:grayscale opacity-50 drag-none"
           />
+        </span> */}
+        <span className="text-muted-foreground/50">
+          Support us in our mission to empower developers by{" "}
+          <Link to="/sponsor" className="primary-link">
+            sponsoring HackGwinnett
+          </Link>
         </span>
       </div>
     </div>
