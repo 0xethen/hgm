@@ -17,7 +17,11 @@ const UTM = {
 
 const sponsorList: { main: Array<Sponsor>; other: Array<Sponsor> } = {
   // main / premier sponsors
-  main: [{ title: "State Farm", href: "https://st8.fm/hg", src: "statefarm-v2.svg", utm: false }],
+  main: [
+    { title: "State Farm", href: "https://st8.fm/hg", src: "statefarm-v2.svg", utm: false },
+    { title: "Amazon", href: "https://amazon.com/", src: "amazon.svg", utm: false },
+    { title: "OpenAI", href: "https://openai.com/", src: "oaiwordmark.svg", utm: false },
+  ],
 
   // other sponsors (scroller / grid):
   other: [
