@@ -1,10 +1,18 @@
 import * as React from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useForm, useSelector } from "@tanstack/react-form";
 import { toast } from "#/components/ui/toast";
-import { RiArrowRightLine, RiCheckLine, RiPencilLine, RiResetLeftLine } from "@remixicon/react";
+import {
+  RiArrowRightLine,
+  RiBracesLine,
+  RiCheckLine,
+  RiFileEditLine,
+  RiPencilLine,
+  RiResetLeftLine,
+} from "@remixicon/react";
 import { Kbd } from "#/components/ui/kbd";
 import { Button } from "#/components/ui/button";
+import { Badge } from "#/components/ui/badge";
 import { Separator } from "#/components/ui/separator";
 import { Fallback } from "#/components/Fallback.tsx";
 import { events } from "#/lib/meta/events";
@@ -63,23 +71,8 @@ export const Route = createFileRoute("/programs/hackathon/register/")({
   errorComponent: ErrorComponent,
 });
 
-// Know JSON?
-// Test out your object-making skills with our Interactive Registration!
-// Try it out
-// Continue to normal registration instead
-
 function RouteComponent() {
-  return (
-    <Fallback
-      title="click here to complete your registration:"
-      actions={[
-        {
-          label: `register now`,
-          to: event.registration?.url,
-        },
-      ]}
-    />
-  );
+  const [mode, setMode] = React.useState<"choose" | "interactive">("choose");
 
   if (event.registration?.closed)
     return (
@@ -100,7 +93,68 @@ function RouteComponent() {
       />
     );
 
-  return <Interactive />;
+  if (mode === "interactive") return <Interactive />;
+
+  return <RegisterChooser onChooseInteractive={() => setMode("interactive")} />;
+}
+
+function RegisterChooser({ onChooseInteractive }: { onChooseInteractive: () => void }) {
+  return (
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <h1 className="font-semibold text-3xl sm:text-4xl">Register</h1>
+        <p className="text-base sm:text-lg text-muted-foreground">
+          Pick how you'd like to register for {event.shortName}.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <Link
+          to={event.registration?.url as string}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group"
+        >
+          <article className="h-full overflow-hidden border bg-card transition-all hover:shadow-sm flex flex-col p-5">
+            <div className="flex items-center justify-between gap-2">
+              <RiFileEditLine className="size-8 text-primary" />
+              <Badge variant="secondary">Recommended</Badge>
+            </div>
+
+            <h2 className="mt-4 text-xl font-semibold leading-tight transition-colors group-hover:text-primary">
+              Regular registration
+            </h2>
+
+            <p className="mt-2 text-sm text-muted-foreground">
+              Head straight to the form and register the usual way.
+            </p>
+
+            <div className="mt-auto pt-6 text-sm font-medium text-primary icon-link">
+              Register now <RiArrowRightLine />
+            </div>
+          </article>
+        </Link>
+
+        <button type="button" onClick={onChooseInteractive} className="group text-left">
+          <article className="h-full overflow-hidden border bg-card transition-all hover:shadow-sm flex flex-col p-5">
+            <RiBracesLine className="size-8 text-primary" />
+
+            <h2 className="mt-4 text-xl font-semibold leading-tight transition-colors group-hover:text-primary">
+              Interactive registration
+            </h2>
+
+            <p className="mt-2 text-sm text-muted-foreground">
+              Want to test your JSON skills? Complete out a JSON object to prefill the form!
+            </p>
+
+            <div className="mt-auto pt-6 text-sm font-medium text-primary icon-link">
+              Try it out <RiArrowRightLine />
+            </div>
+          </article>
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function Interactive() {
@@ -308,7 +362,8 @@ function Interactive() {
               <button
                 type="button"
                 onClick={continueAnyway}
-                className={cn(hasVisibleProblems ? "font-semibold primary-link" : "link")}
+                className="link"
+                // className={cn(hasVisibleProblems ? "font-semibold primary-link" : "link")}
               >
                 Continue to form anyway
               </button>

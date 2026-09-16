@@ -6,12 +6,18 @@ import { Scroller } from "#/components/ui/motion-primitives/scroller";
 import { type Sponsor, mainSponsors, otherSponsors } from "#/lib/meta/sponsors";
 import { useBreakpoint, useIsReducedMotion } from "#/hooks/browser.ts";
 
-export function SponsorSection({ title }: { title: React.ReactNode }) {
+export function SponsorSection({
+  title,
+  defaultManual,
+}: {
+  title?: React.ReactNode;
+  defaultManual?: boolean;
+}) {
   const { md } = useBreakpoint();
   const isMobile = !md;
   const reducedMotion = useIsReducedMotion();
   const [hasKeyboardFocus, setHasKeyboardFocus] = React.useState(false);
-  const [manualGrid, setManualGrid] = React.useState(false);
+  const [manualGrid, setManualGrid] = React.useState(!!defaultManual);
 
   // the marquee is the only reason the grid isn't the default, so anything that rules the
   // marquee out (small screens, reduced motion, an explicit ask) falls back to the grid.
@@ -101,7 +107,7 @@ export function SponsorSection({ title }: { title: React.ReactNode }) {
         </span> */}
         <span className="text-muted-foreground/50">
           Support us in our mission to empower developers by{" "}
-          <Link to="/sponsor" className="primary-link">
+          <Link to="/sponsors" className="primary-link">
             sponsoring HackGwinnett
           </Link>
         </span>

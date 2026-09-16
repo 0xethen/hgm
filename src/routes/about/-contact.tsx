@@ -20,11 +20,12 @@ import {
 } from "#/components/ui/card";
 import { Textarea } from "#/components/ui/textarea";
 import { RiCheckLine, RiFileCopyLine } from "@remixicon/react";
-import { copy, getGWEmailUrl, popup } from "#/lib/utils";
+import { cn, copy, getGWEmailUrl, popup } from "#/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "#/components/ui/tooltip";
 import { useBreakpoint } from "#/hooks/browser.ts";
 import { useState } from "react";
 import { brand } from "#/lib/meta/brand";
+import { useLocation } from "@tanstack/react-router";
 
 const CONTACT_EMAIL = "hackgwinnett@gmail.com"; // @hackgwinnett.org soon??? 👀
 
@@ -116,9 +117,9 @@ export function ContactForm() {
     },
   });
 
-  const { md, isMobileDevice } = useBreakpoint();
-
   const [emailCopied, setEmailCopied] = useState(false);
+  const { md, isMobileDevice } = useBreakpoint();
+  const location = useLocation();
 
   const copyEmail = () => {
     if (isMobileDevice && !confirm("Copy email address to clipboard?")) return;
@@ -143,9 +144,19 @@ export function ContactForm() {
         await form.handleSubmit();
       }}
     >
-      <Card size={!md ? "sm" : "default"} className="max-w-full lg:max-w-md">
+      <Card
+        size={!md ? "sm" : "default"}
+        className={cn(
+          "max-w-full lg:max-w-md",
+          location.hash === "contact" && "border border-amber-300",
+        )}
+      >
         <CardHeader>
-          <CardTitle>Contact Us</CardTitle>
+          <CardTitle>
+            <span className={cn(location.hash === "contact" && "bg-amber-300 px-2")}>
+              Contact Us
+            </span>
+          </CardTitle>
           <CardDescription>Get in touch with the {brand.name} team via email.</CardDescription>
         </CardHeader>
 

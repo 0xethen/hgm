@@ -39,6 +39,7 @@ import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
 import { Route as PostsAtChar123authorChar125RouteImport } from './routes/posts/@{$author}'
 import { Route as ProgramsIndexRouteImport } from './routes/programs/index'
 import { Route as ProgramsHackathonRouteRouteImport } from './routes/programs/hackathon/route'
+import { Route as SponsorsIndexRouteImport } from './routes/sponsors/index'
 import { Route as ToolsIndexRouteImport } from './routes/tools/index'
 import { Route as ToolsBirdieRouteImport } from './routes/tools/birdie'
 import { Route as ToolsBogeyRouteImport } from './routes/tools/bogey'
@@ -198,6 +199,11 @@ const ProgramsHackathonRouteRoute = ProgramsHackathonRouteRouteImport.update({
   path: '/hackathon',
   getParentRoute: () => ProgramsRouteRoute,
 } as any)
+const SponsorsIndexRoute = SponsorsIndexRouteImport.update({
+  id: '/sponsors/',
+  path: '/sponsors/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsIndexRoute = ToolsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -272,6 +278,7 @@ export interface FileRoutesByFullPath {
   '/gallery/': typeof GalleryIndexRoute
   '/posts/': typeof PostsIndexRoute
   '/programs/': typeof ProgramsIndexRoute
+  '/sponsors/': typeof SponsorsIndexRoute
   '/tools/': typeof ToolsIndexRoute
   '/developer/crumbtest/bogey': typeof DeveloperCrumbtestBogeyRoute
   '/posts/tag/$tag': typeof PostsTagTagRoute
@@ -306,6 +313,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryIndexRoute
   '/posts': typeof PostsIndexRoute
   '/programs': typeof ProgramsIndexRoute
+  '/sponsors': typeof SponsorsIndexRoute
   '/tools': typeof ToolsIndexRoute
   '/developer/crumbtest/bogey': typeof DeveloperCrumbtestBogeyRoute
   '/posts/tag/$tag': typeof PostsTagTagRoute
@@ -347,6 +355,7 @@ export interface FileRoutesById {
   '/gallery/': typeof GalleryIndexRoute
   '/posts/': typeof PostsIndexRoute
   '/programs/': typeof ProgramsIndexRoute
+  '/sponsors/': typeof SponsorsIndexRoute
   '/tools/': typeof ToolsIndexRoute
   '/developer/crumbtest/bogey': typeof DeveloperCrumbtestBogeyRoute
   '/posts/tag/$tag': typeof PostsTagTagRoute
@@ -388,6 +397,7 @@ export interface FileRouteTypes {
     | '/gallery/'
     | '/posts/'
     | '/programs/'
+    | '/sponsors/'
     | '/tools/'
     | '/developer/crumbtest/bogey'
     | '/posts/tag/$tag'
@@ -422,6 +432,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/posts'
     | '/programs'
+    | '/sponsors'
     | '/tools'
     | '/developer/crumbtest/bogey'
     | '/posts/tag/$tag'
@@ -462,6 +473,7 @@ export interface FileRouteTypes {
     | '/gallery/'
     | '/posts/'
     | '/programs/'
+    | '/sponsors/'
     | '/tools/'
     | '/developer/crumbtest/bogey'
     | '/posts/tag/$tag'
@@ -485,6 +497,7 @@ export interface RootRouteChildren {
   GoSlugRoute: typeof GoSlugRoute
   AboutIndexRoute: typeof AboutIndexRoute
   GalleryIndexRoute: typeof GalleryIndexRoute
+  SponsorsIndexRoute: typeof SponsorsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -699,6 +712,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsHackathonRouteRouteImport
       parentRoute: typeof ProgramsRouteRoute
     }
+    '/sponsors/': {
+      id: '/sponsors/'
+      path: '/sponsors'
+      fullPath: '/sponsors/'
+      preLoaderRoute: typeof SponsorsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools/': {
       id: '/tools/'
       path: '/'
@@ -895,6 +915,7 @@ const rootRouteChildren: RootRouteChildren = {
   GoSlugRoute: GoSlugRoute,
   AboutIndexRoute: AboutIndexRoute,
   GalleryIndexRoute: GalleryIndexRoute,
+  SponsorsIndexRoute: SponsorsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
