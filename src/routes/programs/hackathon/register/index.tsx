@@ -63,7 +63,24 @@ export const Route = createFileRoute("/programs/hackathon/register/")({
   errorComponent: ErrorComponent,
 });
 
+// Know JSON?
+// Test out your object-making skills with our Interactive Registration!
+// Try it out
+// Continue to normal registration instead
+
 function RouteComponent() {
+  return (
+    <Fallback
+      title="click here to complete your registration:"
+      actions={[
+        {
+          label: `register now`,
+          to: event.registration?.url,
+        },
+      ]}
+    />
+  );
+
   if (event.registration?.closed)
     return (
       <Fallback
