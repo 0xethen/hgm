@@ -29,8 +29,8 @@ export const faq: { value: string; trigger: string; content: string | React.Reac
     trigger: "How can I participate?",
     content: (
       <>
-        To attend {events.hackathon.name}, simply <SignupLink>register for the event</SignupLink>{" "}
-        and show up on the day of! If you're interested in volunteering or sponsoring, please{" "}
+        To attend {events.hackathon.name}, simply <SignupLink>register for free</SignupLink> and
+        show up on the day of! If you're interested in volunteering or sponsoring, please{" "}
         <Link to="/contact" className="link">
           contact us
         </Link>{" "}
