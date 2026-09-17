@@ -22,4 +22,8 @@ Here's what you can choose from when you [sign up](/go/register) for Hackathon 6
 - Serverless Computing
 - Full Stack Applications
 
+**Masterclass**:
+
+This year, Amazon is hosting a special two-hour complete masterclass on programming with AI. [Sign up](/go/register) for Hackathon 6.0 to participate!
+
 Want to learn even more? Check out our archive of [previous workshops](https://github.com/hackgwinnett/workshops)
