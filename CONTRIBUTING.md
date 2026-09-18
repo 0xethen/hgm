@@ -17,18 +17,20 @@ When adding static assets like images, sound, etc. to the site, call the .toAsse
 
 ## Syncing your local `.env` to the `pages` (prod) GitHub environment (optional) [vibe]
 
-[`scripts/sync-env.sh`](./scripts/sync-env.sh) pushes a small, fixed allowlist of
-values from your local `.env` (never `.env.local`) into this repo's `pages` GitHub Actions
-environment — the one [deploy.yml](./.github/workflows/deploy.yml) reads from at build time — using the `gh` CLI. It exists so a value you've already set up locally doesn't also need to be retyped by hand into GitHub's UI.
+[`scripts/sync-env.ts`](./scripts/sync-env.ts) (`vpr sync:env` / `pnpm sync:env`) pushes a
+small, fixed allowlist of values from your local `.env` (never `.env.local`) into this repo's
+`pages` GitHub Actions environment — the one [deploy.yml](./.github/workflows/deploy.yml) reads
+from at build time — using the `gh` CLI. It exists so a value you've already set up locally
+doesn't also need to be retyped by hand into GitHub's UI.
 
-**It is an allowlist, not "upload everything in `.env`".** Only `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL` is in it today, matching `EXPECTED_ENV` in [build.ts](./build.ts) — the one value the production build actually needs. The three sender-related values documented in [docs/NEWSLETTER.md](./docs/NEWSLETTER.md) (`PUBLIC_APPS_SCRIPT_SENDER_URL`, `PUBLIC_NEWSLETTER_SENDER_SECRET`, `PUBLIC_NEWSLETTER_TEST_EMAIL`) are deliberately **not** included, and must never be added — they're only supposed to exist in your local `.env`. If you ever add a new key to the script's allowlist, add it to `EXPECTED_ENV` in `build.ts` too, and think hard about whether it's actually meant to be public once the site is built.
+**It is an allowlist, not "upload everything in `.env`".** Only `PUBLIC_APPS_SCRIPT_NEWSLETTER_URL` and `PUBLIC_GOATCOUNTER_URL` are in it today, matching `EXPECTED_ENV` in [build.ts](./build.ts) — the values the production build actually needs. The three sender-related values documented in [docs/NEWSLETTER.md](./docs/NEWSLETTER.md) (`PUBLIC_APPS_SCRIPT_SENDER_URL`, `PUBLIC_NEWSLETTER_SENDER_SECRET`, `PUBLIC_NEWSLETTER_TEST_EMAIL`) are deliberately **not** included, and must never be added — they're only supposed to exist in your local `.env`. If you ever add a new key to the script's allowlist, add it to `EXPECTED_ENV` in `build.ts` too, and think hard about whether it's actually meant to be public once the site is built.
 
-The script does nothing on its own — nothing in this repo calls it automatically. If you want it
-to run automatically, wire it up yourself as a **pre-push** hook (this is per-clone, gitignored,
-so it's genuinely opt-in):
+Running it by hand (`pnpm sync:env`) always syncs. It does nothing on its own beyond that —
+nothing in this repo calls it automatically. If you want it to run automatically, wire it up
+yourself as a **pre-push** hook (this is per-clone, gitignored, so it's genuinely opt-in):
 
 ```sh
-printf 'scripts/sync-env.sh "$@"\n' > .vite-hooks/pre-push
+printf 'node scripts/sync-env.ts "$@"\n' > .vite-hooks/pre-push
 chmod +x .vite-hooks/pre-push
 ```
 

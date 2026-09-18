@@ -17,7 +17,8 @@
     "preview": "vp preview",
     "prepare": "vp config",
     "date": "node -e \"console.log(Date.now())\"",
-    "sync:newsletter-template": "node --no-warnings scripts/sync-newsletter-template.ts"
+    "sync:template": "node --no-warnings scripts/sync-newsletter-template.ts",
+    "sync:env": "node --no-warnings scripts/sync-env.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
