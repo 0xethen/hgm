@@ -3,28 +3,39 @@ import { Link } from "@tanstack/react-router";
 import { RiGridLine, RiPlayLine } from "@remixicon/react";
 import { cn } from "#/lib/utils";
 import { Scroller } from "#/components/ui/motion-primitives/scroller";
-import { type Sponsor, mainSponsors, otherSponsors } from "#/lib/meta/sponsors";
+import {
+  type Sponsor as SponsorData,
+  mainSponsors,
+  otherSponsors,
+  pastSponsors,
+} from "#/lib/meta/sponsors";
 import { useBreakpoint, useIsReducedMotion } from "#/hooks/browser.ts";
 
-export function SponsorSection({
+export function Sponsors({
   title,
-  defaultManual,
+  canScroll = true,
+  footer,
 }: {
   title?: React.ReactNode;
-  defaultManual?: boolean;
+  canScroll?: boolean;
+  footer?: React.ReactNode;
 }) {
   const { md } = useBreakpoint();
   const isMobile = !md;
   const reducedMotion = useIsReducedMotion();
   const [hasKeyboardFocus, setHasKeyboardFocus] = React.useState(false);
-  const [manualGrid, setManualGrid] = React.useState(!!defaultManual);
+  const [manualGrid, setManualGrid] = React.useState(!canScroll);
+
+  // too few sponsors to bother scrolling — a marquee with only a handful of logos just
+  // looks like a stall, so it's not worth animating (or offering the toggle for) at all
+  const tooFewToScroll = otherSponsors.length < 6;
 
   // the marquee is the only reason the grid isn't the default, so anything that rules the
-  // marquee out (small screens, reduced motion, an explicit ask) falls back to the grid.
-  // Scroller keeps the same sponsor links mounted across this toggle, so switching layout
-  // while tabbing through never drops focus.
-  const showGrid = isMobile || reducedMotion || hasKeyboardFocus || manualGrid;
-  const canToggle = !isMobile && !reducedMotion;
+  // marquee out (small screens, reduced motion, an explicit ask, too few sponsors) falls
+  // back to the grid. Scroller keeps the same sponsor links mounted across this toggle, so
+  // switching layout while tabbing through never drops focus.
+  const showGrid = isMobile || reducedMotion || hasKeyboardFocus || manualGrid || tooFewToScroll;
+  const canToggle = canScroll && !isMobile && !reducedMotion && !tooFewToScroll;
 
   const handleFocusCapture = (e: React.FocusEvent<HTMLElement>) => {
     if ((e.target as HTMLElement | null)?.matches(":focus-visible")) {
@@ -50,7 +61,7 @@ export function SponsorSection({
         {/* main sponsors (3 per row) */}
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 max-w-5xl mx-auto">
           {mainSponsors.map((sponsor, index) => (
-            <SponsorLogo
+            <Sponsor
               key={`main-${sponsor.title}-${index}`}
               sponsor={sponsor}
               classNames={{
@@ -63,14 +74,15 @@ export function SponsorSection({
         {/* other sponsors */}
         <div className="relative mx-auto max-w-4xl w-full">
           <Scroller
-            className="w-full mask-x-from-95%"
+            className="w-full"
+            scrollClassName="mask-x-from-95%"
             speedOnHover={0.5}
             gap={24}
             grid={showGrid}
-            gridClassName="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 justify-items-center"
+            gridClassName="flex flex-wrap items-center justify-center gap-6"
           >
             {otherSponsors.map((sponsor, index) => (
-              <SponsorLogo key={`${sponsor.title}-${index}-logo`} sponsor={sponsor} />
+              <Sponsor key={`${sponsor.title}-${index}-logo`} sponsor={sponsor} />
             ))}
           </Scroller>
 
@@ -97,6 +109,7 @@ export function SponsorSection({
       </div>
 
       <div>
+        {footer}
         {/* <span className="text-muted-foreground/50">
           Prizes brought to you by{" "}
           <img
@@ -105,26 +118,39 @@ export function SponsorSection({
             className="inline h-[1em] not-hover:grayscale opacity-50 drag-none"
           />
         </span> */}
-        <span className="text-muted-foreground/50">
-          Support us in our mission to empower developers by{" "}
-          <Link to="/sponsors" className="primary-link">
-            sponsoring HackGwinnett
-          </Link>
-        </span>
       </div>
     </div>
   );
 }
 
-type SponsorLogoProps = Omit<React.ComponentPropsWithoutRef<typeof Link>, "href" | "title"> & {
-  sponsor: Sponsor;
+export function PastSponsors({ title }: { title?: React.ReactNode }) {
+  if (pastSponsors.length === 0) return null;
+
+  return (
+    <div className="space-y-4 text-center">
+      {title}
+      <div className="flex flex-wrap items-center justify-center gap-4 max-w-3xl mx-auto">
+        {pastSponsors.map((sponsor, index) => (
+          <Sponsor
+            key={`past-${sponsor.title}-${index}`}
+            sponsor={sponsor}
+            classNames={{ image: "h-6 w-auto max-w-24 sm:h-7 sm:max-w-28" }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+type SponsorProps = Omit<React.ComponentPropsWithoutRef<typeof Link>, "href" | "title"> & {
+  sponsor: SponsorData;
   classNames?: {
     parent?: string;
     image?: string;
   };
 };
 
-const SponsorLogo = React.forwardRef<HTMLAnchorElement, SponsorLogoProps>(
+export const Sponsor = React.forwardRef<HTMLAnchorElement, SponsorProps>(
   ({ sponsor, classNames, className, ...props }, ref) => {
     return (
       <Link

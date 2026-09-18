@@ -8,7 +8,7 @@ Workshops for total beginners or seasoned pros are available throughout the day 
 
 This year, you may attend up to 4 workshops total. Like always, you don't have to attend one for each time slot--and usually, after lecture, you'll have time to work on your hackathon submission. You may even apply the skills you learned to improve your project!
 
-Here's what you can choose from when you [sign up](/go/register) for Hackathon 6.0:
+Here's what you can choose from when you [sign up](/go/register?ref=hackathon) for Hackathon 6.0:
 
 **Beginner**
 
@@ -24,6 +24,6 @@ Here's what you can choose from when you [sign up](/go/register) for Hackathon 6
 
 **Masterclass**:
 
-This year, Amazon is hosting a special two-hour complete masterclass on programming with AI. [Sign up](/go/register) for Hackathon 6.0 to participate!
+This year, Amazon is hosting a special two-hour complete masterclass on programming with AI. [Sign up](/go/register?ref=hackathon) for Hackathon 6.0 to participate!
 
-Want to learn even more? Check out our archive of [previous workshops](https://github.com/hackgwinnett/workshops)
+Want to learn even more? Check out our archive of [previous workshops](https://github.com/hackgwinnett/workshops?ref=hackathon)

@@ -15,7 +15,7 @@ const UTM = {
   utm_campaign: "sponsors",
 };
 
-const sponsorList: { main: Array<Sponsor>; other: Array<Sponsor> } = {
+const sponsorList: { main: Array<Sponsor>; other: Array<Sponsor>; past: Array<Sponsor> } = {
   // main / premier sponsors
   main: [
     { title: "State Farm", href: "https://st8.fm/hg", src: "statefarm.svg", utm: false },
@@ -23,8 +23,11 @@ const sponsorList: { main: Array<Sponsor>; other: Array<Sponsor> } = {
     { title: "OpenAI", href: "https://openai.com/", src: "oaiwordmark.svg", utm: false },
   ],
 
-  // other sponsors (scroller / grid):
-  other: [
+  // other current sponsors (scroller / grid):
+  other: [{ title: "GSMST", href: "https://gsmst.gcpsk12.org", src: "gsmst.webp", utm: false }],
+
+  // past sponsors (shown only in the "past sponsors" section on /sponsors):
+  past: [
     { title: "Replit", href: "https://replit.com", src: "replit.svg", utm: true },
     { title: "Inspirit AI", href: "https://inspiritai.com", src: "inspirit.jpeg", utm: true },
     { title: "Taskade", href: "https://taskade.com", src: "taskade-v2.svg", utm: true },
@@ -32,7 +35,6 @@ const sponsorList: { main: Array<Sponsor>; other: Array<Sponsor> } = {
     { title: "Hack Club", href: "https://hackclub.com", src: "hackclub.svg", utm: true },
     { title: "Interview Cake", href: "https://interviewcake.com", src: "intcake.svg", utm: true },
     { title: "MIE Coach", href: "https://miecoach.com", src: "mie-logo.png", utm: true },
-    { title: "GSMST", href: "https://gsmst.gcpsk12.org", src: "gsmst.webp", utm: false },
   ],
 };
 
@@ -54,5 +56,6 @@ const sponsorify = (s: Sponsor): Sponsor => ({
 
 export const mainSponsors: Array<Sponsor> = sponsorList.main.map(sponsorify);
 export const otherSponsors: Array<Sponsor> = sponsorList.other.map(sponsorify);
+export const pastSponsors: Array<Sponsor> = sponsorList.past.map(sponsorify);
 
-export const sponsors: Array<Sponsor> = [...mainSponsors, ...otherSponsors];
+export const sponsors: Array<Sponsor> = [...mainSponsors, ...otherSponsors, ...pastSponsors];

@@ -21,6 +21,7 @@ export type ScrollerProps = {
    * (only their layout classes change), so focus survives a mode switch mid-keyboard-tab
    */
   grid?: boolean;
+  scrollClassName?: string;
   gridClassName?: string;
 };
 
@@ -35,6 +36,7 @@ export function Scroller({
   disabled = false,
   ignoreReducedMotion = false,
   grid = false,
+  scrollClassName,
   gridClassName,
 }: ScrollerProps) {
   const reducedMotion = useIsReducedMotion();
@@ -100,7 +102,7 @@ export function Scroller({
   };
 
   return (
-    <div className={cn("overflow-hidden", className)}>
+    <div className={cn("overflow-hidden", className, !grid && scrollClassName)}>
       <motion.div
         ref={ref}
         className={cn(grid ? cn("grid", gridClassName) : "flex w-max")}

@@ -63,6 +63,89 @@ three today, and `/a/sender` itself 404s outside `vp dev` — keep both of those
 tiles and the "send test to yourself" button both call the Sender script too, so you can sanity
 check before the real send.
 
+## Keeping the email template in sync
+
+The email's HTML/text template used to be hand-duplicated in two places — a Tailwind mockup in
+`/a/sender`'s preview, and the real inline-styled HTML in the Sender script's
+`buildNewsletterHtml_` — and they'd quietly drifted apart. There's now exactly one copy:
+`src/lib/newsletter/template.ts`, a plain, self-contained (zero-import) TS module. `/a/sender`
+imports it directly and renders its real output in an `<iframe srcDoc>`, so the preview you see
+is byte-for-byte what gets sent — not an approximation.
+
+Apps Script has no bundler and can't run TypeScript or `import`/`export`, so that same file can't
+be pasted into the Sender project as-is. Instead:
+
+```
+pnpm sync:newsletter-template
+```
+
+strips its types (via Node's built-in `stripTypeScriptTypes` — no extra dependency) and writes a
+plain-JS copy to `.vault/GENERATED_Template.gs` (gitignored; it's a build artifact). One-time
+integration into the **Sender** project (`.vault/subscriptions.gs` or wherever your current
+deployment's source lives):
+
+1. Delete the old `buildNewsletterHtml_`, `buildNewsletterText_`, `escapeHtml_`, and `BRAND`
+   block.
+2. Paste in the generated file's contents in its place.
+3. Where `SITE_DOMAIN` and the old `const URLS = {...}` block used to be, replace the `URLS`
+   object with `const URLS = urlsForDomain_(SITE_DOMAIN);` (the generated file defines
+   `urlsForDomain_`, given `SITE_DOMAIN` is already defined elsewhere in the project).
+
+After that first integration, whenever the template needs a design change: edit
+`template.ts`, re-run the sync command, and re-paste the regenerated block — no other file
+should define this template again.
+
+_Bigger picture: this keeps the current Apps Script architecture and just kills the drift. A
+fuller move — managing the whole Apps Script project as real TypeScript in this repo via
+Google's official `clasp` CLI, or moving off Apps Script entirely — is a larger, separate
+decision; ask if you want that written up._
+
+## Fixing the 100-emails/day ceiling
+
+`MailApp.sendEmail` shares Gmail's standard consumer quota — 100 recipients/day across every
+script on the account, which is what the amber banner on `/a/sender` is warning about. The
+lowest-effort fix that keeps everything else (the Sheet, verify/unsubscribe, `/a/sender` itself)
+unchanged: send through a transactional email API instead of `MailApp`. **Brevo**'s free tier is
+300 emails/day forever, no card required — signup at brevo.com, grab an API key from
+**SMTP & API → API Keys**.
+
+In the **Sender** project's Script Properties, add `BREVO_API_KEY`. Then in `sendNewsletter_`,
+replace the retry loop's `MailApp.sendEmail(...)` call with:
+
+```js
+function sendViaBrevo_(to, subject, text, html) {
+  const apiKey = PropertiesService.getScriptProperties().getProperty("BREVO_API_KEY");
+  if (!apiKey) throw new Error("BREVO_API_KEY is not set in Script Properties.");
+
+  const response = UrlFetchApp.fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "post",
+    contentType: "application/json",
+    headers: { "api-key": apiKey },
+    muteHttpExceptions: true,
+    payload: JSON.stringify({
+      sender: { name: NEWSLETTER_SENDER_NAME, email: "hackgwinnett@gmail.com" }, // must be a verified Brevo sender
+      to: [{ email: to }],
+      replyTo: NEWSLETTER_REPLY_TO ? { email: NEWSLETTER_REPLY_TO } : undefined,
+      subject,
+      htmlContent: html,
+      textContent: text,
+    }),
+  });
+
+  if (response.getResponseCode() >= 300) {
+    throw new Error(
+      `Brevo send failed (${response.getResponseCode()}): ${response.getContentText()}`,
+    );
+  }
+}
+```
+
+and call `sendViaBrevo_(recipient.email, emailSubject, text, html)` where `MailApp.sendEmail(...)`
+used to be. `MailApp.getRemainingDailyQuota()` no longer applies — either drop that check or
+replace it with a fixed `300` (or whatever your current Brevo plan allows) so the resumable-send
+logic still has a sane ceiling to stop at. **Verify a sender identity in Brevo first** (their
+dashboard walks you through it) — sends from an unverified `from` address get rejected.
+
 ## What changed from the original version
 
 - **Brute-force lockout**: 5 failed secret attempts locks the endpoint for 15 minutes

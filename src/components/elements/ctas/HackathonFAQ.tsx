@@ -12,12 +12,7 @@ function SignupLink({ children }: { children: React.ReactNode }) {
   if (events.hackathon.registration?.closed) return children;
 
   return (
-    <Link
-      to="/go/$slug"
-      params={{ slug: "register" }}
-      search={{ ref: "faq-cost" }}
-      className="link"
-    >
+    <Link to="/go/$slug" params={{ slug: "register" }} search={{ ref: "faq" }} className="link">
       {children}
     </Link>
   );

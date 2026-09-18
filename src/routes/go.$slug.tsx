@@ -1,6 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { z } from "zod/mini";
 import { socialLinks } from "#/lib/meta/brand";
 import { events } from "#/lib/meta/events";
+import { trackEvent } from "#/lib/analytics.ts";
 
 const redirects: Record<string, string> = {
   // redirects
@@ -35,13 +37,20 @@ export const Route = createFileRoute("/go/$slug")({
     title: { page: "Redirecting...", exact: true },
     header: { hidden: true },
   },
-  loader: ({ params }) => {
+  // ?ref= tags where a golink was shared from (a poster, a bio, a QR code...) so we can see
+  // which sources actually drive clicks
+  validateSearch: z.object({
+    ref: z.optional(z.string()),
+  }),
+  loaderDeps: ({ search }) => ({ ref: search.ref }),
+  loader: ({ params, deps }) => {
     const { slug } = params;
+    const target = redirects[slug];
 
-    if (redirects[slug]) {
-      return Route.redirect(path(redirects[slug]));
-    }
+    if (!target) throw notFound();
 
-    throw notFound();
+    trackEvent("Go Link", { slug, ref: deps.ref || "(direct)" });
+
+    return Route.redirect(path(target));
   },
 });

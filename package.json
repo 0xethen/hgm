@@ -16,7 +16,8 @@
     "lint": "vp lint",
     "preview": "vp preview",
     "prepare": "vp config",
-    "date": "node -e \"console.log(Date.now())\""
+    "date": "node -e \"console.log(Date.now())\"",
+    "sync:newsletter-template": "node --no-warnings scripts/sync-newsletter-template.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

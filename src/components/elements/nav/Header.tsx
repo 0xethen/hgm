@@ -64,6 +64,12 @@ const navItems = [
     href: "/posts",
   },
   {
+    title: "Sponsors",
+    description: "HackGwinnett wouldn't be possible without the support of our sponsors.",
+    className: "hidden", // drawer-only
+    href: "/sponsors",
+  },
+  {
     title: "Programs",
     list: {
       className: "w-100",
@@ -349,7 +355,13 @@ function SocialButton({
   return (
     <Button
       render={
-        <RouterLink to="/go/$slug" params={{ slug }} target="_blank" className="link icon-link" />
+        <RouterLink
+          to="/go/$slug"
+          params={{ slug }}
+          search={{ ref: "nav" }}
+          target="_blank"
+          className="link icon-link"
+        />
       }
       className={cn(CTA_HOVER_CLASS, className)}
       variant="ghost"
@@ -499,6 +511,7 @@ export function Header({
                     <RouterLink
                       to="/go/$slug"
                       params={{ slug: "register" }}
+                      search={{ ref: "nav" }}
                       className="link icon-link"
                     />
                   }

@@ -1,6 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { md } from "#/lib/markdown.ts";
+import { buildNewsletterHtml, urlsForDomain } from "#/lib/newsletter/template.ts";
+import { brand } from "#/lib/meta/brand.ts";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -120,9 +122,23 @@ function RouteComponent() {
     return () => controller.abort();
   }, [scriptUrl, secret]);
 
+  const previewUrls = useMemo(() => urlsForDomain(brand.domain), []);
+
+  // the exact same function the Apps Script sender uses (synced via
+  // scripts/sync-newsletter-gas.ts), fed the exact same content the real payload carries — so
+  // this preview can't drift from what actually gets mailed
   const previewHtml = useMemo(() => {
-    return md(markdown);
-  }, [markdown]);
+    return buildNewsletterHtml(
+      {
+        title: title.trim(),
+        contentHtml: md(markdown),
+        contentText: "",
+        postUrl: postUrl.trim(),
+        unsubscribeUrl: "#preview-unsubscribe-link",
+      },
+      previewUrls,
+    );
+  }, [title, markdown, postUrl, previewUrls]);
 
   function buildPayload() {
     const html = md(markdown);
@@ -424,77 +440,19 @@ function RouteComponent() {
             </div>
           </section>
 
-          <section className="border border-border bg-muted p-4">
-            <div className="mb-3 px-2 text-sm font-medium text-muted-foreground">Preview</div>
-
-            <div className="overflow-hidden border border-border bg-card">
-              <div className="flex items-center justify-center bg-brand px-6 py-8">
-                <img
-                  src="/assets/images/brand/hackgwinnett.svg"
-                  alt="HackGwinnett"
-                  className="max-h-16 max-w-55"
-                />
-              </div>
-
-              <div className="px-8 py-10">
-                {title && <h1 className="mb-6 text-3xl font-bold">{title}</h1>}
-
-                <div
-                  className="prose typeset space-y-4 max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: String(previewHtml),
-                  }}
-                />
-
-                {postUrl && (
-                  <div className="mt-8">
-                    <Button
-                      render={<a href={postUrl} target="_blank" rel="noreferrer" />}
-                      nativeButton={false}
-                    >
-                      Read on HackGwinnett →
-                    </Button>
-                  </div>
-                )}
-              </div>
-
-              <div className="border-t border-border bg-hg-green-alt px-8 py-8 text-center">
-                <p className="mb-4 text-xs leading-5 text-primary-foreground/70">
-                  You're receiving this email because you subscribed to the HackGwinnett newsletter.
-                </p>
-
-                <div className="mb-4 flex justify-center gap-5 text-sm">
-                  <a
-                    href="https://hackgwinnett.org/go/instagram"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary-foreground hover:underline"
-                  >
-                    Instagram
-                  </a>
-
-                  <a
-                    href="https://hackgwinnett.org/go/youtube"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary-foreground hover:underline"
-                  >
-                    YouTube
-                  </a>
-
-                  <a
-                    href="https://hackgwinnett.org/go/x"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary-foreground hover:underline"
-                  >
-                    X (Twitter)
-                  </a>
-                </div>
-
-                <span className="text-xs text-primary-foreground/70">Unsubscribe</span>
-              </div>
+          <section className="border border-border bg-card p-6">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Preview</h2>
+              <span className="text-xs text-muted-foreground">
+                exactly what gets sent — same template, same content
+              </span>
             </div>
+
+            <iframe
+              title="Newsletter preview"
+              srcDoc={previewHtml}
+              className="h-[800px] w-full border border-border bg-white"
+            />
           </section>
         </div>
       </div>

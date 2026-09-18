@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { pages } from "cms/pages";
 import { md } from "#/lib/markdown";
-import { SponsorSection } from "#/components/elements/home/main/sponsors.tsx";
+import { PastSponsors, Sponsors } from "#/components/elements/home/main/sponsors.tsx";
 
 const SPONSOR_PAGE_ID = "sponsor";
 const fallback =
@@ -31,11 +31,15 @@ function RouteComponent() {
         </p>
       </div>
 
-      <SponsorSection defaultManual />
+      <Sponsors canScroll={false} />
+
+      <PastSponsors
+        title={<h2 className="text-lg font-medium text-muted-foreground">Past Sponsors</h2>}
+      />
 
       {/* max-w-3xl mx-auto */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-center">Become a sponsor</h2>
+        <h2 className="text-2xl font-semibold shimmer">Become a sponsor</h2>
         <div
           className="typeset max-w-none space-y-2"
           dangerouslySetInnerHTML={{ __html: md(content?.content || fallback) }}

@@ -1,7 +1,7 @@
 import { HackathonFAQ } from "#/components/elements/ctas/HackathonFAQ.tsx";
 import { NewsletterCTA } from "#/components/elements/ctas/NewsletterCTA.tsx";
 import { Link } from "@tanstack/react-router";
-import { SponsorSection } from "./sponsors.tsx";
+import { Sponsors } from "./sponsors.tsx";
 import { brand } from "#/lib/meta/brand";
 
 export function HomepageMainContent() {
@@ -37,7 +37,17 @@ export function HomepageMainContent() {
 
       {/* Section 2 */}
       <section id="sponsors">
-        <SponsorSection title={<h2>Our Sponsors</h2>} />
+        <Sponsors
+          title={<h2>Our Sponsors</h2>}
+          footer={
+            <span className="text-muted-foreground/50">
+              Support us in our mission to empower developers by{" "}
+              <Link to="/sponsors" className="primary-link">
+                sponsoring HackGwinnett
+              </Link>
+            </span>
+          }
+        />
       </section>
 
       {/* Section 3 */}

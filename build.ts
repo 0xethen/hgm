@@ -18,7 +18,7 @@ const SHELL_FILE = `${CLIENT_DIR}/_shell.html`;
 
 const SITE_URL = "https://hackgwinnett.org";
 const POSTS_DIR = "cms/posts/content";
-const EXPECTED_ENV = ["PUBLIC_APPS_SCRIPT_NEWSLETTER_URL"];
+const EXPECTED_ENV = ["PUBLIC_APPS_SCRIPT_NEWSLETTER_URL", "PUBLIC_GOATCOUNTER_URL"];
 const DEFAULT_REPO = "hackgwinnett/www";
 
 // parsed in main()

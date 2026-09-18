@@ -55,22 +55,6 @@ export function HomepageHeroVideoDialog() {
             onError={() => setIsVideoLoading(false)}
           />
         </div>
-        {/*<DialogClose
-          // onClick={() => {
-          //   videoDialog.close();
-          // }}
-          render={
-            <Button
-              variant="ghost"
-              className="absolute top-5 right-5 bg-secondary z-2"
-              size="icon-xs"
-              disabled={isVideoLoading}
-            />
-          }
-        >
-          {isVideoLoading ? <Spinner /> : <RiCloseLine />}
-          <span className="sr-only">Close</span>
-        </DialogClose>*/}
       </DialogContent>
     </Dialog>
   );
