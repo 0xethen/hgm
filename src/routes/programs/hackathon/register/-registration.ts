@@ -126,7 +126,7 @@ const ABOUT_FIELDS: FieldDoc[] = [
     key: "schoolEmail",
     type: "string",
     required: true,
-    hint: "your school email (like @g.gcpsk12.org)",
+    hint: "your school email (like @g.gcpsk12.org or @gsmst.org)",
   },
   { key: "grade", type: "enum", required: true, hint: "your grade this year", values: GRADES },
   {
